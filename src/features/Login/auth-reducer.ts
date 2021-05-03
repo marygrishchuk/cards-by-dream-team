@@ -63,6 +63,22 @@ export const logoutTC = () => (dispatch: ThunkDispatch) => {
         })
 }
 
+export const getAuthUserDataTC = () => (dispatch: ThunkDispatch) => {
+    dispatch(setRequestStatusAC('loading'))
+    authAPI.me()
+        .then(res => {
+            dispatch(setAuthUserDataAC(res.data._id, res.data.email, res.data.name, true))
+            dispatch(setRequestStatusAC('success'))
+        })
+        .catch(e => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console')
+            dispatch(setErrorAC(error))
+            dispatch(setRequestStatusAC('failed'))
+        })
+}
+
 //types
 export type InitialAuthStateType = typeof initialState
 export type RequestStatusType = 'idle' | 'loading' | 'success' | 'failed'
