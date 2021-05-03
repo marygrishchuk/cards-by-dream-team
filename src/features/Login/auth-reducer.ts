@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {authAPI} from "../../api/api";
+import {authAPI, LoginDataType} from "../../api/api";
 
 const initialState = {
     _id: "",
@@ -30,6 +30,12 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
                 error: action.error
             }
         }
+        case 'login/SET-IS-LOGGED-IN': {
+            return {
+                ...state,
+                isLoggedIn: action.value
+            }
+        }
         default:
             return state
     }
@@ -44,9 +50,30 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'AUTH/SET-REQUEST-STATUS',
     requestStatus
 } as const)
+export const setIsLoggedInAC = (value: boolean) => ({
+        type: 'login/SET-IS-LOGGED-IN', value} as const
+)
 const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
 
+
+
 //thunks
+export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) => {
+    dispatch(setRequestStatusAC('loading'))
+    authAPI.login(loginData)
+        .then(() => {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setRequestStatusAC('success'))
+        })
+        .catch(e => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console')
+            dispatch(setErrorAC(error))
+            dispatch(setRequestStatusAC('failed'))
+        })
+}
+
 export const logoutTC = () => (dispatch: ThunkDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.logout()
@@ -71,5 +98,6 @@ export type ActionsType =
     | ReturnType<typeof setAuthUserDataAC>
     | ReturnType<typeof setRequestStatusAC>
     | ReturnType<typeof setErrorAC>
+    |   ReturnType<typeof setIsLoggedInAC>
 // тип диспатча:
 type ThunkDispatch = Dispatch<ActionsType>
