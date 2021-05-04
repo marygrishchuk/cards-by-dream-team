@@ -7,7 +7,7 @@ import {useFormik} from "formik";
 import { Redirect } from 'react-router-dom';
 import {loginTC} from "./auth-reducer";
 
-// export const Login = () => {
+// export const Login1 = () => {
 //     return (
 //         <div className={style.login}>
 //             Log In
@@ -24,7 +24,6 @@ export const Login = () => {
 
     const dispatch = useDispatch()
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-
 
     const formik = useFormik({
         validate: (values) => {
@@ -51,30 +50,29 @@ export const Login = () => {
 
 
     if(isLoggedIn) {
-        return <Redirect to={"/"}/>
+        return <Redirect to={"/profile"}/>
     }
-
     return (
-        <div className={style.login}>
-            <form onSubmit={formik.handleSubmit}>
-                <input
-                    type="email"
-                    {...formik.getFieldProps("email")}
-                />
-                {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-                <input
-                    type="password"
-                    {...formik.getFieldProps("password")}
-                />
-                {formik.errors.password ? <div>{formik.errors.password}</div> : null}
-                <input type="checkbox"
-                       {...formik.getFieldProps("rememberMe")}
-                       checked={formik.values.rememberMe}
-                />
-                <button type={'submit'} color={'primary'}>Login</button>
+        <form onSubmit={formik.handleSubmit}>
+            <div className={style.login}>
+
+                <label>Email</label>
+                <input type="email" {...formik.getFieldProps("email")}/>
+                {formik.errors.email ? <div className={style.error}>{formik.errors.email}</div> : null}
+
+                <label>Password</label>
+                <input type="password" {...formik.getFieldProps("password")}/>
+                {formik.errors.password ? <div className={style.error}>{formik.errors.password}</div> : null}
+
                 <NavLink to="/forgot" activeClassName={style.active}>Forgot password?</NavLink>
+
+                <label>Remember Me<input type="checkbox" {...formik.getFieldProps("rememberMe")}
+                checked={formik.values.rememberMe} /></label>
+
+                <button type={'submit'} color={'primary'}>Login</button>
                 <NavLink to="/register" activeClassName={style.active}>Registration</NavLink>
-            </form>
-        </div>
+            </div>
+        </form>
+
     )
 }
