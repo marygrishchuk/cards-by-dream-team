@@ -30,12 +30,12 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
                 error: action.error
             }
         }
-        case 'login/SET-IS-LOGGED-IN': {
-            return {
-                ...state,
-                isLoggedIn: action.value
-            }
-        }
+        // case 'login/SET-IS-LOGGED-IN': {
+        //     return {
+        //         ...state,
+        //         isLoggedIn: action.value
+        //     }
+        // }
         default:
             return state
     }
@@ -50,9 +50,9 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'AUTH/SET-REQUEST-STATUS',
     requestStatus
 } as const)
-export const setIsLoggedInAC = (value: boolean) => ({
-        type: 'login/SET-IS-LOGGED-IN', value} as const
-)
+// export const setIsLoggedInAC = (value: boolean) => ({
+//         type: 'login/SET-IS-LOGGED-IN', value} as const
+// )
 const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
 
 
@@ -61,8 +61,8 @@ const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
 export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.login(loginData)
-        .then(() => {
-            dispatch(setIsLoggedInAC(true))
+        .then((res) => {
+            dispatch(setAuthUserDataAC(res.data._id, res.data.email, res.data.name, true))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {
@@ -114,6 +114,6 @@ export type ActionsType =
     | ReturnType<typeof setAuthUserDataAC>
     | ReturnType<typeof setRequestStatusAC>
     | ReturnType<typeof setErrorAC>
-    |   ReturnType<typeof setIsLoggedInAC>
+
 // тип диспатча:
 type ThunkDispatch = Dispatch<ActionsType>
