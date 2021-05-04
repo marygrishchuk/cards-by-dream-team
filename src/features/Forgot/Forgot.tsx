@@ -21,7 +21,9 @@ export const Forgot = () => {
     return (
         <div className={style.forgot}>
             Please enter your email, and we'll send you a link to reset your password.
-            {info && <i>{info}</i>}
+            {requestStatus === 'loading'
+                ? <div style={{color: 'green'}}>loading...</div>
+                : info && <i>{info}</i>}
             {error && <div style={{color: 'red'}}>{error}</div>}
             <input type="email" value={email} onChange={onEmailInput}/>
             <button onClick={onSendBtnClick} disabled={requestStatus === 'loading'}>Send</button>
