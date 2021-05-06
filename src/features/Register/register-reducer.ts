@@ -46,7 +46,9 @@ export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) =>
         .catch((err) => {
 
             dispatch(successRegisterAC(err.response.data.error))
-            setTimeout(()=>{dispatch(successRegisterAC(''))},3000)
+            setTimeout(() => {
+                dispatch(successRegisterAC(''))
+            }, 3000)
         })
 }
 //types
