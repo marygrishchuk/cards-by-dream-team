@@ -15,7 +15,7 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
             return {...state, responseText: action.text}
         }
         case "REGISTER/SET-LOGIN": {
-            return {...state, isRegistration: true}
+            return {...state, isRegistration: action.isRegistration}
         }
         default:
             return state
@@ -25,7 +25,7 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
 //action creators
 // export const setSomethingAC = () => ({type: 'REGISTER/SET-SOMETHING'} as const)
 const successRegisterAC = (text: string) => ({type: 'REGISTER/SUCCESS_REGISTER', text} as const)
-const setLoginAC = () => ({type: 'REGISTER/SET-LOGIN'} as const)
+const setLoginAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-LOGIN', isRegistration} as const)
 //thunk
 // export const doSomethingTC = () => (dispatch: ThunkDispatch) => {
 //
@@ -35,8 +35,11 @@ export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) =>
         .then((res) => {
             dispatch(successRegisterAC('success'))
             setTimeout(() => {
-                dispatch(setLoginAC())
+                dispatch(setLoginAC(true))
             }, 3000)
+            setTimeout(() => {
+                dispatch(setLoginAC(false))
+            }, 5000)
 
 
         })

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import style from "./Register.module.css";
-import {NavLink, Redirect, Switch} from "react-router-dom";
+import {NavLink, Redirect, Route, Switch} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {requestRegister} from "./register-reducer";
 import {AppRootStateType} from "../../app/store";
@@ -22,7 +22,7 @@ export const Register = () => {
 
     if (isRegistration) {
         return <Redirect to={'/login'}/>
-    }
+    }else{<Route path={'/register'} render={() => <Register/>}/>}
 
     return (
         <div className={style.register}>
