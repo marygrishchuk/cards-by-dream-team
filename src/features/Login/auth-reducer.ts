@@ -21,7 +21,10 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
         case 'AUTH/SET-REQUEST-STATUS': {
             return {
                 ...state,
-                requestStatus: action.requestStatus
+                requestStatus: action.requestStatus,
+                error: action.requestStatus === 'success'
+                    ? ''
+                    : state.error
             }
         }
         case 'AUTH/SET-ERROR': {
@@ -54,7 +57,6 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 //         type: 'login/SET-IS-LOGGED-IN', value} as const
 // )
 const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
-
 
 
 //thunks
