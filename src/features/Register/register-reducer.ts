@@ -14,7 +14,7 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
         case "REGISTER/SUCCESS_REGISTER": {
             return {...state, responseText: action.text}
         }
-        case "REGISTER/SET-LOGIN": {
+        case "REGISTER/SET-REGISTRATION": {
             return {...state, isRegistration: action.isRegistration}
         }
         default:
@@ -24,8 +24,8 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
 
 //action creators
 // export const setSomethingAC = () => ({type: 'REGISTER/SET-SOMETHING'} as const)
-const successRegisterAC = (text: string) => ({type: 'REGISTER/SUCCESS_REGISTER', text} as const)
-const setLoginAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-LOGIN', isRegistration} as const)
+const setResponseTextAC = (text: string) => ({type: 'REGISTER/SUCCESS_REGISTER', text} as const)
+const setRegistrationAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-REGISTRATION', isRegistration} as const)
 //thunk
 // export const doSomethingTC = () => (dispatch: ThunkDispatch) => {
 //
@@ -33,21 +33,20 @@ const setLoginAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-LOGIN', is
 export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) => {
     authAPI.register(regData)
         .then((res) => {
-            dispatch(successRegisterAC('success'))
-            setTimeout(() => {
-                dispatch(setLoginAC(true))
-            }, 3000)
-            setTimeout(() => {
-                dispatch(setLoginAC(false))
-            }, 5000)
+            dispatch(setResponseTextAC('success'))
 
+            setTimeout(() => {
+                dispatch(setRegistrationAC(true))
+                dispatch(setResponseTextAC(''))
+                dispatch(setRegistrationAC(false))
+            }, 3000)
 
         })
         .catch((err) => {
 
-            dispatch(successRegisterAC(err.response.data.error))
+            dispatch(setResponseTextAC(err.response.data.error))
             setTimeout(() => {
-                dispatch(successRegisterAC(''))
+                dispatch(setResponseTextAC(''))
             }, 3000)
         })
 }
@@ -55,6 +54,6 @@ export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) =>
 export type InitialStateType = typeof initialState
 //объединение типов actionов:
 // export type ActionsType = ReturnType<typeof setSomethingAC>
-type ActionsType = ReturnType<typeof successRegisterAC> | ReturnType<typeof setLoginAC>
+type ActionsType = ReturnType<typeof setResponseTextAC> | ReturnType<typeof setRegistrationAC>
 // тип диспатча:
 // type ThunkDispatch = Dispatch<ReturnType<typeof setSomethingAC>>

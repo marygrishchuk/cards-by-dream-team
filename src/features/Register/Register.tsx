@@ -22,8 +22,6 @@ export const Register = () => {
 
     if (isRegistration) {
         return <Redirect to={'/login'}/>
-    } else {
-        <Route path={'/register'} render={() => <Register/>}/>
     }
 
     return (
