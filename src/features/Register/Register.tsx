@@ -7,7 +7,7 @@ import {AppRootStateType} from "../../app/store";
 
 export const Register = () => {
     const text = useSelector<AppRootStateType, string>(state => state.register.responseText)
-    const isLogin = useSelector<AppRootStateType, boolean>(state => state.register.isLogin)
+    const isRegistration = useSelector<AppRootStateType, boolean>(state => state.register.isRegistration)
 
     const dispatch = useDispatch()
     const [emailValue, setEmailValue] = useState('')
@@ -20,7 +20,7 @@ export const Register = () => {
 
     const failedPassword = password !== confirmPassword ? true : false
 
-    if (isLogin) {
+    if (isRegistration) {
         return <Redirect to={'/login'}/>
     }
 

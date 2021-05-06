@@ -5,7 +5,7 @@ import {Simulate} from "react-dom/test-utils";
 
 const initialState = {
     responseText: '',
-    isLogin: false
+    isRegistration: false
 }
 
 export const registerReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -15,7 +15,7 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
             return {...state, responseText: action.text}
         }
         case "REGISTER/SET-LOGIN": {
-            return {...state, isLogin: true}
+            return {...state, isRegistration: true}
         }
         default:
             return state
@@ -41,7 +41,9 @@ export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) =>
 
         })
         .catch((err) => {
+
             dispatch(successRegisterAC(err.response.data.error))
+            setTimeout(()=>{dispatch(successRegisterAC(''))},3000)
         })
 }
 //types
