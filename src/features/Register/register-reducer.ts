@@ -39,7 +39,7 @@ export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) =>
                 dispatch(setRegistrationAC(true))
                 dispatch(setResponseTextAC(''))
                 dispatch(setRegistrationAC(false))
-            }, 3000)
+            }, 1000)
 
         })
         .catch((err) => {
