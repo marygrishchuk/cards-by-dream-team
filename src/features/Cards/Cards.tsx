@@ -41,7 +41,8 @@ export const Cards = () => {
                 </div>
             </div>
             <table width="100%" cellPadding="4" className={style.table}>
-                <tr style={{border: '4px solid rgb(200, 200, 200)'}}>
+                <thead>
+                <tr>
                     <th>Question</th>
                     <th>Answer</th>
                     <th>
@@ -53,6 +54,7 @@ export const Cards = () => {
                         <button>Add</button>
                     </th>
                 </tr>
+                </thead>
                 {/*мапим карточки, чтобы они появились в таблице*/}
                 {/*{cards.map(c => <tr key={c._id}>*/}
                 {/*    <td>{c.question}</td>*/}

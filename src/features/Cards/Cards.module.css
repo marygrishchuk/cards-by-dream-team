@@ -74,7 +74,7 @@ input[type=range]::-webkit-slider-thumb::before {
 
 .table {
     margin: 10px 0;
-    border: 2px solid rgb(200, 200, 200);
+    border: 2px solid rgb(133, 89, 89);
 }
 
 .withButtons {
