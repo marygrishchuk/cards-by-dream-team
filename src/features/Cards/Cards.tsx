@@ -25,11 +25,11 @@ export const Cards = () => {
         <div className={style.cards}>
             <h2>Cards</h2>
             <div className={style.filter}>
-                <label><input type="checkbox"/> including my private packs</label>
-                {/*фильтр по названию колоды*/}
+                {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input type="text"/></label>
+                {/*фильтр карточек по ответу*/}
                 <label>Search cards by answer: <input type="text"/></label>
-                {/*двойной range для сортировки по кол-ву карточек в колоде*/}
+                {/*двойной range для сортировки по оценкам (grade)*/}
                 Search cards by grade:
                 <div className={style.rangeBlock}>
                     {min}
