@@ -7,6 +7,8 @@ import {Register} from "../features/Register/Register";
 import {SetPassword} from "../features/SetPassword/SetPassword";
 import {Profile} from "../features/Profile/Profile";
 import {Header} from "../features/Header/Header";
+import {Packs} from "../features/Packs/Packs";
+import {Cards} from "../features/Cards/Cards";
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
         <Route path={'/forgot'} render={() => <Forgot/>}/>
         <Route path={'/set-new-password/:token?'} render={() => <SetPassword/>}/>
         <Route path={'/profile'} render={() => <Profile/>}/>
+        <Route path={'/packs'} render={() => <Packs/>}/>
+        <Route path={'/cards'} render={() => <Cards/>}/>
         <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
         <Redirect from={'*'} to={'/404'}/>
 

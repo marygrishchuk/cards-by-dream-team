@@ -10,6 +10,8 @@ export const Header = () => {
             <NavLink to="/forgot" activeClassName={style.active}>Forgot</NavLink>
             <NavLink to="/set-new-password" activeClassName={style.active}>Set New Password</NavLink>
             <NavLink to="/profile" activeClassName={style.active}>Profile</NavLink>
+            <NavLink to="/packs" activeClassName={style.active}>Packs</NavLink>
+            <NavLink to="/cards" activeClassName={style.active}>Cards</NavLink>
         </div>
     );
 }
