@@ -1,14 +1,25 @@
 import {Dispatch} from "redux";
 import {RequestStatusType} from "../Login/auth-reducer";
+import {GetSortedCardsType, SortDirections} from "../../api/api";
 
 const initialState = {
     requestStatus: 'idle' as RequestStatusType, //изначально статус запроса - "неактивный"
     error: '',
+    sortParams: {
+        question: '',
+        answer: '',
+        sortDirection: SortDirections.Down,
+        propToSortBy: undefined,
+        minGrade: '0',
+        maxGrade: '5',
+        page: 1,
+        pageCount: 10
+    } as GetSortedCardsType
 }
 
 export const cardsReducer = (state = initialState, action: ActionsType): CardsStateType => {
     switch (action.type) {
-        case 'SET-PASSWORD/SET-REQUEST-STATUS': {
+        case 'CARDS/SET-REQUEST-STATUS': {
             return {
                 ...state,
                 requestStatus: action.requestStatus,
@@ -17,10 +28,16 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
                     : state.error
             }
         }
-        case 'SET-PASSWORD/SET-ERROR': {
+        case 'CARDS/SET-ERROR': {
             return {
                 ...state,
                 error: action.error
+            }
+        }
+        case 'CARDS/SET-SORT-PARAMS': {
+            return {
+                ...state,
+                sortParams: {...state.sortParams, ...action.sortParams}
             }
         }
         default:
@@ -30,10 +47,11 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
 
 //action creators
 const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
-    type: 'SET-PASSWORD/SET-REQUEST-STATUS',
+    type: 'CARDS/SET-REQUEST-STATUS',
     requestStatus
 } as const)
-const setErrorAC = (error: string) => ({type: 'SET-PASSWORD/SET-ERROR', error} as const)
+const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const)
+const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
 
 //thunk
 // export const resetPasswordTC = (password: string, resetPasswordToken: string | undefined) => (dispatch: ThunkDispatch) => {
@@ -58,6 +76,7 @@ export type CardsStateType = typeof initialState
 export type ActionsType =
     | ReturnType<typeof setRequestStatusAC>
     | ReturnType<typeof setErrorAC>
+    | ReturnType<typeof setSortParamsAC>
 
 // тип диспатча:
 type ThunkDispatch = Dispatch<ActionsType>

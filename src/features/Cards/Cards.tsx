@@ -1,23 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, {KeyboardEvent, useCallback, useEffect} from "react";
 import style from "./Cards.module.css";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {SortButtons} from "../../common/SortButtons/SortButtons";
 import {getAuthUserDataTC} from "../Login/auth-reducer";
+import {GetSortedCardsType, SortDirections} from "../../api/api";
+import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
 
 export const Cards = () => {
-    //значения для range (диапазона) для поиска карточек по оценкам (grade)
-    const [min, setMin] = useState("0")
-    const [max, setMax] = useState("5")
-
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    // const {packId} = useParams<{ packId?: string }>()    //читаем id колоды из URL
+    const error = useSelector<AppRootStateType, string>(state => state.cards.error)
+    const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (isLoggedIn) return
-        dispatch(getAuthUserDataTC())
+        // if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
+        if (!isLoggedIn) dispatch(getAuthUserDataTC())
     }, [])
+
+    const onSortByGrade = useCallback((sortDirection: SortDirections) => {
+        // dispatch(getCardsTC({sortDirection, propToSortBy: "grade"}))
+    }, [dispatch])
+
+    const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<string | undefined>) => {
+        // dispatch(getCardsTC({minGrade: minValue, maxGrade: maxValue}))
+    }, [dispatch])
+
+    const onSearchByQuestion = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+
+        }
+    }
+    const onSearchByAnswer = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+
+        }
+    }
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
 
@@ -26,27 +46,23 @@ export const Cards = () => {
             <h2>Cards</h2>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
-                <label>Search cards by question: <input type="text"/></label>
+                <label>Search cards by question: <input placeholder={'Type a question and press Enter to search'}
+                                                        onKeyPress={onSearchByQuestion}/></label>
                 {/*фильтр карточек по ответу*/}
-                <label>Search cards by answer: <input type="text"/></label>
+                <label>Search cards by answer: <input placeholder={'Type an answer and press Enter to search'}
+                                                      onKeyPress={onSearchByAnswer}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
                 Search cards by grade:
-                <div className={style.rangeBlock}>
-                    {min}
-                    <span className={style.doubleRange}>
-                    <input type="range" value={min} onChange={e => setMin(e.currentTarget.value)} max={'5'} />
-                    <input type="range" value={max} onChange={e => setMax(e.currentTarget.value)} max={'5'} />
-                </span>
-                    {max}
-                </div>
+                <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
+                             maxRangeLimit={'5'}/>
             </div>
+            {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>
-                <thead>
-                <tr>
+                <tr style={{outline: 'medium solid'}}>
                     <th>Question</th>
                     <th>Answer</th>
                     <th>
-                        <div className={style.withButtons}>Grade<SortButtons param={'grade'}/></div>
+                        <div className={style.cellWithButtons}>Grade<SortButtons onClick={onSortByGrade}/></div>
                     </th>
                     <th>Last Updated</th>
                     <th>URL</th>
@@ -54,7 +70,6 @@ export const Cards = () => {
                         <button>Add</button>
                     </th>
                 </tr>
-                </thead>
                 {/*мапим карточки, чтобы они появились в таблице*/}
                 {/*{cards.map(c => <tr key={c._id}>*/}
                 {/*    <td>{c.question}</td>*/}

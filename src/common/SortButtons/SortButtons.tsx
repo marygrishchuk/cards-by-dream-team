@@ -1,28 +1,17 @@
 import React from "react";
+import {SortDirections} from "../../api/api";
 
 type SortButtonsProps = {
-    param: 'name' | 'cardsCount' | 'grade' //пока 3 параметра, в будущем можно расширять
+    onClick: (sortDirection: SortDirections) => void //сообщаем родителю направление сортировки
 }
 
-export const SortButtons = ({param}: SortButtonsProps) => {
+export const SortButtons = React.memo(({onClick}: SortButtonsProps) => {
 
     const onUpClick = () => {
-        if (param === 'name') {
-            //логика для сортировки по name по возврастанию
-        } else if (param === 'cardsCount') {
-            //логика для сортировки по cardsCount по возврастанию
-        } else if (param === 'grade') {
-            //логика для сортировки по grade по возврастанию
-        }
+        onClick(SortDirections.Up)
     }
     const onDownClick = () => {
-        if (param === 'name') {
-            //логика для сортировки по name по убыванию
-        } else if (param === 'cardsCount') {
-            //логика для сортировки по cardsCount по убыванию
-        } else if (param === 'grade') {
-            //логика для сортировки по grade по возврастанию
-        }
+        onClick(SortDirections.Down)
     }
 
     return <span style={{margin: '0 5px'}}>
@@ -33,4 +22,4 @@ export const SortButtons = ({param}: SortButtonsProps) => {
             <button onClick={onDownClick}>↓</button>
         </div>
     </span>
-}
+})

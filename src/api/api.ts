@@ -37,11 +37,13 @@ export const authAPI = {
 }
 
 export const packsAPI = {
-    getPacks() { // получение колод
-        return instance.get<GetPackResponseType>(`cards/pack`)
-    },
-    getPacksByName(name: string) { // получение отфильтрованных по имени колод
-        return instance.get<GetPackResponseType>(`cards/pack?packName=${name}`)
+    getPacks(params: GetSortedPacksType = {}) { // получение колод
+        const {
+            nameToSearch = '', maxCardsCount = '', minCardsCount = '', page = '', pageCount = '',
+            sortDirection = '', propToSortBy = '', userId = ''
+        } = params
+        return instance.get<GetPackResponseType>(`cards/pack?packName=${nameToSearch}&sortPacks=${sortDirection}` +
+            `${propToSortBy}&min=${minCardsCount}&max=${maxCardsCount}&page=${page}&pageCount=${pageCount}&user_id=${userId}`)
     },
     addPack(name?: string, isPrivate?: boolean, deckCover?: string) {  // добавление (создание) колоды
         return instance.post<AddPackResponseType>(`cards/pack`, {cardsPack: {name, private: isPrivate, deckCover}})
@@ -55,23 +57,42 @@ export const packsAPI = {
 }
 
 export const cardsAPI = {
-    getCards(packId: string) { // получение карточек по id колоды
-        return instance.get<GetCardsResponseType>(`cards/card&cardsPack_id=${packId}`)
+    getCards(packId: string, params: GetSortedCardsType = {}) { // получение карточек по id колоды
+        const {
+            question = '', answer = '', sortDirection = '', propToSortBy = '', minGrade = '',
+            maxGrade = '', page = '', pageCount = ''
+        } = params
+        return instance.get<GetCardsResponseType>(`cards/card?cardsPack_id=${packId}&cardQuestion=${question}` +
+            `&cardAnswer=${answer}&sortCards=${sortDirection}${propToSortBy}&min=${minGrade}&max=${maxGrade}` +
+            `&page=${page}&pageCount=${pageCount}
+`)
     },
-    getCardsByQuestion (packId: string, question: string) { // получение отфильтрованных по вопросу карточек
-        return instance.get<GetCardsResponseType>(`cards/card&cardsPack_id=${packId}&cardQuestion=${question}`)
-    },
-    getCardsByAnswer (packId: string, answer: string) { // получение отфильтрованных по ответу карточек
-        return instance.get<GetCardsResponseType>(`cards/card&cardsPack_id=${packId}?cardAnswer=${answer}`)
-    },
-    addCard(packId: string, question?: string, answer?: string) {  // добавление (создание) карточки
-        return instance.post(`cards/card`, {card: {cardsPack_id: packId, question, answer}})
+    addCard(packId: string, params: NewCardDataType = {}) {  // добавление (создание) карточки
+        const {
+            question, answer, grade, shots, rating, answerImg, questionImg,
+            questionVideo, answerVideo, type
+        } = params
+        return instance.post(`cards/card`, {
+            card: {
+                cardsPack_id: packId, question, answer, grade, shots,
+                rating, answerImg, questionImg, questionVideo, answerVideo, type
+            }
+        })
     },
     deleteCard(cardId: string) { //удаление карточки
         return instance.delete(`cards/card?id=${cardId}`)
     },
-    updateCard(cardId: string, question?: string, answer?: string) { //изменение карточки
-        return instance.put(`cards/card`, {card: {_id: cardId, question, answer}})
+    updateCard(cardId: string, params: NewCardDataType = {}, comments?: string) { //изменение карточки
+        const {
+            question, answer, grade, shots, rating, answerImg, questionImg,
+            questionVideo, answerVideo, type
+        } = params
+        return instance.put(`cards/card`, {
+            card: {
+                _id: cardId, question, answer, grade, shots,
+                rating, answerImg, questionImg, questionVideo, answerVideo, type, comments
+            }
+        })
     },
 }
 
@@ -173,4 +194,43 @@ export type CardDataType = {
     user_id: string
     created: Date
     updated: Date
+}
+
+export enum SortDirections {
+    Up = 0,
+    Down = 1,
+}
+
+export type GetSortedPacksType = {
+    nameToSearch?: string
+    minCardsCount?: string
+    maxCardsCount?: string
+    sortDirection?: SortDirections
+    propToSortBy?: "name" | "cardsCount"
+    page?: number
+    pageCount?: number
+    userId?: string
+}
+export type GetSortedCardsType = {
+    question?: string
+    answer?: string
+    sortDirection?: SortDirections
+    propToSortBy?: "grade"
+    minGrade?: string
+    maxGrade?: string
+    page?: number
+    pageCount?: number
+}
+
+export type NewCardDataType = {
+    question?: string
+    answer?: string
+    grade?: 0 | 1 | 2 | 3 | 4 | 5
+    shots?: number
+    rating?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?: string
+    answerVideo?: string
+    type?: "card"
 }

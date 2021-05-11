@@ -52,7 +52,7 @@ const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
 
 
 //thunks
-export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) => {
+export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.login(loginData)
         .then((res) => {
@@ -68,7 +68,7 @@ export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) =
         })
 }
 
-export const logoutTC = () => (dispatch: ThunkDispatch) => {
+export const logoutTC = () => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.logout()
         .then(() => {
@@ -84,7 +84,7 @@ export const logoutTC = () => (dispatch: ThunkDispatch) => {
         })
 }
 
-export const getAuthUserDataTC = () => (dispatch: ThunkDispatch) => {
+export const getAuthUserDataTC = () => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.me()
         .then(res => {
@@ -110,4 +110,4 @@ export type ActionsType =
     | ReturnType<typeof setErrorAC>
 
 // тип диспатча:
-type ThunkDispatch = Dispatch<ActionsType>
+type ThunkCustomDispatch = Dispatch<ActionsType>

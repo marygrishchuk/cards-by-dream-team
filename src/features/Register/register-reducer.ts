@@ -1,6 +1,5 @@
 import {authAPI, RegDataType} from "../../api/api";
 import {Dispatch} from "redux";
-import {Simulate} from "react-dom/test-utils";
 
 
 const initialState = {
@@ -30,7 +29,7 @@ const setRegistrationAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-REG
 // export const doSomethingTC = () => (dispatch: ThunkDispatch) => {
 //
 // }
-export const requestRegister = (regData: RegDataType) => (dispatch: Dispatch) => {
+export const requestRegister = (regData: RegDataType) => (dispatch: ThunkCustomDispatch) => {
     authAPI.register(regData)
         .then((res) => {
             dispatch(setResponseTextAC('success'))
@@ -56,4 +55,4 @@ export type InitialStateType = typeof initialState
 // export type ActionsType = ReturnType<typeof setSomethingAC>
 type ActionsType = ReturnType<typeof setResponseTextAC> | ReturnType<typeof setRegistrationAC>
 // тип диспатча:
-// type ThunkDispatch = Dispatch<ReturnType<typeof setSomethingAC>>
+type ThunkCustomDispatch = Dispatch<ActionsType>
