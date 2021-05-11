@@ -16,14 +16,13 @@ export const DoubleRange = React.memo(({
                                            onValuesChange
                                        }: DoubleRangePropsType) => {
 
-    const [min, setMin] = useState(minValue)
-    const [max, setMax] = useState(maxValue)
+    const [min, setMin] = useState(minValue || '0')
+    const [max, setMax] = useState(maxValue || '5')
 
     useEffect(() => {
-        if (min === max && max === maxRangeLimit) {
-            setMin(state => state && (+state - 1).toString())
-        } else if (minValue === maxValue) {
-            setMax(state => state && (+state + 1).toString())
+        if (min === max) {
+            setMin((+min - 1).toString())
+            setMax((+max + 1).toString())
         }
     }, [min, max, maxRangeLimit])
 
