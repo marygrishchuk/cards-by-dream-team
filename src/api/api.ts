@@ -49,10 +49,10 @@ export const packsAPI = {
         return instance.post<AddPackResponseType>(`cards/pack`, {cardsPack: {name, private: isPrivate, deckCover}})
     },
     deletePack(packId: string) { //удаление колоды
-        return instance.delete(`cards/pack?id=${packId}`)
+        return instance.delete<DeletePackResponseType>(`cards/pack?id=${packId}`)
     },
     updatePack(packId: string, name?: string) { //изменение колоды
-        return instance.put(`cards/pack`, {cardsPack: {_id: packId, name}})
+        return instance.put<UpdatePackResponseType>(`cards/pack`, {cardsPack: {_id: packId, name}})
     },
 }
 
@@ -168,6 +168,16 @@ export type NewPackType = {
 
 export type AddPackResponseType = {
     newCardsPack: PackDataType
+    token: string
+    tokenDeathTime: number
+}
+export type DeletePackResponseType = {
+    deletedCardsPack: PackDataType
+    token: string
+    tokenDeathTime: number
+}
+export type UpdatePackResponseType = {
+    updatedCardsPack: PackDataType
     token: string
     tokenDeathTime: number
 }
