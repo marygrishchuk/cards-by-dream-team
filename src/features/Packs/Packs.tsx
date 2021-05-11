@@ -65,7 +65,7 @@ export const Packs = () => {
                 {/*поиск приватных колод*/}
                 <label><input type="checkbox" checked={!!userId} onChange={onPrivatePacksSearch}/> including my private packs</label>
                 {/*фильтр по названию колоды*/}
-                <label>Search packs by name: <input placeholder={'Type a name and press Enter to search'}
+                <label>Search packs by name: <input placeholder={'Press Enter to search'}
                                                     onKeyPress={onSearchByName}/></label>
 
                 {/*двойной range для сортировки по кол-ву карточек в колоде*/}

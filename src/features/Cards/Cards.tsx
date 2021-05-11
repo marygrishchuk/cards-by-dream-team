@@ -46,10 +46,10 @@ export const Cards = () => {
             <h2>Cards</h2>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
-                <label>Search cards by question: <input placeholder={'Type a question and press Enter to search'}
+                <label>Search cards by question: <input placeholder={'Press Enter to search'}
                                                         onKeyPress={onSearchByQuestion}/></label>
                 {/*фильтр карточек по ответу*/}
-                <label>Search cards by answer: <input placeholder={'Type an answer and press Enter to search'}
+                <label>Search cards by answer: <input placeholder={'Press Enter to search'}
                                                       onKeyPress={onSearchByAnswer}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
                 Search cards by grade:
