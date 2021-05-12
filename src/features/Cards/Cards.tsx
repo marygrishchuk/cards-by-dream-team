@@ -24,7 +24,7 @@ export const Cards = () => {
         // dispatch(getCardsTC({sortDirection, propToSortBy: "grade"}))
     }, [dispatch])
 
-    const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<string | undefined>) => {
+    const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
         // dispatch(getCardsTC({minGrade: minValue, maxGrade: maxValue}))
     }, [dispatch])
 
@@ -52,9 +52,9 @@ export const Cards = () => {
                 <label>Search cards by answer: <input placeholder={'Press Enter to search'}
                                                       onKeyPress={onSearchByAnswer}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
-                Search cards by grade:
+                <div style={{display: "flex"}}>Search cards by grade:
                 <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
-                             maxRangeLimit={'5'}/>
+                             maxRangeLimit={5}/></div>
             </div>
             {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>
