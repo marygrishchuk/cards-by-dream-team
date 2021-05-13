@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import style from "./Profile.module.css";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
-import {getAuthUserDataTC, InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
-import {Avatar} from 'antd';
+import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
+import {Avatar, Popover} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import {Popover} from 'antd';
+import { Typography } from 'antd';
+import {PATH} from "../../app/App";
 
 export const Profile = () => {
     const {
@@ -18,13 +19,8 @@ export const Profile = () => {
         requestStatus
     } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const dispatch = useDispatch()
+    const { Paragraph } = Typography;
     const [newAvatarUrl, setNewAvatarUrl] = useState('')
-    const [newName, setNewName] = useState('')
-
-    useEffect(() => {
-        if (isLoggedIn) return
-        dispatch(getAuthUserDataTC())
-    }, [])
 
     const onLogoutClick = () => {
         dispatch(logoutTC())
@@ -32,7 +28,7 @@ export const Profile = () => {
     const onChangeAvatarClick = () => {
         dispatch(updateUserDataTC({avatar: newAvatarUrl}))
     }
-    const onChangeNameClick = () => {
+    const onNewNameSubmit = (newName: string) => {
         dispatch(updateUserDataTC({name: newName}))
     }
 
@@ -46,15 +42,7 @@ export const Profile = () => {
         </span>
     )
 
-    const setNameTools = (
-        <span>
-            <input onChange={e => setNewName(e.currentTarget.value)}
-                   value={newName}/>
-            <button onClick={onChangeNameClick}>Set name</button>
-        </span>
-    )
-
-    if (!isLoggedIn) return <Redirect to={'/login'}/>
+    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div className={style.profile}>
@@ -69,9 +57,7 @@ export const Profile = () => {
                     <Avatar size={64}
                             icon={<UserOutlined/>}/>
                 </Popover>}
-            <Popover content={setNameTools} title="Change your name" trigger="hover">
-                <div>{name}</div>
-            </Popover>
+            <Paragraph editable={{ onChange: onNewNameSubmit }}>{name}</Paragraph>
             <div>{email}</div>
             <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
         </div>

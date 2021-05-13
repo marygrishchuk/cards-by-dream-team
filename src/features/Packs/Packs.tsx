@@ -3,12 +3,12 @@ import style from "./Packs.module.css";
 import {SortButtons} from "../../common/SortButtons/SortButtons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
-import {getAuthUserDataTC} from "../Login/auth-reducer";
 import {Redirect} from "react-router-dom";
 import {addPackTC, getPacksTC} from "./packs-reducer";
 import {GetSortedPacksType, PackDataType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
 import {Pack} from "./Pack/Pack";
+import {PATH} from "../../app/App";
 
 export const Packs = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
@@ -24,7 +24,6 @@ export const Packs = () => {
 
     useEffect(() => {
         if (isLoggedIn) dispatch(getPacksTC())
-        if (!isLoggedIn) dispatch(getAuthUserDataTC())
     }, [])
 
     const onPrivatePacksSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +55,7 @@ export const Packs = () => {
         dispatch(addPackTC())
     }
 
-    if (!isLoggedIn) return <Redirect to={'/login'}/>
+    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div className={style.packs}>
@@ -70,12 +69,13 @@ export const Packs = () => {
 
                 {/*двойной range для сортировки по кол-ву карточек в колоде*/}
                 <div style={{display: "flex"}}>Search packs by cards count:
-                <DoubleRange minValue={minCardsCount} maxValue={maxCardsCount} onValuesChange={onCardsCountChange}
-                             maxRangeLimit={200}/></div>
+                    <DoubleRange minValue={minCardsCount} maxValue={maxCardsCount} onValuesChange={onCardsCountChange}
+                                 maxRangeLimit={200}/></div>
             </div>
             {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>
-                <tr style={{outline: 'medium solid'}}>
+                <thead style={{outline: 'medium solid'}}>
+                <tr>
                     <th>
                         <div className={style.cellWithButtons}>Name<SortButtons onClick={onSortByName}/></div>
                     </th>
@@ -83,15 +83,17 @@ export const Packs = () => {
                         <div className={style.cellWithButtons}>Cards Count<SortButtons onClick={onSortByCardsCount}/>
                         </div>
                     </th>
-                    <th>Last Updated</th>
+                    <th>Last Update</th>
                     <th>Created by</th>
                     <th>
                         <button onClick={onAddBtnClick}>Add</button>
                     </th>
                 </tr>
-
+                </thead>
+                <tbody>
                 {/*мапим колоды, чтобы они появились в таблице*/}
                 {packs.map(p => <Pack key={p._id} pack={p} authUserId={authUserId}/>)}
+                </tbody>
             </table>
             {/*Pagination*/}
             <div className={style.pagination}>
