@@ -20,8 +20,8 @@ const initialState = {
         answer: '',
         sortDirection: SortDirections.Down,
         propToSortBy: undefined,
-        minGrade: '0',
-        maxGrade: '5',
+        minGrade: 0,
+        maxGrade: 5,
         page: 1,
         pageCount: 10
     } as GetSortedCardsType

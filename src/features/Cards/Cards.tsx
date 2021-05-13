@@ -59,7 +59,6 @@ export const Cards = () => {
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
 
-
     return (
         <div className={style.cards}>
             <h2>Cards</h2>
@@ -75,9 +74,9 @@ export const Cards = () => {
                                                       value={answer}
                                                       onChange={e => setAnswer(e.currentTarget.value)}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
-                Search cards by grade:
+                <div style={{display: "flex"}}>Search cards by grade:
                 <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
-                             maxRangeLimit={'5'}/>
+                             maxRangeLimit={5}/></div>
             </div>
             {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>

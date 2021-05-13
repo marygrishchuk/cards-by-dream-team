@@ -213,8 +213,8 @@ export enum SortDirections {
 
 export type GetSortedPacksType = {
     nameToSearch?: string
-    minCardsCount?: string
-    maxCardsCount?: string
+    minCardsCount?: number
+    maxCardsCount?: number
     sortDirection?: SortDirections
     propToSortBy?: "name" | "cardsCount"
     page?: number
@@ -227,8 +227,8 @@ export type GetSortedCardsType = {
     answer?: string
     sortDirection?: SortDirections
     propToSortBy?: "grade"
-    minGrade?: string
-    maxGrade?: string
+    minGrade?: number
+    maxGrade?: number
     page?: number
     pageCount?: number
 }

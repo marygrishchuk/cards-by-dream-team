@@ -10,8 +10,8 @@ const initialState = {
     error: "",
     sortParams: {
         nameToSearch: '',
-        minCardsCount: '0',
-        maxCardsCount: '100',
+        minCardsCount: 0,
+        maxCardsCount: 100,
         sortDirection: SortDirections.Down,
         propToSortBy: undefined,
         page: 1,

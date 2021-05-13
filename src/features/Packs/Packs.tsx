@@ -40,7 +40,7 @@ export const Packs = () => {
 
         }
     }
-    const onCardsCountChange = useCallback(([minValue, maxValue]: Array<string | undefined>) => {
+    const onCardsCountChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
         dispatch(getPacksTC({minCardsCount: minValue, maxCardsCount: maxValue}))
     }, [dispatch])
 
@@ -63,15 +63,15 @@ export const Packs = () => {
             <h2>Packs</h2>
             <div className={style.filter}>
                 {/*поиск приватных колод*/}
-                <label><input type="checkbox" checked={!!userId} onChange={onPrivatePacksSearch}/> including my private packs</label>
+                <label><input type="checkbox" checked={!!userId} onChange={onPrivatePacksSearch}/> show my private packs</label>
                 {/*фильтр по названию колоды*/}
                 <label>Search packs by name: <input placeholder={'Press Enter to search'}
                                                     onKeyPress={onSearchByName}/></label>
 
                 {/*двойной range для сортировки по кол-ву карточек в колоде*/}
-                Search packs by cards count:
+                <div style={{display: "flex"}}>Search packs by cards count:
                 <DoubleRange minValue={minCardsCount} maxValue={maxCardsCount} onValuesChange={onCardsCountChange}
-                             maxRangeLimit={'200'}/>
+                             maxRangeLimit={200}/></div>
             </div>
             {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>
@@ -84,14 +84,14 @@ export const Packs = () => {
                         </div>
                     </th>
                     <th>Last Updated</th>
-                    <th>URL</th>
+                    <th>Created by</th>
                     <th>
                         <button onClick={onAddBtnClick}>Add</button>
                     </th>
                 </tr>
 
                 {/*мапим колоды, чтобы они появились в таблице*/}
-                {packs.map(p => <Pack key={p._id} pack={p}/>)}
+                {packs.map(p => <Pack key={p._id} pack={p} authUserId={authUserId}/>)}
             </table>
             {/*Pagination*/}
             <div className={style.pagination}>
