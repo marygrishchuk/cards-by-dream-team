@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from "react";
 import {Slider} from 'antd';
-import 'antd/dist/antd.css';
 import style from "./DoubleRange.module.css";
 
 type DoubleRangePropsType = {

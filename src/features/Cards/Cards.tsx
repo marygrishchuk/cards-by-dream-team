@@ -32,7 +32,7 @@ export const Cards = () => {
         dispatch(getCardsTC(packId, {sortDirection, propToSortBy: "grade"}))
     }, [dispatch])
 
-    const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<string | undefined>) => {
+    const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
         dispatch(getCardsTC(packId, {minGrade: minValue, maxGrade: maxValue}))
     }, [dispatch])
 
