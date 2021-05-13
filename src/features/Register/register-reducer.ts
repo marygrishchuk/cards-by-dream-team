@@ -1,5 +1,6 @@
 import {authAPI, RegDataType} from "../../api/api";
 import {Dispatch} from "redux";
+import {stat} from "fs";
 
 
 const initialState = {
@@ -14,7 +15,10 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
             return {...state, responseText: action.text}
         }
         case "REGISTER/SET-REGISTRATION": {
-            return {...state, isRegistration: action.isRegistration}
+            return {
+                ...state, isRegistration: action.isRegistration,
+                responseText: state.isRegistration === true ? '' : state.responseText
+            }
         }
         default:
             return state
@@ -36,7 +40,6 @@ export const requestRegister = (regData: RegDataType) => (dispatch: ThunkCustomD
 
             setTimeout(() => {
                 dispatch(setRegistrationAC(true))
-                dispatch(setResponseTextAC(''))
                 dispatch(setRegistrationAC(false))
             }, 1000)
 
