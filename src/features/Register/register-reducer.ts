@@ -1,6 +1,5 @@
 import {authAPI, RegDataType} from "../../api/api";
 import {Dispatch} from "redux";
-import {stat} from "fs";
 
 
 const initialState = {
