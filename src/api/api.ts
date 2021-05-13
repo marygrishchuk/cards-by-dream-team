@@ -220,6 +220,7 @@ export type GetSortedPacksType = {
     page?: number
     pageCount?: number
     userId?: string
+
 }
 export type GetSortedCardsType = {
     question?: string

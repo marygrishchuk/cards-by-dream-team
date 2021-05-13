@@ -1,45 +1,64 @@
-import React, {KeyboardEvent, useCallback, useEffect} from "react";
+import React, {KeyboardEvent, MouseEventHandler, useCallback, useEffect, useState} from "react";
 import style from "./Cards.module.css";
-import {Redirect} from "react-router-dom";
+import {Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {SortButtons} from "../../common/SortButtons/SortButtons";
 import {getAuthUserDataTC} from "../Login/auth-reducer";
-import {GetSortedCardsType, SortDirections} from "../../api/api";
+import {CardDataType, GetSortedCardsType, PackDataType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
+import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
+
 
 export const Cards = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-    // const {packId} = useParams<{ packId?: string }>()    //читаем id колоды из URL
+    const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
+    const cards = useSelector<AppRootStateType, Array<CardDataType>>(state => state.cards.cards)
+    const packUserId = useSelector<AppRootStateType, string>(state => state.cards.packUserId)
+    const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
     const error = useSelector<AppRootStateType, string>(state => state.cards.error)
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
     const dispatch = useDispatch()
 
+    const [answer, setAnswer] = useState<string>("")
+    const [question, setQuestion] = useState<string>("")
+
     useEffect(() => {
-        // if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
+        if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
         if (!isLoggedIn) dispatch(getAuthUserDataTC())
     }, [])
 
     const onSortByGrade = useCallback((sortDirection: SortDirections) => {
-        // dispatch(getCardsTC({sortDirection, propToSortBy: "grade"}))
+        dispatch(getCardsTC(packId, {sortDirection, propToSortBy: "grade"}))
     }, [dispatch])
 
     const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<string | undefined>) => {
-        // dispatch(getCardsTC({minGrade: minValue, maxGrade: maxValue}))
+        dispatch(getCardsTC(packId, {minGrade: minValue, maxGrade: maxValue}))
     }, [dispatch])
 
     const onSearchByQuestion = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-
+            dispatch(getCardsTC(packId, {question: question}))
         }
     }
     const onSearchByAnswer = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-
+            dispatch(getCardsTC(packId, {answer: answer}))
         }
     }
+    const onDeleteClick = (cardId: string) => {
+        dispatch(deleteCardTC(packId, cardId))
+    }
+    const onAddBtnClick = (packId: string) => {
+        dispatch(addCardTC(packId))
+    }
+    const onUpdateClick = (cardId: string) => {
+        dispatch(updateCardTC(packId, cardId))
+    }
+
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
+
 
     return (
         <div className={style.cards}>
@@ -47,10 +66,14 @@ export const Cards = () => {
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input placeholder={'Press Enter to search'}
-                                                        onKeyPress={onSearchByQuestion}/></label>
+                                                        onKeyPress={onSearchByQuestion}
+                                                        value={question}
+                                                        onChange={e => setQuestion(e.currentTarget.value)}/></label>
                 {/*фильтр карточек по ответу*/}
                 <label>Search cards by answer: <input placeholder={'Press Enter to search'}
-                                                      onKeyPress={onSearchByAnswer}/></label>
+                                                      onKeyPress={onSearchByAnswer}
+                                                      value={answer}
+                                                      onChange={e => setAnswer(e.currentTarget.value)}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
                 Search cards by grade:
                 <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
@@ -67,21 +90,27 @@ export const Cards = () => {
                     <th>Last Updated</th>
                     <th>URL</th>
                     <th>
-                        <button>Add</button>
+                        <button onClick={() => {
+                            onAddBtnClick(packId)
+                        }} disabled={packUserId !== authUserId}>Add
+                        </button>
                     </th>
                 </tr>
                 {/*мапим карточки, чтобы они появились в таблице*/}
-                {/*{cards.map(c => <tr key={c._id}>*/}
-                {/*    <td>{c.question}</td>*/}
-                {/*    <td>{c.answer}</td>*/}
-                {/*    <td>{c.grade}</td>*/}
-                {/*    <td>{c.updated}</td>*/}
-                {/*    <td>string</td>*/}
-                {/*    <td>*/}
-                {/*        <button>Delete</button>*/}
-                {/*        <button>Update</button>*/}
-                {/*    </td>*/}
-                {/*</tr>)}*/}
+                {cards.map(c => <tr key={c._id}>
+                    <td>{c.question}</td>
+                    <td>{c.answer}</td>
+                    <td>{c.grade}</td>
+                    <td>{c.updated}</td>
+                    <td>string</td>
+                    <td>
+
+                        <button onClick={() => onDeleteClick(c._id)} disabled={packUserId !== authUserId}>Delete
+                        </button>
+                        <button onClick={() => onUpdateClick(c._id)} disabled={packUserId !== authUserId}>Update
+                        </button>
+                    </td>
+                </tr>)}
 
             </table>
             {/*Pagination*/}
