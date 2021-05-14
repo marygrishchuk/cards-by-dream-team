@@ -6,16 +6,16 @@ import {AppRootStateType} from "../../app/store";
 import {getAuthUserDataTC} from "../Login/auth-reducer";
 import {Redirect} from "react-router-dom";
 import {addPackTC, getPacksTC, PacksStateType} from "./packs-reducer";
-import {GetSortedPacksType, PackDataType, SortDirections} from "../../api/api";
+import {GetSortedPacksType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
 import {Pack} from "./Pack/Pack";
-import { Paginator } from "../Paginator/Paginator";
+import {Paginator} from "../Paginator/Paginator";
 
 export const Packs = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
     const error = useSelector<AppRootStateType, string>(state => state.packs.error)
-    const {cardPacksTotalCount, page, cardPacks} = useSelector<AppRootStateType,PacksStateType>(state=>state.packs)
+    const {cardPacksTotalCount, page, cardPacks} = useSelector<AppRootStateType, PacksStateType>(state => state.packs)
 
     const {
         minCardsCount,
@@ -61,9 +61,9 @@ export const Packs = () => {
     }
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
-const paginatorPage=(page:number, pageCount: number| undefined)=>{
-        dispatch(getPacksTC({page,pageCount}))
-}
+    const paginatorPage = (page: number, pageCount: number | undefined) => {
+        dispatch(getPacksTC({page, pageCount}))
+    }
     return (
         <div className={style.packs}>
             <h2>Packs</h2>
@@ -75,7 +75,7 @@ const paginatorPage=(page:number, pageCount: number| undefined)=>{
                 <label>Search packs by name: <input placeholder={'Press Enter to search'}
                                                     onKeyPress={onSearchByName}
                                                     value={searchByName}
-                                                   onChange={e=>setSearchByName(e.currentTarget.value)}
+                                                    onChange={e => setSearchByName(e.currentTarget.value)}
                 /></label>
 
                 {/*двойной range для сортировки по кол-ву карточек в колоде*/}

@@ -1,15 +1,14 @@
-import React, {KeyboardEvent, MouseEventHandler, useCallback, useEffect, useState} from "react";
+import React, {KeyboardEvent, useCallback, useEffect, useState} from "react";
 import style from "./Cards.module.css";
 import {Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {SortButtons} from "../../common/SortButtons/SortButtons";
 import {getAuthUserDataTC} from "../Login/auth-reducer";
-import {CardDataType, GetSortedCardsType, PackDataType, SortDirections} from "../../api/api";
+import {CardDataType, GetSortedCardsType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
 import {addCardTC, CardsStateType, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
-import {PacksStateType} from "../Packs/packs-reducer";
 
 
 export const Cards = () => {
@@ -20,7 +19,7 @@ export const Cards = () => {
     const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
     const error = useSelector<AppRootStateType, string>(state => state.cards.error)
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
-    const {cardsTotalCount, page} = useSelector<AppRootStateType,CardsStateType>(state=>state.cards)
+    const {cardsTotalCount, page} = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
     const dispatch = useDispatch()
 
     const [answer, setAnswer] = useState<string>("")
@@ -61,9 +60,9 @@ export const Cards = () => {
 
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
-const paginatorPage= (page:number, pageCount: number| undefined)=>{
-        dispatch(getCardsTC(packId, {page,pageCount}))
-}
+    const paginatorPage = (page: number, pageCount: number | undefined) => {
+        dispatch(getCardsTC(packId, {page, pageCount}))
+    }
     return (
         <div className={style.cards}>
             <h2>Cards</h2>
@@ -80,8 +79,8 @@ const paginatorPage= (page:number, pageCount: number| undefined)=>{
                                                       onChange={e => setAnswer(e.currentTarget.value)}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
                 <div style={{display: "flex"}}>Search cards by grade:
-                <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
-                             maxRangeLimit={5}/></div>
+                    <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
+                                 maxRangeLimit={5}/></div>
             </div>
             {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
             <table width="100%" cellPadding="4" className={style.table}>

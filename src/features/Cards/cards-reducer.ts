@@ -1,14 +1,8 @@
 import {Dispatch} from "redux";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {
-    CardDataType,
-    cardsAPI,
-    GetSortedCardsType, GetSortedPacksType, NewCardDataType, PackDataType, packsAPI,
-    SortDirections
-} from "../../api/api";
+import {CardDataType, cardsAPI, GetSortedCardsType, NewCardDataType, SortDirections} from "../../api/api";
 import {AppRootStateType} from "../../app/store";
 import {ThunkDispatch} from "redux-thunk";
-import {getPacksTC} from "../Packs/packs-reducer";
 
 const initialState = {
     requestStatus: 'idle' as RequestStatusType, //изначально статус запроса - "неактивный"
@@ -73,11 +67,11 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 } as const)
 const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const)
 const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
-const setCardsAC = (cards: Array<CardDataType> , packUserId: string, page: number, cardsTotalCount: number ) =>
-    ({ type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount } as const)
+const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number) =>
+    ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount} as const)
 
 //thunk
-export const getCardsTC = (packId: string , params: GetSortedCardsType = {}) => (dispatch: ThunkCustommDispatch, getState: () => AppRootStateType) => {
+export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustommDispatch, getState: () => AppRootStateType) => {
     if (params) dispatch(setSortParamsAC(params))
     const sortParams = getState().cards.sortParams
     dispatch(setRequestStatusAC('loading'))
@@ -127,7 +121,7 @@ export const deleteCardTC = (packId: string, cardId: string) => (dispatch: Thunk
         })
 }
 
-export const updateCardTC = (packId:string, cardId: string, params: NewCardDataType = {}, comments?: string) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
+export const updateCardTC = (packId: string, cardId: string, params: NewCardDataType = {}, comments?: string) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.updateCard(cardId, params, comments)
         .then(() => {

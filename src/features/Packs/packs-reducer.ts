@@ -54,7 +54,8 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
                 ...state,
                 sortParams: {...state.sortParams, ...action.sortParams}
             }
-        };
+        }
+            ;
 
         default:
             return state
@@ -62,7 +63,7 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
 } // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
 
 //action creators
-const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page:number) => ({
+const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page: number) => ({
     type: 'PACKS/SET-PACKS',
     cardPacks, cardPacksTotalCount,
     page
