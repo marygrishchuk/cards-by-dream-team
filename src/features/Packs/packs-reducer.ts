@@ -55,8 +55,6 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
                 sortParams: {...state.sortParams, ...action.sortParams}
             }
         }
-            ;
-
         default:
             return state
     }
