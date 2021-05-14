@@ -4,7 +4,7 @@ import {Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {SortButtons} from "../../common/SortButtons/SortButtons";
-import {CardDataType, GetSortedCardsType, SortDirections} from "../../api/api";
+import {GetSortedCardsType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
 import {addCardTC, CardsStateType, getCardsTC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
@@ -15,12 +15,16 @@ import {Card} from "./Card/Card";
 export const Cards = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
-    const cards = useSelector<AppRootStateType, Array<CardDataType>>(state => state.cards.cards)
-    const packUserId = useSelector<AppRootStateType, string>(state => state.cards.packUserId)
     const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
-    const error = useSelector<AppRootStateType, string>(state => state.cards.error)
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
-    const {cardsTotalCount, page} = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
+    const {
+        cards,
+        packUserId,
+        cardsTotalCount,
+        page,
+        pageCount,
+        error
+    } = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
     const dispatch = useDispatch()
 
     const [answer, setAnswer] = useState<string>("")
@@ -104,6 +108,7 @@ export const Cards = () => {
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
+                           pageCount={pageCount}
                            total={cardsTotalCount}
                            onChange={paginatorPage}/>
             </div>

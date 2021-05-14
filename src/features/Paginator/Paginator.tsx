@@ -5,14 +5,14 @@ type PaginatorType = {
     onChange: (page: number, pageCount: number | undefined, packId?: string) => void
     current: number
     total: number
-
+    pageCount: number
 }
 
 export const Paginator = (props: PaginatorType) => {
 
     return <div>
-        <Pagination showQuickJumper current={props.current} total={props.total} onChange={props.onChange}/>
-
+        <Pagination showQuickJumper current={props.current} total={props.total} onChange={props.onChange}
+                    pageSize={props.pageCount}/>
     </div>
 
 }

@@ -15,7 +15,12 @@ export const Packs = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
     const error = useSelector<AppRootStateType, string>(state => state.packs.error)
-    const {cardPacksTotalCount, page, cardPacks} = useSelector<AppRootStateType, PacksStateType>(state => state.packs)
+    const {
+        cardPacksTotalCount,
+        page,
+        cardPacks,
+        pageCount
+    } = useSelector<AppRootStateType, PacksStateType>(state => state.packs)
 
     const {
         minCardsCount,
@@ -110,6 +115,7 @@ export const Packs = () => {
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
+                           pageCount={pageCount}
                            total={cardPacksTotalCount}
                            onChange={paginatorPage}/>
             </div>

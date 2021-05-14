@@ -11,6 +11,7 @@ const initialState = {
     packUserId: "",
     cardsTotalCount: 0,
     page: 0,
+    pageCount: 10,
     sortParams: {
         question: '',
         answer: '',
@@ -52,7 +53,8 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
                 cards: action.cards,
                 packUserId: action.packUserId,
                 page: action.page,
-                cardsTotalCount: action.cardsTotalCount
+                cardsTotalCount: action.cardsTotalCount,
+                pageCount: action.pageCount
             }
         }
         default:
@@ -67,8 +69,8 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 } as const)
 const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const)
 const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
-const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number) =>
-    ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount} as const)
+const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number, pageCount: number) =>
+    ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount, pageCount} as const)
 
 //thunk
 export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustomDispatch, getState: () => AppRootStateType) => {
@@ -77,7 +79,7 @@ export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.getCards(packId, sortParams)
         .then(res => {
-            dispatch(setCardsAC(res.data.cards, res.data.packUserId, res.data.page, res.data.cardsTotalCount))
+            dispatch(setCardsAC(res.data.cards, res.data.packUserId, res.data.page, res.data.cardsTotalCount, res.data.pageCount))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {

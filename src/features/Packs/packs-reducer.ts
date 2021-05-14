@@ -11,6 +11,7 @@ const initialState = {
     error: "",
     cardPacksTotalCount: 0,
     page: 1,
+    pageCount: 10,
     sortParams: {
         nameToSearch: '',
         minCardsCount: 0,
@@ -30,8 +31,8 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
                 ...state,
                 cardPacks: action.cardPacks,
                 cardPacksTotalCount: action.cardPacksTotalCount,
-                page: action.page
-
+                page: action.page,
+                pageCount: action.pageCount
             }
         }
         case 'PACKS/SET-REQUEST-STATUS': {
@@ -61,10 +62,10 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
 } // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
 
 //action creators
-const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page: number) => ({
+const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page: number, pageCount: number) => ({
     type: 'PACKS/SET-PACKS',
     cardPacks, cardPacksTotalCount,
-    page
+    page, pageCount
 } as const)
 const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'PACKS/SET-REQUEST-STATUS',
@@ -82,7 +83,7 @@ export const getPacksTC = (params: GetSortedPacksType = {}) => (dispatch: ThunkC
     dispatch(setRequestStatusAC('loading'))
     packsAPI.getPacks(sortParams)
         .then(res => {
-            dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount, res.data.page))
+            dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount, res.data.page, res.data.pageCount))
             dispatch(setRequestStatusAC('success'))
 
         })
