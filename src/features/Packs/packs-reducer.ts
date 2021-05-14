@@ -96,7 +96,8 @@ export const getPacksTC = (params: GetSortedPacksType = {}) => (dispatch: ThunkC
         })
 }
 
-export const addPackTC = (name?: string, isPrivate?: boolean, deckCover?: string) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
+export const addPackTC = (name?: string, isPrivate?: boolean, deckCover?: string) => (
+    dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
     packsAPI.addPack(name, isPrivate, deckCover)
         .then(() => {

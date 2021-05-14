@@ -217,7 +217,7 @@ export type GetSortedPacksType = {
     minCardsCount?: number
     maxCardsCount?: number
     sortDirection?: SortDirections
-    propToSortBy?: "name" | "cardsCount"
+    propToSortBy?: "name" | "cardsCount" | "updated"
     page?: number
     pageCount?: number
     userId?: string
@@ -227,7 +227,7 @@ export type GetSortedCardsType = {
     question?: string
     answer?: string
     sortDirection?: SortDirections
-    propToSortBy?: "grade"
+    propToSortBy?: "grade" | "updated"
     minGrade?: number
     maxGrade?: number
     page?: number

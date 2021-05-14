@@ -73,7 +73,8 @@ const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number
     ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount, pageCount} as const)
 
 //thunk
-export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustomDispatch, getState: () => AppRootStateType) => {
+export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustomDispatch,
+                                                                                getState: () => AppRootStateType) => {
     if (params) dispatch(setSortParamsAC(params))
     const sortParams = getState().cards.sortParams
     dispatch(setRequestStatusAC('loading'))
@@ -123,7 +124,8 @@ export const deleteCardTC = (packId: string, cardId: string) => (dispatch: Thunk
         })
 }
 
-export const updateCardTC = (packId: string, cardId: string, params: NewCardDataType = {}, comments?: string) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
+export const updateCardTC = (packId: string, cardId: string, params: NewCardDataType = {}, comments?: string) => (
+    dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.updateCard(cardId, params, comments)
         .then(() => {

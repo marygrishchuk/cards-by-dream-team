@@ -3,13 +3,12 @@ import style from "./Cards.module.css";
 import {Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
-import {SortButtons} from "../../common/SortButtons/SortButtons";
-import {GetSortedCardsType, SortDirections} from "../../api/api";
+import {GetSortedCardsType} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
-import {addCardTC, CardsStateType, getCardsTC} from "./cards-reducer";
+import {CardsStateType, getCardsTC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
 import {PATH} from "../../app/App";
-import {Card} from "./Card/Card";
+import {CardsTable} from "./CardsTable";
 
 
 export const Cards = () => {
@@ -34,10 +33,6 @@ export const Cards = () => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
     }, [])
 
-    const onSortByGrade = useCallback((sortDirection: SortDirections) => {
-        dispatch(getCardsTC(packId, {sortDirection, propToSortBy: "grade"}))
-    }, [packId, dispatch])
-
     const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
         dispatch(getCardsTC(packId, {minGrade: minValue, maxGrade: maxValue}))
     }, [packId, dispatch])
@@ -51,9 +46,6 @@ export const Cards = () => {
         if (e.key === 'Enter') {
             dispatch(getCardsTC(packId, {answer: answer}))
         }
-    }
-    const onAddBtnClick = (packId: string) => {
-        dispatch(addCardTC(packId))
     }
     const paginatorPage = useCallback((page: number, pageCount: number | undefined) => {
         dispatch(getCardsTC(packId, {page, pageCount}))
@@ -77,34 +69,13 @@ export const Cards = () => {
                                                       value={answer}
                                                       onChange={e => setAnswer(e.currentTarget.value)}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
-                <div style={{display: "flex"}}>Search cards by grade:
+                <div className={style.rangeContainer}>Search cards by grade:
                     <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
                                  maxRangeLimit={5}/></div>
             </div>
-            {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
-            <table width="100%" cellPadding="4" className={style.table}>
-                <thead style={{outline: 'medium solid'}}>
-                <tr>
-                    <th>Question</th>
-                    <th>Answer</th>
-                    <th>
-                        <div className={style.cellWithButtons}>Grade<SortButtons onClick={onSortByGrade}/></div>
-                    </th>
-                    <th>Last Update</th>
-                    <th>Pack ID</th>
-                    <th>
-                        <button onClick={() => {
-                            onAddBtnClick(packId)
-                        }} disabled={packUserId !== authUserId}>Add
-                        </button>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {/*мапим карточки, чтобы они появились в таблице*/}
-                {cards.map(c => <Card key={c._id} card={c} packId={packId} authUserId={authUserId}/>)}
-                </tbody>
-            </table>
+            {error && <div className={style.error}>{error}</div>}
+            {/*таблица с карточками*/}
+            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId}/>
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
