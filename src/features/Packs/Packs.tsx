@@ -13,7 +13,7 @@ import {PATH} from "../../app/App";
 export const Packs = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
-    const packs = useSelector<AppRootStateType, Array<PackDataType>>(state => state.packs.cardPacks)
+    const cardPacks = useSelector<AppRootStateType, Array<PackDataType>>(state => state.packs.cardPacks)
     const error = useSelector<AppRootStateType, string>(state => state.packs.error)
     const {
         minCardsCount,
@@ -92,7 +92,7 @@ export const Packs = () => {
                 </thead>
                 <tbody>
                 {/*мапим колоды, чтобы они появились в таблице*/}
-                {packs.map(p => <Pack key={p._id} pack={p} authUserId={authUserId}/>)}
+                {cardPacks.map(p => <Pack key={p._id} pack={p} authUserId={authUserId}/>)}
                 </tbody>
             </table>
             {/*Pagination*/}
@@ -108,4 +108,3 @@ export const Packs = () => {
         </div>
     );
 }
-
