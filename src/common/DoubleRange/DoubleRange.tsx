@@ -27,7 +27,7 @@ export const DoubleRange = React.memo(({
 
     const onMouseUpHandler = useCallback(() => {
         onValuesChange([min, max])
-    }, [min, max])
+    }, [onValuesChange, min, max])
 
     return <span className={style.rangeBlock}>
         <Slider range={{draggableTrack: true}} value={[min, max]} min={minRangeLimit} max={maxRangeLimit}
