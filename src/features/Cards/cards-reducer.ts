@@ -71,7 +71,7 @@ const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number
     ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount} as const)
 
 //thunk
-export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustommDispatch, getState: () => AppRootStateType) => {
+export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustomDispatch, getState: () => AppRootStateType) => {
     if (params) dispatch(setSortParamsAC(params))
     const sortParams = getState().cards.sortParams
     dispatch(setRequestStatusAC('loading'))
@@ -147,4 +147,4 @@ export type ActionsType =
     | ReturnType<typeof setCardsAC>
 
 // тип диспатча:
-type ThunkCustommDispatch = Dispatch<ActionsType>
+type ThunkCustomDispatch = Dispatch<ActionsType>
