@@ -7,7 +7,9 @@ import {SortButtons} from "../../common/SortButtons/SortButtons";
 import {getAuthUserDataTC} from "../Login/auth-reducer";
 import {CardDataType, GetSortedCardsType, PackDataType, SortDirections} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
-import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
+import {addCardTC, CardsStateType, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
+import {Paginator} from "../Paginator/Paginator";
+import {PacksStateType} from "../Packs/packs-reducer";
 
 
 export const Cards = () => {
@@ -18,6 +20,7 @@ export const Cards = () => {
     const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
     const error = useSelector<AppRootStateType, string>(state => state.cards.error)
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
+    const {cardsTotalCount, page} = useSelector<AppRootStateType,CardsStateType>(state=>state.cards)
     const dispatch = useDispatch()
 
     const [answer, setAnswer] = useState<string>("")
@@ -58,7 +61,9 @@ export const Cards = () => {
 
 
     if (!isLoggedIn) return <Redirect to={'/login'}/>
-
+const paginatorPage= (page:number, pageCount: number| undefined)=>{
+        dispatch(getCardsTC(packId, {page,pageCount}))
+}
     return (
         <div className={style.cards}>
             <h2>Cards</h2>
@@ -114,13 +119,16 @@ export const Cards = () => {
             </table>
             {/*Pagination*/}
             <div className={style.pagination}>
-                Pagination
-                {/*номер текущей страницы (сначала вводим, а затем сетаем значение с сервера),*/}
-                <input type="number"/>
-                {/*отмапленные кнопки для перехода на другие страницы и*/}
-                <button>кнопки для перехода на другие страницы</button>
-                {/*общее количество страниц*/}
-                <span>общее кол-во страниц</span>
+                <Paginator current={page}
+                           total={cardsTotalCount}
+                           onChange={paginatorPage}/>
+                {/*Pagination*/}
+                {/*/!*номер текущей страницы (сначала вводим, а затем сетаем значение с сервера),*!/*/}
+                {/*<input type="number"/>*/}
+                {/*/!*отмапленные кнопки для перехода на другие страницы и*!/*/}
+                {/*<button>кнопки для перехода на другие страницы</button>*/}
+                {/*/!*общее количество страниц*!/*/}
+                {/*<span>общее кол-во страниц</span>*/}
             </div>
         </div>
     );

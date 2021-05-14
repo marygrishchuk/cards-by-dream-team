@@ -4,10 +4,13 @@ import {RequestStatusType} from "../Login/auth-reducer";
 import {ThunkDispatch} from "redux-thunk";
 import {AppRootStateType} from "../../app/store";
 
+
 const initialState = {
     cardPacks: [] as Array<PackDataType>,
     requestStatus: 'idle' as RequestStatusType,
     error: "",
+    cardPacksTotalCount: 0,
+    page: 1,
     sortParams: {
         nameToSearch: '',
         minCardsCount: 0,
@@ -25,7 +28,10 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
         case 'PACKS/SET-PACKS': {
             return {
                 ...state,
-                cardPacks: action.cardPacks
+                cardPacks: action.cardPacks,
+                cardPacksTotalCount: action.cardPacksTotalCount,
+                page: action.page
+
             }
         }
         case 'PACKS/SET-REQUEST-STATUS': {
@@ -48,16 +54,18 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
                 ...state,
                 sortParams: {...state.sortParams, ...action.sortParams}
             }
-        }
+        };
+
         default:
             return state
     }
 } // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
 
 //action creators
-const setPacksAC = (cardPacks: Array<PackDataType>) => ({
+const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page:number) => ({
     type: 'PACKS/SET-PACKS',
-    cardPacks
+    cardPacks, cardPacksTotalCount,
+    page
 } as const)
 const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'PACKS/SET-REQUEST-STATUS',
@@ -67,6 +75,7 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 const setErrorAC = (error: string) => ({type: 'PACKS/SET-ERROR', error} as const)
 const setSortParamsAC = (sortParams: GetSortedPacksType) => ({type: 'PACKS/SET-SORT-PARAMS', sortParams} as const)
 
+
 //thunk
 export const getPacksTC = (params: GetSortedPacksType = {}) => (dispatch: ThunkCustomDispatch, getState: () => AppRootStateType) => {
     if (params) dispatch(setSortParamsAC(params))
@@ -74,8 +83,9 @@ export const getPacksTC = (params: GetSortedPacksType = {}) => (dispatch: ThunkC
     dispatch(setRequestStatusAC('loading'))
     packsAPI.getPacks(sortParams)
         .then(res => {
-            dispatch(setPacksAC(res.data.cardPacks))
+            dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount, res.data.page))
             dispatch(setRequestStatusAC('success'))
+
         })
         .catch(e => {
             const error = e.response
@@ -142,6 +152,7 @@ export type ActionsType =
     | ReturnType<typeof setRequestStatusAC>
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof setSortParamsAC>
+
 
 // тип диспатча:
 type ThunkCustomDispatch = Dispatch<ActionsType>

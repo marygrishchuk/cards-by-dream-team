@@ -15,6 +15,8 @@ const initialState = {
     error: '',
     cards: [] as Array<CardDataType>,
     packUserId: "",
+    cardsTotalCount: 0,
+    page: 0,
     sortParams: {
         question: '',
         answer: '',
@@ -54,7 +56,9 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
             return {
                 ...state,
                 cards: action.cards,
-                packUserId: action.packUserId
+                packUserId: action.packUserId,
+                page: action.page,
+                cardsTotalCount: action.cardsTotalCount
             }
         }
         default:
@@ -69,19 +73,17 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 } as const)
 const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const)
 const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
-const setCardsAC = (cards: Array<CardDataType> , packUserId: string) => ({ type: 'CARDS/SET-CARDS', cards, packUserId } as const)
-
-
-
+const setCardsAC = (cards: Array<CardDataType> , packUserId: string, page: number, cardsTotalCount: number ) =>
+    ({ type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount } as const)
 
 //thunk
-export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustommDispatch, getState: () => AppRootStateType) => {
+export const getCardsTC = (packId: string , params: GetSortedCardsType = {}) => (dispatch: ThunkCustommDispatch, getState: () => AppRootStateType) => {
     if (params) dispatch(setSortParamsAC(params))
     const sortParams = getState().cards.sortParams
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.getCards(packId, sortParams)
         .then(res => {
-            dispatch(setCardsAC(res.data.cards, res.data.packUserId))
+            dispatch(setCardsAC(res.data.cards, res.data.packUserId, res.data.page, res.data.cardsTotalCount))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {
