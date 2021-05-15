@@ -69,7 +69,7 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
 } as const)
 const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const)
 const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
-const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number, pageCount: number) =>
+export const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number, pageCount: number) =>
     ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount, pageCount} as const)
 
 //thunk

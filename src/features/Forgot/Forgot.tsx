@@ -22,9 +22,9 @@ export const Forgot = () => {
         <div className={style.forgot}>
             Please enter your email, and we'll send you a link to reset your password.
             {requestStatus === 'loading'
-                ? <div style={{color: 'green'}}>loading...</div>
+                ? <div className={style.loading}>loading...</div>
                 : info && <i>{info}</i>}
-            {error && <div style={{color: 'red'}}>{error}</div>}
+            {error && <div className={style.error}>{error}</div>}
             <input type="email" value={email} onChange={onEmailInput}/>
             <button onClick={onSendBtnClick} disabled={requestStatus === 'loading'}>Send</button>
             <NavLink to="/login" activeClassName={style.active}>Log in</NavLink>

@@ -5,12 +5,14 @@ import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
 import React from "react";
 import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
+import {RequestStatusType} from "../Login/auth-reducer";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
     packId: string
     packUserId: string
     authUserId: string
+    requestStatus: RequestStatusType
 }
 type CardIdsType = {
     cardId: string
@@ -26,7 +28,7 @@ type CardType = {
     buttons: CardIdsType
 }
 
-export const CardsTable = ({cards, packId, packUserId, authUserId}: CardsTablePropsType) => {
+export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus}: CardsTablePropsType) => {
     const dispatch = useDispatch()
 
     const onAddBtnClick = () => {
@@ -80,5 +82,5 @@ export const CardsTable = ({cards, packId, packUserId, authUserId}: CardsTablePr
     }
 
     return <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
-                  size={'small'}/>
+                  size={'small'} loading={requestStatus === 'loading'}/>
 }

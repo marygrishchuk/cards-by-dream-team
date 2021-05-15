@@ -45,8 +45,8 @@ export const Login = () => {
             <form onSubmit={formik.handleSubmit}>
 
                 <div className={style.login}>
-                    {requestStatus === 'loading' && <div style={{color: 'green'}}>loading...</div>}
-                    {error && <div style={{color: 'red'}}>{error}</div>}
+                    {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
+                    {error && <div className={style.error}>{error}</div>}
                     <label>Email</label>
                     <input type="email" {...formik.getFieldProps("email")}/>
                     {formik.errors.email ? <div className={style.error}>{formik.errors.email}</div> : null}

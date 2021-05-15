@@ -35,10 +35,10 @@ export const SetPassword = () => {
         <div className={style.setPassword}>
             Please enter your new password in each field.
             {requestStatus === 'loading'
-                ? <div style={{color: 'green'}}>loading...</div>
+                ? <div className={style.loading}>loading...</div>
                 : info && <i>{info}</i>}
-            {error && <div style={{color: 'red'}}>{error}</div>}
-            {localError && <div style={{color: 'red'}}>{localError}</div>}
+            {error && <div className={style.error}>{error}</div>}
+            {localError && <div className={style.error}>{localError}</div>}
             <input type="password" value={password1} onChange={onPassword1Input}
                    onKeyPress={() => setLocalError("")}/>
             <input type="password" value={password2} onChange={onPassword2Input}

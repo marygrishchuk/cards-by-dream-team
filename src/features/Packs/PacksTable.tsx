@@ -7,10 +7,12 @@ import style from "./Packs.module.css";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
 import React from "react";
+import {RequestStatusType} from "../Login/auth-reducer";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
     authUserId: string
+    requestStatus: RequestStatusType
 }
 type PackIdsType = {
     packId: string
@@ -24,7 +26,7 @@ type PackType = {
     createdBy: string,
     buttons: PackIdsType
 }
-export const PacksTable = ({cardPacks, authUserId}: PacksTablePropsType) => {
+export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
     const dispatch = useDispatch()
 
     const onAddBtnClick = () => {
@@ -84,5 +86,5 @@ export const PacksTable = ({cardPacks, authUserId}: PacksTablePropsType) => {
     }
 
     return <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
-                  size={'small'}/>
+                  size={'small'} loading={requestStatus === 'loading'}/>
 }

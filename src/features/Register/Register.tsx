@@ -13,7 +13,7 @@ export const Register = () => {
     const [emailValue, setEmailValue] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [errorPassowrd, setErrorPassword] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
 
     const regData = {email: emailValue, password: password}
     const setRegister = () => {
@@ -44,7 +44,7 @@ export const Register = () => {
                    onKeyPress={clearError}/>
             <input type="password" placeholder={'confirm password'} onKeyPress={clearError}
                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}/>
-            {errorPassowrd}
+            {errorPassword}
             <button onClick={setRegister}>Register</button>
             <NavLink to="/login" activeClassName={style.active}>Log in</NavLink>
         </div>

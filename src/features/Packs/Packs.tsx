@@ -18,7 +18,8 @@ export const Packs = () => {
         cardPacksTotalCount,
         page,
         cardPacks,
-        pageCount
+        pageCount,
+        requestStatus
     } = useSelector<AppRootStateType, PacksStateType>(state => state.packs)
 
     const {
@@ -80,13 +81,14 @@ export const Packs = () => {
             </div>
             {error && <div className={style.error}>{error}</div>}
             {/*таблица с колодами*/}
-            <PacksTable cardPacks={cardPacks} authUserId={authUserId}/>
+            <PacksTable cardPacks={cardPacks} authUserId={authUserId} requestStatus={requestStatus}/>
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
                            pageCount={pageCount}
                            total={cardPacksTotalCount}
-                           onChange={paginatorPage}/>
+                           onChange={paginatorPage}
+                           requestStatus={requestStatus}/>
             </div>
         </div>
     );

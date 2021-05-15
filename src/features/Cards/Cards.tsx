@@ -1,11 +1,11 @@
 import React, {KeyboardEvent, useCallback, useEffect, useState} from "react";
 import style from "./Cards.module.css";
-import {Redirect, useParams} from "react-router-dom";
+import {NavLink, Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
-import {GetSortedCardsType} from "../../api/api";
+import {GetSortedCardsType, PackDataType} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
-import {CardsStateType, getCardsTC} from "./cards-reducer";
+import {CardsStateType, getCardsTC, setCardsAC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
 import {PATH} from "../../app/App";
 import {CardsTable} from "./CardsTable";
@@ -22,8 +22,10 @@ export const Cards = () => {
         cardsTotalCount,
         page,
         pageCount,
-        error
+        error,
+        requestStatus
     } = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
+    const packs = useSelector<AppRootStateType, Array<PackDataType>>(state => state.packs.cardPacks)
     const dispatch = useDispatch()
 
     const [answer, setAnswer] = useState<string>("")
@@ -31,6 +33,10 @@ export const Cards = () => {
 
     useEffect(() => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
+        //зачищаем карточки при выходе со страницы Cards, чтобы при следующем запросе новых карточек не были видны старые
+        return () => {
+            dispatch(setCardsAC([], "", 0, 0, 0))
+        }
     }, [])
 
     const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
@@ -50,13 +56,15 @@ export const Cards = () => {
     const paginatorPage = useCallback((page: number, pageCount: number | undefined) => {
         dispatch(getCardsTC(packId, {page, pageCount}))
     }, [packId, dispatch])
+    //защита от попытки открыть Cards с выдуманным packId в url
+    let isPackFound = packs.some(p => p._id === packId)
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
-    if (isLoggedIn && !packId) return <Redirect to={PATH.PACKS}/>
+    if (isLoggedIn && !packId || isLoggedIn && !isPackFound) return <Redirect to={PATH.PACKS}/>
 
     return (
         <div className={style.cards}>
-            <h2>Cards</h2>
+            <h2><NavLink to={PATH.PACKS} activeClassName={style.active}>⏴ Packs</NavLink></h2>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input placeholder={'Press Enter to search'}
@@ -75,13 +83,14 @@ export const Cards = () => {
             </div>
             {error && <div className={style.error}>{error}</div>}
             {/*таблица с карточками*/}
-            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId}/>
+            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId} requestStatus={requestStatus}/>
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
                            pageCount={pageCount}
                            total={cardsTotalCount}
-                           onChange={paginatorPage}/>
+                           onChange={paginatorPage}
+                           requestStatus={requestStatus}/>
             </div>
         </div>
     );
