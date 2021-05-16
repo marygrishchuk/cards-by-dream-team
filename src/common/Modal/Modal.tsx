@@ -10,7 +10,7 @@ type ModalPropsType = {
     show: boolean
 }
 
-export const Modal: React.FC<ModalPropsType> = (
+export const Modal: React.FC<ModalPropsType> = React.memo((
     {
         enableBackground,
         backgroundOnClick = () => {},
@@ -64,4 +64,4 @@ export const Modal: React.FC<ModalPropsType> = (
             </div>
         </>
     )
-}
+})

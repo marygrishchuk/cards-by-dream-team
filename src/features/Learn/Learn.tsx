@@ -51,6 +51,10 @@ export const Learn = () => {
         setCard(getRandomCard(cards))
         setShowAnswer(false)
     }
+    const onNextClick = () => {
+        setCard(getRandomCard(cards))
+        setShowAnswer(false)
+    }
 
     //защита от попытки открыть Learn с выдуманным packId в url
     let isPackFound = packs.some(p => p._id === packId)
@@ -59,32 +63,38 @@ export const Learn = () => {
     if (!isPackFound) return <Redirect to={PATH.PACKS}/>
 
     return <Modal show enableBackground modalWidthPx={800} modalHeightPx={600}
-                  backgroundOnClick={() => history.goBack()}>
-        <h2><NavLink to={PATH.PACKS} activeClassName={style.active}>⏴ Packs</NavLink></h2>
+                  backgroundOnClick={() => history.push(PATH.PACKS)}>
         {error && <div className={style.error}>{error}</div>}
         {/*вопрос*/}
         <div>Question:</div>
         <div>{card.question}</div>
-        <button onClick={() => setShowAnswer(true)}>Check answer</button>
+        {!showAnswer && <button onClick={() => setShowAnswer(true)}>Check answer</button>}
         {/*ответ*/}
         {showAnswer && <>
             <div>Answer:</div>
             <div>{card.answer}</div>
-            <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>Не знал/Didn’t know
-            </button>
-            <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'2'}>Забыл/Forgot</button>
-            <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'3'}>Долго думал/Thought
-                too long
-            </button>
-            <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'4'}>Почти угадал/Nearly
-                guessed
-            </button>
-            <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'5'}>Знал/I knew it
-            </button>
             <div>
-                <NavLink to={PATH.PACKS} activeClassName={style.active}> Cancel </NavLink>
-                <button>Next</button>
+                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>Не знал/Didn’t
+                    know
+                </button>
+                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'2'}>Забыл/Forgot
+                </button>
+                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'3'}>Долго
+                    думал/Thought
+                    too long
+                </button>
+                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'4'}>Почти
+                    угадал/Nearly
+                    guessed
+                </button>
+                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'5'}>Знал/I knew it
+                </button>
             </div>
-        </>}
+        </>
+        }
+        <div>
+            <NavLink to={PATH.PACKS} activeClassName={style.active}> Cancel </NavLink>
+            <button onClick={onNextClick}>Next</button>
+        </div>
     </Modal>
 }

@@ -10,16 +10,19 @@ import React, {useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
+import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
+import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
     authUserId: string
     requestStatus: RequestStatusType
 }
-type PackIdsType = {
+type ButtonsDataType = {
     packId: string
     packUserId: string
     cardsCount: number
+    packName: string
 }
 type PackType = {
     key: string,
@@ -27,23 +30,31 @@ type PackType = {
     cardsCount: number,
     updated: Date,
     createdBy: string,
-    buttons: PackIdsType
+    buttons: ButtonsDataType
 }
-export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
+export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
     const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
+    const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
+    const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
+    const [currentPackID, setCurrentPackID] = useState<string>('')
+    const [currentPackName, setCurrentPackName] = useState<string>('')
     const dispatch = useDispatch()
 
     const onAddPackClick = (values: Array<string>) => {
-        //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в DeleteItemModal
         dispatch(addPackTC(values[0]))
     }
 
-    const onDeleteClick = (packId: string) => {
-        dispatch(deletePackTC(packId))
+    const onDeleteClick = (isToBeDeleted: boolean) => {
+        if (isToBeDeleted) {
+            dispatch(deletePackTC(currentPackID))
+            setShowDeleteItemModal(false)
+        }
     }
 
-    const onUpdateClick = (packId: string) => {
-        dispatch(updatePackTC(packId))
+    const onUpdateClick = (values: Array<string>) => {
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
+        dispatch(updatePackTC(currentPackID, values[0]))
     }
 
     const data: Array<PackType> = cardPacks.map(p => ({
@@ -52,7 +63,7 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
         cardsCount: p.cardsCount,
         updated: p.updated,
         createdBy: p.user_name,
-        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount}
+        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount, packName: p.name}
     }))
 
     const columns: ColumnsType<PackType> = [
@@ -64,11 +75,21 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
             title: () => <button onClick={() => setShowAddItemModal(true)}>Add</button>,
             dataIndex: 'buttons',
             key: 'buttons',
-            render: ({packId, packUserId, cardsCount}: PackIdsType) => <>
-                <button onClick={() => onDeleteClick(packId)} disabled={packUserId !== authUserId}>Delete</button>
-                <button onClick={() => onUpdateClick(packId)} disabled={packUserId !== authUserId}>Update</button>
+            render: ({packId, packUserId, cardsCount, packName}: ButtonsDataType) => <>
+                <button onClick={() => {
+                    setCurrentPackID(packId);
+                    setShowDeleteItemModal(true)
+                }} disabled={packUserId !== authUserId}>Delete
+                </button>
+                <button onClick={() => {
+                    setCurrentPackID(packId);
+                    setCurrentPackName(packName);
+                    setShowUpdateItemModal(true)
+                }} disabled={packUserId !== authUserId}>Update
+                </button>
                 <span><NavLink to={PATH.CARDS + "/" + packId} activeClassName={style.active}> Cards </NavLink></span>
-                {cardsCount > 0 && <span><NavLink to={PATH.LEARN + "/" + packId} activeClassName={style.active}> Learn </NavLink></span>}
+                {cardsCount > 0 &&
+                <span><NavLink to={PATH.LEARN + "/" + packId} activeClassName={style.active}> Learn </NavLink></span>}
             </>,
         },
     ];
@@ -94,7 +115,16 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
     return <>
         <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
                size={'small'} loading={requestStatus === 'loading'}/>
-        {showAddItemModal && <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}
-                          itemToAdd={'pack'} onAddBtnClick={onAddPackClick}/>}
+        {/*модалка для добавления колоды*/}
+        {showAddItemModal &&
+        <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}
+                      itemToAdd={'pack'} onAddBtnClick={onAddPackClick}/>}
+        {/*модалка для удаления колоды*/}
+        {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
+                                                 itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}
+        {/*модалка для редактирования колоды*/}
+        {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
+                                                 itemToUpdate={'pack'} onUpdateBtnClick={onUpdateClick}
+                                                 inputLabels={["Name: "]} inputValues={[currentPackName]}/>}
     </>
-}
+})

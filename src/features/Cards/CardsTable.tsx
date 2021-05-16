@@ -29,12 +29,12 @@ type CardType = {
     buttons: CardIdsType
 }
 
-export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus}: CardsTablePropsType) => {
+export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, requestStatus}: CardsTablePropsType) => {
     const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
     const onAddCardClick = (values: Array<string>) => {
-        //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в DeleteItemModal
         dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
     }
 
@@ -91,4 +91,4 @@ export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
                       itemToAdd={'card'} onAddBtnClick={onAddCardClick}/>}
     </>
-}
+})
