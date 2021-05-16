@@ -8,7 +8,7 @@ export const getRandomCard = (cards: Array<CardDataType>): CardDataType => {
     let sum = 0
     while (sum < random) {
         sum += (6 - cardsCopy[i].grade)
-        i = sum > random ? i++ : i
+        i = sum < random ? i++ : i
     }
     return cardsCopy[i]
 }
