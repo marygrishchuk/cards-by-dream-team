@@ -33,7 +33,7 @@ export const Cards = () => {
 
     useEffect(() => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
-        //зачищаем карточки при выходе со страницы Cards, чтобы при следующем запросе новых карточек не были видны старые
+        //зачищаем карточки при выходе со страницы Learn, чтобы при следующем запросе новых карточек не были видны старые
         return () => {
             dispatch(setCardsAC([], "", 1, 0, 10))
         }
@@ -56,7 +56,7 @@ export const Cards = () => {
     const paginatorPage = useCallback((page: number, pageCount: number | undefined) => {
         dispatch(getCardsTC(packId, {page, pageCount}))
     }, [packId, dispatch])
-    //защита от попытки открыть Cards с выдуманным packId в url
+    //защита от попытки открыть Learn с выдуманным packId в url
     let isPackFound = packs.some(p => p._id === packId)
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>

@@ -21,7 +21,7 @@ const initialState = {
         maxGrade: 5,
         page: 1,
         pageCount: 10
-    } as GetSortedCardsType
+    } as GetSortedCardsType,
 }
 
 export const cardsReducer = (state = initialState, action: ActionsType): CardsStateType => {
@@ -57,6 +57,12 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
                 pageCount: action.pageCount
             }
         }
+        case 'CARDS/SET-NEW-GRADE': {
+            return {
+                ...state,
+                cards: state.cards.map(c => c._id === action.cardId ? {...c, grade: action.grade} : c)
+            }
+        }
         default:
             return state
     }
@@ -71,6 +77,7 @@ const setErrorAC = (error: string) => ({type: 'CARDS/SET-ERROR', error} as const
 const setSortParamsAC = (sortParams: GetSortedCardsType) => ({type: 'CARDS/SET-SORT-PARAMS', sortParams} as const)
 export const setCardsAC = (cards: Array<CardDataType>, packUserId: string, page: number, cardsTotalCount: number, pageCount: number) =>
     ({type: 'CARDS/SET-CARDS', cards, packUserId, page, cardsTotalCount, pageCount} as const)
+export const setNewGradeAC = (grade: number, cardId: string) => ({type: 'CARDS/SET-NEW-GRADE', grade, cardId} as const)
 
 //thunk
 export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (dispatch: ThunkCustomDispatch,
@@ -141,6 +148,22 @@ export const updateCardTC = (packId: string, cardId: string, params: NewCardData
         })
 }
 
+export const updateGradeTC = (grade: number, cardId: string) => (dispatch: ThunkCustomDispatch) => {
+    dispatch(setRequestStatusAC('loading'))
+    cardsAPI.updateGrade(grade, cardId)
+        .then(res => {
+            dispatch(setNewGradeAC(res.data.updatedGrade.grade, res.data.updatedGrade.card_id))
+            dispatch(setRequestStatusAC('success'))
+        })
+        .catch(e => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console')
+            dispatch(setErrorAC(error))
+            dispatch(setRequestStatusAC('failed'))
+        })
+}
+
 //types
 export type CardsStateType = typeof initialState
 //объединение типов actionов:
@@ -149,6 +172,7 @@ export type ActionsType =
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof setSortParamsAC>
     | ReturnType<typeof setCardsAC>
+    | ReturnType<typeof setNewGradeAC>
 
 // тип диспатча:
 type ThunkCustomDispatch = Dispatch<ActionsType>

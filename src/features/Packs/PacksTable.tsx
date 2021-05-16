@@ -9,6 +9,7 @@ import {SorterResult} from "antd/lib/table/interface";
 import React, {useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
+import {PATH} from "../../app/App";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
@@ -18,6 +19,7 @@ type PacksTablePropsType = {
 type PackIdsType = {
     packId: string
     packUserId: string
+    cardsCount: number
 }
 type PackType = {
     key: string,
@@ -50,22 +52,23 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
         cardsCount: p.cardsCount,
         updated: p.updated,
         createdBy: p.user_name,
-        buttons: {packId: p._id, packUserId: p.user_id}
+        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount}
     }))
 
     const columns: ColumnsType<PackType> = [
         {title: 'Name', dataIndex: 'name', key: 'name', sorter: true},
-        {title: 'Cards Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
+        {title: 'Learn Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
         {
             title: () => <button onClick={() => setShowAddItemModal(true)}>Add</button>,
             dataIndex: 'buttons',
             key: 'buttons',
-            render: ({packId, packUserId}: PackIdsType) => <>
+            render: ({packId, packUserId, cardsCount}: PackIdsType) => <>
                 <button onClick={() => onDeleteClick(packId)} disabled={packUserId !== authUserId}>Delete</button>
                 <button onClick={() => onUpdateClick(packId)} disabled={packUserId !== authUserId}>Update</button>
-                <NavLink to={`/cards/${packId}`} activeClassName={style.active}>Cards</NavLink>
+                <span><NavLink to={PATH.CARDS + "/" + packId} activeClassName={style.active}> Cards </NavLink></span>
+                {cardsCount > 0 && <span><NavLink to={PATH.LEARN + "/" + packId} activeClassName={style.active}> Learn </NavLink></span>}
             </>,
         },
     ];
