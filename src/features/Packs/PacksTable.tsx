@@ -6,8 +6,9 @@ import {NavLink} from "react-router-dom";
 import style from "./Packs.module.css";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
-import React from "react";
+import React, {useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
+import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
@@ -27,10 +28,12 @@ type PackType = {
     buttons: PackIdsType
 }
 export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
+    const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
-    const onAddBtnClick = () => {
-        dispatch(addPackTC())
+    const onAddPackClick = (values: Array<string>) => {
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
+        dispatch(addPackTC(values[0]))
     }
 
     const onDeleteClick = (packId: string) => {
@@ -56,7 +59,7 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
         {
-            title: () => <button onClick={onAddBtnClick}>Add</button>,
+            title: () => <button onClick={() => setShowAddItemModal(true)}>Add</button>,
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({packId, packUserId}: PackIdsType) => <>
@@ -85,6 +88,10 @@ export const PacksTable = ({cardPacks, authUserId, requestStatus}: PacksTablePro
         }
     }
 
-    return <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
-                  size={'small'} loading={requestStatus === 'loading'}/>
+    return <>
+        <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
+               size={'small'} loading={requestStatus === 'loading'}/>
+        {showAddItemModal && <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}
+                          itemToAdd={'pack'} onAddBtnClick={onAddPackClick}/>}
+    </>
 }

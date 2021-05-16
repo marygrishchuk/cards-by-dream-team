@@ -3,9 +3,10 @@ import {useDispatch} from "react-redux";
 import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
-import React from "react";
+import React, {useState} from "react";
 import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
+import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
@@ -29,10 +30,12 @@ type CardType = {
 }
 
 export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus}: CardsTablePropsType) => {
+    const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
-    const onAddBtnClick = () => {
-        dispatch(addCardTC(packId))
+    const onAddCardClick = (values: Array<string>) => {
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
+        dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
     }
 
     const onDeleteClick = (cardId: string) => {
@@ -60,7 +63,7 @@ export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Pack ID', dataIndex: 'packId', key: 'packId'},
         {
-            title: () => <button onClick={onAddBtnClick} disabled={packUserId !== authUserId}>Add</button>,
+            title: () => <button onClick={() => setShowAddItemModal(true)} disabled={packUserId !== authUserId}>Add</button>,
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({cardId, cardUserId}: CardIdsType) => <>
@@ -81,6 +84,11 @@ export const CardsTable = ({cards, packId, packUserId, authUserId, requestStatus
         }
     }
 
-    return <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
-                  size={'small'} loading={requestStatus === 'loading'}/>
+    return <>
+        <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
+               size={'small'} loading={requestStatus === 'loading'}/>
+        {showAddItemModal &&
+        <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
+                      itemToAdd={'card'} onAddBtnClick={onAddCardClick}/>}
+    </>
 }
