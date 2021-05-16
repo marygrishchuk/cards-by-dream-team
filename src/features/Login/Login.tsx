@@ -6,6 +6,7 @@ import {AppRootStateType} from "../../app/store";
 import {useFormik} from "formik";
 import {InitialAuthStateType, loginTC} from "./auth-reducer";
 import {PATH} from "../../app/App";
+import { Form } from "antd";
 
 
 export const Login = () => {
@@ -45,6 +46,14 @@ export const Login = () => {
             <form onSubmit={formik.handleSubmit}>
 
                 <div className={style.login}>
+                    <Form.Item className={style.notice}>
+                        <p>To log in, please get registered
+                            <NavLink to={PATH.REGISTER} activeClassName={style.active}> here,</NavLink>
+                        </p>
+                        <p>or please use common test account credentials:</p>
+                        <p>Email: nya-admin@nya.nya</p>
+                        <p>Password: 1qazxcvBG</p>
+                    </Form.Item>
                     {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
                     {error && <div className={style.error}>{error}</div>}
                     <label>Email</label>

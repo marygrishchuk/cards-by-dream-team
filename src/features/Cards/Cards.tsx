@@ -35,7 +35,7 @@ export const Cards = () => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
         //зачищаем карточки при выходе со страницы Cards, чтобы при следующем запросе новых карточек не были видны старые
         return () => {
-            dispatch(setCardsAC([], "", 0, 0, 0))
+            dispatch(setCardsAC([], "", 1, 0, 10))
         }
     }, [])
 

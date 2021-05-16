@@ -10,7 +10,7 @@ const initialState = {
     cards: [] as Array<CardDataType>,
     packUserId: "",
     cardsTotalCount: 0,
-    page: 0,
+    page: 1,
     pageCount: 10,
     sortParams: {
         question: '',
