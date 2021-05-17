@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/cards-by-dream-team/static/css/main.b6d1a1da.chunk.css",
-    "main.js": "/cards-by-dream-team/static/js/main.6d25f920.chunk.js",
-    "main.js.map": "/cards-by-dream-team/static/js/main.6d25f920.chunk.js.map",
-    "runtime-main.js": "/cards-by-dream-team/static/js/runtime-main.fdd53ced.js",
-    "runtime-main.js.map": "/cards-by-dream-team/static/js/runtime-main.fdd53ced.js.map",
+    "main.css": "/cards-by-dream-team/static/css/main.d885403b.chunk.css",
+    "main.js": "/cards-by-dream-team/static/js/main.272a18b8.chunk.js",
+    "main.js.map": "/cards-by-dream-team/static/js/main.272a18b8.chunk.js.map",
+    "runtime-main.js": "/cards-by-dream-team/static/js/runtime-main.071b95d5.js",
+    "runtime-main.js.map": "/cards-by-dream-team/static/js/runtime-main.071b95d5.js.map",
     "static/css/2.e4d41df7.chunk.css": "/cards-by-dream-team/static/css/2.e4d41df7.chunk.css",
-    "static/js/2.0510ab9d.chunk.js": "/cards-by-dream-team/static/js/2.0510ab9d.chunk.js",
-    "static/js/2.0510ab9d.chunk.js.map": "/cards-by-dream-team/static/js/2.0510ab9d.chunk.js.map",
-    "static/js/3.56448b98.chunk.js": "/cards-by-dream-team/static/js/3.56448b98.chunk.js",
-    "static/js/3.56448b98.chunk.js.map": "/cards-by-dream-team/static/js/3.56448b98.chunk.js.map",
+    "static/js/2.3aa8dd6b.chunk.js": "/cards-by-dream-team/static/js/2.3aa8dd6b.chunk.js",
+    "static/js/2.3aa8dd6b.chunk.js.map": "/cards-by-dream-team/static/js/2.3aa8dd6b.chunk.js.map",
+    "static/js/3.243d825c.chunk.js": "/cards-by-dream-team/static/js/3.243d825c.chunk.js",
+    "static/js/3.243d825c.chunk.js.map": "/cards-by-dream-team/static/js/3.243d825c.chunk.js.map",
     "index.html": "/cards-by-dream-team/index.html",
     "static/css/2.e4d41df7.chunk.css.map": "/cards-by-dream-team/static/css/2.e4d41df7.chunk.css.map",
-    "static/css/main.b6d1a1da.chunk.css.map": "/cards-by-dream-team/static/css/main.b6d1a1da.chunk.css.map",
-    "static/js/2.0510ab9d.chunk.js.LICENSE.txt": "/cards-by-dream-team/static/js/2.0510ab9d.chunk.js.LICENSE.txt"
+    "static/css/main.d885403b.chunk.css.map": "/cards-by-dream-team/static/css/main.d885403b.chunk.css.map",
+    "static/js/2.3aa8dd6b.chunk.js.LICENSE.txt": "/cards-by-dream-team/static/js/2.3aa8dd6b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.fdd53ced.js",
+    "static/js/runtime-main.071b95d5.js",
     "static/css/2.e4d41df7.chunk.css",
-    "static/js/2.0510ab9d.chunk.js",
-    "static/css/main.b6d1a1da.chunk.css",
-    "static/js/main.6d25f920.chunk.js"
+    "static/js/2.3aa8dd6b.chunk.js",
+    "static/css/main.d885403b.chunk.css",
+    "static/js/main.272a18b8.chunk.js"
   ]
 }
