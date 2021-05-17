@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
+import style from "./AddItemModal.module.css";
 import {Modal} from "../../../common/Modal/Modal";
 
 type AddItemModalPropsType = {
@@ -30,13 +31,15 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
 
     return <Modal enableBackground modalHeightPx={250} modalWidthPx={395} show={show}
                   backgroundOnClick={() => setShow(false)}>
-        <div>Add new {itemToAdd}</div>
-        {inputLabels.map((l, i) => <div>
-            <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
-        </div>)}
-        <div>
-            <button onClick={() => setShow(false)}>Cancel</button>
-            <button onClick={onAddClick}>Add</button>
+        <div className={style.addBlock}>
+            <h4>Add new {itemToAdd}:</h4>
+            {inputLabels.map((l, i) => <div>
+                <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
+            </div>)}
+            <div className={style.buttons}>
+                <button onClick={() => setShow(false)}>Cancel</button>
+                <button onClick={onAddClick}>Add</button>
+            </div>
         </div>
     </Modal>
 })

@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
 import {Modal} from "../../../common/Modal/Modal";
+import style from "./UpdateItemModal.module.css";
 
 type UpdateItemModalPropsType = {
     inputValues: Array<string>
@@ -31,13 +32,17 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
 
     return <Modal enableBackground modalHeightPx={250} modalWidthPx={395} show={show}
                   backgroundOnClick={() => setShow(false)}>
-        <div>Update {itemToUpdate}</div>
-        {inputLabels.map((l, i) => <div>
-            <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
-        </div>)}
-        <div>
-            <button onClick={() => setShow(false)}>Cancel</button>
-            <button onClick={onUpdateClick}>Update</button>
+        <div className={style.updateBlock}>
+            <h4>Update {itemToUpdate}:</h4>
+            <div>
+                {inputLabels.map((l, i) => <div>
+                    <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
+                </div>)}
+            </div>
+            <div className={style.buttons}>
+                <button onClick={() => setShow(false)}>Cancel</button>
+                <button onClick={onUpdateClick}>Update</button>
+            </div>
         </div>
     </Modal>
 })

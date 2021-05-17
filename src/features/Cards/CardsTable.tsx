@@ -34,7 +34,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const dispatch = useDispatch()
 
     const onAddCardClick = (values: Array<string>) => {
-        //values содержатся в массиве в том порядке, в котором передаем inputLabels в DeleteItemModal
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в ScrollUpModal
         dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
     }
 

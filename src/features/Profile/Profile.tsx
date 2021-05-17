@@ -8,6 +8,7 @@ import {Avatar, Popover} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import { Typography } from 'antd';
 import {PATH} from "../../app/App";
+import commonStyle from "../../common/styles/error.module.css";
 
 export const Profile = () => {
     const {
@@ -48,7 +49,7 @@ export const Profile = () => {
         <div className={style.profile}>
             Welcome!
             {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
-            {error && <div className={style.error}>{error}</div>}
+            <div className={error && commonStyle.error}>{error}</div>
             {avatar
                 ? <Popover content={setAvatarTools} title="Change avatar" trigger="hover">
                     <Avatar src={avatar} size={64}/>

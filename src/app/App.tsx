@@ -16,6 +16,7 @@ import {AppRootStateType} from "./store";
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {Learn} from "../features/Learn/Learn";
+import { ScrollUpModal } from '../features/Modals/ScrollUpModal/ScrollUpModal';
 
 export const PATH = {
     LOGIN: "/login",
@@ -59,6 +60,8 @@ const App = () => {
                 <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>
+            {/*кнопка для скролла вверх появится только, если юзер промотал вниз на 400px*/}
+            <ScrollUpModal/>
         </div>
     );
 }

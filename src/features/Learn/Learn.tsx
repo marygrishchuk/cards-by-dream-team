@@ -4,10 +4,11 @@ import {NavLink, Redirect, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {CardDataType, PackDataType} from "../../api/api";
-import {CardsStateType, getCardsTC, updateGradeTC} from "../Cards/cards-reducer";
+import {CardsStateType, getCardsTC, setCardsAC, updateGradeTC} from "../Cards/cards-reducer";
 import {PATH} from "../../app/App";
 import {Modal} from "../../common/Modal/Modal";
 import {getRandomCard} from "../../utils/get-random-card";
+import commonStyle from "../../common/styles/error.module.css";
 
 
 export const Learn = () => {
@@ -46,6 +47,13 @@ export const Learn = () => {
         if (cards.length > 0) setCard(getRandomCard(cards))
     }, [dispatch, packId, cards, isFirstCard])
 
+    useEffect(() => {
+        //зачищаем карточки при выходе со страницы Learn, чтобы во время запроса новых карточек в Cards не просвечивались старые
+        return () => {
+            dispatch(setCardsAC([], "", 1, 0, 10))
+        }
+    }, [])
+
     const onGradeBtnClick = (grade: string | undefined) => {
         dispatch(updateGradeTC(grade && +grade || 0, card._id))
         setCard(getRandomCard(cards))
@@ -64,7 +72,7 @@ export const Learn = () => {
 
     return <Modal show enableBackground modalWidthPx={800} modalHeightPx={600}
                   backgroundOnClick={() => history.push(PATH.PACKS)}>
-        {error && <div className={style.error}>{error}</div>}
+        <div className={error && commonStyle.error}>{error}</div>
         {/*вопрос*/}
         <div>Question:</div>
         <div>{card.question}</div>

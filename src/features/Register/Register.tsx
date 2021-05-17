@@ -4,6 +4,7 @@ import {NavLink, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {requestRegister} from "./register-reducer";
 import {AppRootStateType} from "../../app/store";
+import commonStyle from "../../common/styles/error.module.css";
 
 export const Register = () => {
     const text = useSelector<AppRootStateType, string>(state => state.register.responseText)
@@ -44,7 +45,7 @@ export const Register = () => {
                    onKeyPress={clearError}/>
             <input type="password" placeholder={'confirm password'} onKeyPress={clearError}
                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}/>
-            {errorPassword}
+            <div className={errorPassword && commonStyle.error}>{errorPassword}</div>
             <button onClick={setRegister}>Register</button>
             <NavLink to="/login" activeClassName={style.active}>Log in</NavLink>
         </div>

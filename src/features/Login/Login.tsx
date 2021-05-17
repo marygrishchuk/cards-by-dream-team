@@ -7,6 +7,7 @@ import {useFormik} from "formik";
 import {InitialAuthStateType, loginTC} from "./auth-reducer";
 import {PATH} from "../../app/App";
 import { Form } from "antd";
+import commonStyle from "../../common/styles/error.module.css";
 
 
 export const Login = () => {
@@ -55,7 +56,7 @@ export const Login = () => {
                         <p>Password: 1qazxcvBG</p>
                     </Form.Item>
                     {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
-                    {error && <div className={style.error}>{error}</div>}
+                    <div className={error && commonStyle.error}>{error}</div>
                     <label>Email</label>
                     <input type="email" {...formik.getFieldProps("email")}/>
                     {formik.errors.email ? <div className={style.error}>{formik.errors.email}</div> : null}

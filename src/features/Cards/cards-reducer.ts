@@ -5,7 +5,7 @@ import {AppRootStateType} from "../../app/store";
 import {ThunkDispatch} from "redux-thunk";
 
 const initialState = {
-    requestStatus: 'idle' as RequestStatusType, //изначально статус запроса - "неактивный"
+    requestStatus: 'idle' as RequestStatusType, //изначально статус запроса - 'idle' (неактивный)
     error: '',
     cards: [] as Array<CardDataType>,
     packUserId: "",
@@ -66,7 +66,7 @@ export const cardsReducer = (state = initialState, action: ActionsType): CardsSt
         default:
             return state
     }
-} // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
+}
 
 //action creators
 const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
@@ -103,7 +103,7 @@ export const addCardTC = (packId: string, params?: GetSortedCardsType) => (dispa
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.addCard(packId, params)
         .then(() => {
-            dispatch(getCardsTC(packId, params))
+            dispatch(getCardsTC(packId))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {

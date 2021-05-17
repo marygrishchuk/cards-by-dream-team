@@ -41,7 +41,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
     const dispatch = useDispatch()
 
     const onAddPackClick = (values: Array<string>) => {
-        //values содержатся в массиве в том порядке, в котором передаем inputLabels в DeleteItemModal
+        //values содержатся в массиве в том порядке, в котором передаем inputLabels в ScrollUpModal
         dispatch(addPackTC(values[0]))
     }
 

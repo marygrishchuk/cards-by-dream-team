@@ -9,6 +9,7 @@ import {CardsStateType, getCardsTC, setCardsAC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
 import {PATH} from "../../app/App";
 import {CardsTable} from "./CardsTable";
+import commonStyle from "../../common/styles/error.module.css";
 
 
 export const Cards = () => {
@@ -33,7 +34,7 @@ export const Cards = () => {
 
     useEffect(() => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
-        //зачищаем карточки при выходе со страницы Learn, чтобы при следующем запросе новых карточек не были видны старые
+        //зачищаем карточки при выходе со страницы Cards, чтобы во время запроса новых карточек в Cards не просвечивались старые
         return () => {
             dispatch(setCardsAC([], "", 1, 0, 10))
         }
@@ -81,7 +82,7 @@ export const Cards = () => {
                     <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
                                  maxRangeLimit={5}/></div>
             </div>
-            {error && <div className={style.error}>{error}</div>}
+            <div className={error && commonStyle.error}>{error}</div>
             {/*таблица с карточками*/}
             <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId} requestStatus={requestStatus}/>
             {/*Pagination*/}

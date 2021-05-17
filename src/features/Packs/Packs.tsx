@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useEffect, useState} from "react";
 import style from "./Packs.module.css";
+import commonStyle from "../../common/styles/error.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {Redirect} from "react-router-dom";
@@ -37,9 +38,9 @@ export const Packs = () => {
 
     const onPrivatePacksSearch = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.checked) {
-            dispatch(getPacksTC({userId: authUserId}))
+            dispatch(getPacksTC({userId: authUserId, page: 1}))
         } else {
-            dispatch(getPacksTC({userId: ''}))
+            dispatch(getPacksTC({userId: '', page: 1}))
         }
     }
 
@@ -64,7 +65,7 @@ export const Packs = () => {
             <div className={style.filter}>
                 {/*поиск приватных колод*/}
                 <label><input type="checkbox" checked={!!userId} onChange={onPrivatePacksSearch}/>
-                    show my private packs</label>
+                    My packs</label>
                 {/*фильтр по названию колоды*/}
                 <label>Search packs by name: <input placeholder={'Press Enter to search'}
                                                     onKeyPress={onSearchByName}
@@ -79,7 +80,7 @@ export const Packs = () => {
                                  maxRangeLimit={200}/>
                 </div>
             </div>
-            {error && <div className={style.error}>{error}</div>}
+            <div className={error && commonStyle.error}>{error}</div>
             {/*таблица с колодами*/}
             <PacksTable cardPacks={cardPacks} authUserId={authUserId} requestStatus={requestStatus}/>
             {/*Pagination*/}
