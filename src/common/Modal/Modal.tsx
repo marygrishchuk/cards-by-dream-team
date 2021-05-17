@@ -49,6 +49,8 @@ export const Modal: React.FC<ModalPropsType> = React.memo((
                     left,
                     width: modalWidthPx,
                     height: modalHeightPx,
+                    minWidth: 'fit-content',
+                    minHeight: 'fit-content',
                     display: 'flex',
                     flexFlow: 'column',
                     alignItems: 'center',

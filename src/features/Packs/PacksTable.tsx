@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {addPackTC, deletePackTC, getPacksTC, updatePackTC} from "./packs-reducer";
 import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {NavLink} from "react-router-dom";
-import style from "./Packs.module.css";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useState} from "react";
@@ -87,9 +86,9 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
                     setShowUpdateItemModal(true)
                 }} disabled={packUserId !== authUserId}>Update
                 </button>
-                <span><NavLink to={PATH.CARDS + "/" + packId} activeClassName={style.active}> Cards </NavLink></span>
+                <span><NavLink to={PATH.CARDS + "/" + packId}> Cards </NavLink></span>
                 {cardsCount > 0 &&
-                <span><NavLink to={PATH.LEARN + "/" + packId} activeClassName={style.active}> Learn </NavLink></span>}
+                <span><NavLink to={PATH.LEARN + "/" + packId}> Learn </NavLink></span>}
             </>,
         },
     ];

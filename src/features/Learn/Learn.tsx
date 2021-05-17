@@ -74,35 +74,41 @@ export const Learn = () => {
                   backgroundOnClick={() => history.push(PATH.PACKS)}>
         <div className={error && commonStyle.error}>{error}</div>
         {/*вопрос*/}
-        <div>Question:</div>
-        <div>{card.question}</div>
-        {!showAnswer && <button onClick={() => setShowAnswer(true)}>Check answer</button>}
-        {/*ответ*/}
-        {showAnswer && <>
-            <div>Answer:</div>
-            <div>{card.answer}</div>
-            <div>
-                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>Не знал/Didn’t
-                    know
-                </button>
-                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'2'}>Забыл/Forgot
-                </button>
-                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'3'}>Долго
-                    думал/Thought
-                    too long
-                </button>
-                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'4'}>Почти
-                    угадал/Nearly
-                    guessed
-                </button>
-                <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'5'}>Знал/I knew it
-                </button>
+        <div className={style.learn}>
+            <div className={style.section}>
+                <h4>Question: </h4>
+                <span>{card.question}</span>
             </div>
-        </>
-        }
-        <div>
-            <NavLink to={PATH.PACKS} activeClassName={style.active}> Cancel </NavLink>
-            <button onClick={onNextClick}>Next</button>
+            {!showAnswer && <button className={style.section} onClick={() => setShowAnswer(true)}>Check answer</button>}
+            {/*ответ*/}
+            {showAnswer && <>
+                <div className={style.section}>
+                    <h4>Answer: </h4>
+                    <span>{card.answer}</span>
+                </div>
+                <div className={style.buttons}>
+                    <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>
+                        Не знал/<br/>Didn’t know
+                    </button>
+                    <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'2'}>
+                        Забыл/<br/>Forgot
+                    </button>
+                    <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'3'}>
+                        Долго думал/<br/>Thought too long
+                    </button>
+                    <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'4'}>
+                        Почти угадал/<br/>Nearly guessed
+                    </button>
+                    <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'5'}>
+                        Знал/<br/>I knew it
+                    </button>
+                </div>
+            </>
+            }
+            <div className={style.buttons}>
+                <NavLink to={PATH.PACKS}> Cancel </NavLink>
+                <button onClick={onNextClick}>Next</button>
+            </div>
         </div>
     </Modal>
 }
