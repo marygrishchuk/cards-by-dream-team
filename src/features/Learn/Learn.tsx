@@ -44,8 +44,8 @@ export const Learn = () => {
             dispatch(getCardsTC(packId)); //запрашиваем карточки
             setIsFirstCard(false);
         }
-        if (cards.length > 0) setCard(getRandomCard(cards))
-    }, [dispatch, packId, cards, isFirstCard])
+        if (cards.length > 0 && card._id === '') setCard(getRandomCard(cards))
+    }, [dispatch, packId, cards, card, isFirstCard])
 
     useEffect(() => {
         //зачищаем карточки при выходе со страницы Learn, чтобы во время запроса новых карточек в Cards не просвечивались старые
@@ -77,14 +77,14 @@ export const Learn = () => {
         <div className={style.learn}>
             <div className={style.section}>
                 <h4>Question: </h4>
-                <span>{card.question}</span>
+                <p className={style.text}>{card.question}</p>
             </div>
             {!showAnswer && <button className={style.section} onClick={() => setShowAnswer(true)}>Check answer</button>}
             {/*ответ*/}
             {showAnswer && <>
                 <div className={style.section}>
                     <h4>Answer: </h4>
-                    <span>{card.answer}</span>
+                    <p className={style.text}>{card.answer}</p>
                 </div>
                 <div className={style.buttons}>
                     <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>

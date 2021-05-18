@@ -19,7 +19,7 @@ type CardsTablePropsType = {
 type CardIdsType = {
     cardId: string
     cardUserId: string
-    question: string,
+    question: string
     answer: string
 }
 type CardType = {
@@ -82,10 +82,6 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
                     setShowUpdateItemModal(true)
                 }} disabled={packUserId !== authUserId}>Update
                 </button>
-
-                {/*<button onClick={() => onUpdateClick(cardId)}*/}
-                {/*        disabled={cardUserId !== authUserId}*/}
-                {/*>Update</button>*/}
             </>,
         },
     ];
