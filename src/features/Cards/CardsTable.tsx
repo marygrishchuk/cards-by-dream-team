@@ -7,6 +7,7 @@ import React, {useState} from "react";
 import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
+import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
@@ -18,6 +19,8 @@ type CardsTablePropsType = {
 type CardIdsType = {
     cardId: string
     cardUserId: string
+    question: string,
+    answer: string
 }
 type CardType = {
     key: string
@@ -31,6 +34,10 @@ type CardType = {
 
 export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, requestStatus}: CardsTablePropsType) => {
     const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
+    const [currentCardID,setCurrentCardID] = useState<string>("")
+    const [question,setQuestion] = useState<string>("")
+    const [answer,setAnswer] = useState<string>("")
+    const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
     const onAddCardClick = (values: Array<string>) => {
@@ -42,8 +49,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         dispatch(deleteCardTC(packId, cardId))
     }
 
-    const onUpdateClick = (cardId: string) => {
-        dispatch(updateCardTC(packId, cardId))
+    const onUpdateClick = (values: Array<string>) => {
+        dispatch(updateCardTC (packId, currentCardID, {question: values[0], answer: values[1]}))
     }
 
     const data: Array<CardType> = cards.map(c => ({
@@ -53,7 +60,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         grade: c.grade,
         updated: c.updated,
         packId: c.cardsPack_id,
-        buttons: {cardId: c._id, cardUserId: c.user_id}
+        buttons: {cardId: c._id, cardUserId: c.user_id, question: c.question, answer: c.answer}
     }))
 
     const columns: ColumnsType<CardType> = [
@@ -66,9 +73,19 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
             title: () => <button onClick={() => setShowAddItemModal(true)} disabled={packUserId !== authUserId}>Add</button>,
             dataIndex: 'buttons',
             key: 'buttons',
-            render: ({cardId, cardUserId}: CardIdsType) => <>
+            render: ({cardId, cardUserId, question, answer}: CardIdsType) => <>
                 <button onClick={() => onDeleteClick(cardId)} disabled={cardUserId !== authUserId}>Delete</button>
-                <button onClick={() => onUpdateClick(cardId)} disabled={cardUserId !== authUserId}>Update</button>
+                <button onClick={() => {
+                    setCurrentCardID(cardId);
+                    setQuestion(question);
+                    setAnswer(answer)
+                    setShowUpdateItemModal(true)
+                }} disabled={packUserId !== authUserId}>Update
+                </button>
+
+                {/*<button onClick={() => onUpdateClick(cardId)}*/}
+                {/*        disabled={cardUserId !== authUserId}*/}
+                {/*>Update</button>*/}
             </>,
         },
     ];
@@ -90,5 +107,9 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
                       itemToAdd={'card'} onAddBtnClick={onAddCardClick}/>}
+
+        {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
+                                                 itemToUpdate={'card'} onUpdateBtnClick={onUpdateClick}
+                                                 inputLabels={["Question: ", "Answer: "]} inputValues={[question, answer]}/>}
     </>
 })
