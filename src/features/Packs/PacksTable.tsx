@@ -5,7 +5,7 @@ import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {NavLink} from "react-router-dom";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
@@ -39,22 +39,22 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
     const [currentPackName, setCurrentPackName] = useState<string>('')
     const dispatch = useDispatch()
 
-    const onAddPackClick = (values: Array<string>) => {
+    const onAddPackClick = useCallback((values: Array<string>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в ScrollUpModal
         dispatch(addPackTC(values[0]))
-    }
+    }, [dispatch])
 
-    const onDeleteClick = (isToBeDeleted: boolean) => {
+    const onDeleteClick = useCallback((isToBeDeleted: boolean) => {
         if (isToBeDeleted) {
             dispatch(deletePackTC(currentPackID))
             setShowDeleteItemModal(false)
         }
-    }
+    }, [dispatch, currentPackID])
 
-    const onUpdateClick = (values: Array<string>) => {
+    const onUpdateClick = useCallback((values: Array<string>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
         dispatch(updatePackTC(currentPackID, values[0]))
-    }
+    }, [dispatch, currentPackID])
 
     const data: Array<PackType> = cardPacks.map(p => ({
         key: p._id,
@@ -86,9 +86,10 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
                     setShowUpdateItemModal(true)
                 }} disabled={packUserId !== authUserId}>Update
                 </button>
-                <span><NavLink to={PATH.CARDS + "/" + packId}> Cards </NavLink></span>
+                <span><NavLink to={`${PATH.CARDS}/${packId}`}> 👁️ Cards </NavLink></span>
+                <span> | </span>
                 {cardsCount > 0 &&
-                <span><NavLink to={PATH.LEARN + "/" + packId}> Learn </NavLink></span>}
+                <span><NavLink to={`${PATH.LEARN}/${packId}`}> 🎓 Learn </NavLink></span>}
             </>,
         },
     ];

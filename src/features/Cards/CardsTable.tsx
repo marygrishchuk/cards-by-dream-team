@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {Table, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/lib/table/interface";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
@@ -42,24 +42,21 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
-    const onAddCardClick = (values: Array<string>) => {
+    const onAddCardClick = useCallback((values: Array<string>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в ScrollUpModal
         dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
-    }
+    }, [dispatch, packId])
 
-    const onDeleteClick = (isToBeDeleted: boolean) => {
+    const onDeleteClick = useCallback((isToBeDeleted: boolean) => {
         if (isToBeDeleted){
             dispatch(deleteCardTC(packId, currentCardID))
             setShowDeleteItemModal(false)
         }
+    }, [dispatch, packId, currentCardID])
 
-    }
-
-    const onUpdateClick = (values: Array<string>) => {
+    const onUpdateClick = useCallback((values: Array<string>) => {
         dispatch(updateCardTC (packId, currentCardID, {question: values[0], answer: values[1]}))
-    }
-
-
+    }, [dispatch, packId, currentCardID])
 
     const data: Array<CardType> = cards.map(c => ({
         key: c._id,
