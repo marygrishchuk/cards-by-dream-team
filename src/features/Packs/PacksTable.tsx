@@ -68,7 +68,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
 
     const columns: ColumnsType<PackType> = [
         {title: 'Name', dataIndex: 'name', key: 'name', sorter: true},
-        {title: 'Learn Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
+        {title: 'Cards Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
         {
