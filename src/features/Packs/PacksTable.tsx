@@ -3,8 +3,8 @@ import {useDispatch} from "react-redux";
 import {addPackTC, deletePackTC, getPacksTC, updatePackTC} from "./packs-reducer";
 import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {NavLink} from "react-router-dom";
-import {Table, TablePaginationConfig, Button} from "antd";
-import {EditTwoTone, DeleteTwoTone} from '@ant-design/icons';
+import {Button, Table, TablePaginationConfig} from "antd";
+import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
@@ -72,25 +72,27 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
         {
-            title: () => <button onClick={() => setShowAddItemModal(true)}>Add</button>,
+            title: () => <Button onClick={() => setShowAddItemModal(true)} type={'ghost'} size={'large'}
+                                 icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>,
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({packId, packUserId, cardsCount, packName}: ButtonsDataType) => <>
-                <Button onClick={() => {
-                    setCurrentPackID(packId);
-                    setShowDeleteItemModal(true)
-                }} disabled={packUserId !== authUserId}><DeleteTwoTone />
-                </Button>
-                <Button onClick={() => {
-                    setCurrentPackID(packId);
-                    setCurrentPackName(packName);
-                    setShowUpdateItemModal(true)
-                }} disabled={packUserId !== authUserId}><EditTwoTone />
-                </Button>
-                <span><NavLink to={`${PATH.CARDS}/${packId}`}> 👁️ Cards </NavLink></span>
-                <span> | </span>
+                {packUserId === authUserId && <>
+                    <Button onClick={() => {
+                        setCurrentPackID(packId)
+                        setShowDeleteItemModal(true)
+                    }} icon={<DeleteTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
+                    <Button onClick={() => {
+                        setCurrentPackID(packId)
+                        setCurrentPackName(packName)
+                        setShowUpdateItemModal(true)
+                    }} icon={<EditTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
+                </>}
+                {packUserId === authUserId || cardsCount > 0
+                    ? <span><NavLink to={`${PATH.CARDS}/${packId}`}> 👁️ Cards </NavLink></span>
+                    : null}
                 {cardsCount > 0 &&
-                <span><NavLink to={`${PATH.LEARN}/${packId}`}> 🎓 Learn </NavLink></span>}
+                <span><span> | </span><NavLink to={`${PATH.LEARN}/${packId}`}> 🎓 Learn </NavLink></span>}
             </>,
         },
     ];
