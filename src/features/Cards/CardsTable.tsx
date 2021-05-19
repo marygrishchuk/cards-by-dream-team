@@ -8,6 +8,7 @@ import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
+import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
@@ -38,6 +39,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const [question,setQuestion] = useState<string>("")
     const [answer,setAnswer] = useState<string>("")
     const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
+    const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
     const onAddCardClick = (values: Array<string>) => {
@@ -45,13 +47,19 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
     }
 
-    const onDeleteClick = (cardId: string) => {
-        dispatch(deleteCardTC(packId, cardId))
+    const onDeleteClick = (isToBeDeleted: boolean) => {
+        if (isToBeDeleted){
+            dispatch(deleteCardTC(packId, currentCardID))
+            setShowDeleteItemModal(false)
+        }
+
     }
 
     const onUpdateClick = (values: Array<string>) => {
         dispatch(updateCardTC (packId, currentCardID, {question: values[0], answer: values[1]}))
     }
+
+
 
     const data: Array<CardType> = cards.map(c => ({
         key: c._id,
@@ -74,7 +82,10 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({cardId, cardUserId, question, answer}: CardIdsType) => <>
-                <button onClick={() => onDeleteClick(cardId)} disabled={cardUserId !== authUserId}>Delete</button>
+                <button onClick={() => {
+                    setCurrentCardID(cardId);
+                    setShowDeleteItemModal(true)
+                }} disabled={cardUserId !== authUserId}>Delete</button>
                 <button onClick={() => {
                     setCurrentCardID(cardId);
                     setQuestion(question);
@@ -103,6 +114,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
                       itemToAdd={'card'} onAddBtnClick={onAddCardClick}/>}
+        {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
+                                                 itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}
 
         {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
                                                  itemToUpdate={'card'} onUpdateBtnClick={onUpdateClick}
