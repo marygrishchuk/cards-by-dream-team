@@ -1,10 +1,10 @@
-import {CardDataType, SortDirections} from "../../api/api";
+import {CardDataType} from "../../api/api";
 import {useDispatch} from "react-redux";
-import {ColumnsType, FilterValue} from "antd/es/table/interface";
-import {Table, TablePaginationConfig} from "antd";
-import {SorterResult} from "antd/lib/table/interface";
+import {ColumnsType} from "antd/es/table/interface";
+import {Table, Button} from "antd";
+import {EditTwoTone, DeleteTwoTone} from '@ant-design/icons';
 import React, {useCallback, useState} from "react";
-import {addCardTC, deleteCardTC, getCardsTC, updateCardTC} from "./cards-reducer";
+import {addCardTC, deleteCardTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
@@ -71,7 +71,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const columns: ColumnsType<CardType> = [
         {title: 'Question', dataIndex: 'question', key: 'question'},
         {title: 'Answer', dataIndex: 'answer', key: 'answer'},
-        {title: 'Grade', dataIndex: 'grade', key: 'grade', sorter: true},
+        {title: 'Grade', dataIndex: 'grade', key: 'grade'},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Pack ID', dataIndex: 'packId', key: 'packId'},
         {
@@ -79,34 +79,24 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({cardId, cardUserId, question, answer}: CardIdsType) => <>
-                <button onClick={() => {
+                <Button onClick={() => {
                     setCurrentCardID(cardId);
                     setShowDeleteItemModal(true)
-                }} disabled={cardUserId !== authUserId}>Delete</button>
-                <button onClick={() => {
+                }} disabled={cardUserId !== authUserId}><DeleteTwoTone />
+                </Button>
+                <Button onClick={() => {
                     setCurrentCardID(cardId);
                     setQuestion(question);
                     setAnswer(answer)
                     setShowUpdateItemModal(true)
-                }} disabled={packUserId !== authUserId}>Update
-                </button>
+                }} disabled={packUserId !== authUserId}><EditTwoTone />
+                </Button>
             </>,
         },
     ];
 
-    const onChange = (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>,
-                      sorter: SorterResult<CardType> | any) => {
-        if (sorter.columnKey === 'grade' && sorter.order === 'ascend') {
-            dispatch(getCardsTC(packId, {sortDirection: SortDirections.Down, propToSortBy: "grade"}))
-        } else if (sorter.columnKey === 'grade' && sorter.order === 'descend') {
-            dispatch(getCardsTC(packId, {sortDirection: SortDirections.Up, propToSortBy: "grade"}))
-        } else if (sorter.columnKey === 'grade' && sorter.order === undefined) {
-            dispatch(getCardsTC(packId, {sortDirection: SortDirections.Up, propToSortBy: "updated"}))
-        }
-    }
-
     return <>
-        <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
+        <Table columns={columns} dataSource={data} pagination={false} style={{width: '100%'}}
                size={'small'} loading={requestStatus === 'loading'}/>
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}

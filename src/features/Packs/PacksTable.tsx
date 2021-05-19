@@ -3,7 +3,8 @@ import {useDispatch} from "react-redux";
 import {addPackTC, deletePackTC, getPacksTC, updatePackTC} from "./packs-reducer";
 import {ColumnsType, FilterValue} from "antd/es/table/interface";
 import {NavLink} from "react-router-dom";
-import {Table, TablePaginationConfig} from "antd";
+import {Table, TablePaginationConfig, Button} from "antd";
+import {EditTwoTone, DeleteTwoTone} from '@ant-design/icons';
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
@@ -75,17 +76,17 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({packId, packUserId, cardsCount, packName}: ButtonsDataType) => <>
-                <button onClick={() => {
+                <Button onClick={() => {
                     setCurrentPackID(packId);
                     setShowDeleteItemModal(true)
-                }} disabled={packUserId !== authUserId}>Delete
-                </button>
-                <button onClick={() => {
+                }} disabled={packUserId !== authUserId}><DeleteTwoTone />
+                </Button>
+                <Button onClick={() => {
                     setCurrentPackID(packId);
                     setCurrentPackName(packName);
                     setShowUpdateItemModal(true)
-                }} disabled={packUserId !== authUserId}>Update
-                </button>
+                }} disabled={packUserId !== authUserId}><EditTwoTone />
+                </Button>
                 <span><NavLink to={`${PATH.CARDS}/${packId}`}> 👁️ Cards </NavLink></span>
                 <span> | </span>
                 {cardsCount > 0 &&
