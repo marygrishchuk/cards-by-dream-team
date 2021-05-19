@@ -21,7 +21,7 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
                                                                                }) => {
 
     const [values, setValues] = useState<Array<string>>(inputValues)
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         let valuesCopy = [...values]
         setValues(valuesCopy.map((v, i) => i === index ? e.currentTarget.value : v))
     }
@@ -30,13 +30,13 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
         setShow(false)
     }
 
-    return <Modal enableBackground modalHeightPx={250} modalWidthPx={395} show={show}
+    return <Modal enableBackground modalHeightPx={400} modalWidthPx={450} show={show}
                   backgroundOnClick={() => setShow(false)}>
         <div className={style.updateBlock}>
             <h4>Update {itemToUpdate}:</h4>
             <div>
                 {inputLabels.map((l, i) => <div>
-                    <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
+                    <label><div>{l}</div><textarea value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
                 </div>)}
             </div>
             <div className={style.buttons}>

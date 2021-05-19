@@ -4,7 +4,13 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    flex-wrap: wrap;
+}
+
+textarea {
+    width: 300px;
+    height: 4em;
+    overflow: auto;
+    resize: vertical;
 }
 
 .buttons {

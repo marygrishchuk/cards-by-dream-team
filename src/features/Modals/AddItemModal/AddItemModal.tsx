@@ -20,7 +20,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
     //создаем массив initialValues с пустыми строками, кол-во которых совпадает с кол-вом лейблов в inputLabels
     const initialValues = Array.from(inputLabels, () => "")
     const [values, setValues] = useState<Array<string>>(initialValues)
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         let valuesCopy = [...values]
         setValues(valuesCopy.map((v, i) => i === index ? e.currentTarget.value : v))
     }
@@ -29,12 +29,12 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
         setShow(false)
     }
 
-    return <Modal enableBackground modalHeightPx={250} modalWidthPx={395} show={show}
+    return <Modal enableBackground modalHeightPx={400} modalWidthPx={450} show={show}
                   backgroundOnClick={() => setShow(false)}>
         <div className={style.addBlock}>
             <h4>Add new {itemToAdd}:</h4>
             {inputLabels.map((l, i) => <div>
-                <label>{l}<input value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
+                <label><div>{l}</div><textarea value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
             </div>)}
             <div className={style.buttons}>
                 <button onClick={() => setShow(false)}>Cancel</button>
