@@ -13,10 +13,9 @@ import {Cards} from "../features/Cards/Cards";
 import {initializeAppTC} from "./app-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
-import {Spin} from 'antd';
-import {LoadingOutlined} from '@ant-design/icons';
 import {Learn} from "../features/Learn/Learn";
-import { ScrollUpModal } from '../features/Modals/ScrollUpModal/ScrollUpModal';
+import {ScrollUpModal} from '../features/Modals/ScrollUpModal/ScrollUpModal';
+import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
 
 export const PATH = {
     LOGIN: "/login",
@@ -36,13 +35,8 @@ const App = () => {
         dispatch(initializeAppTC())
     }, [])
 
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
-
     if (!isInitialized) {
-        return <div
-            style={{position: 'fixed', top: '50%', textAlign: 'center', width: '100%'}}>
-            <Spin indicator={antIcon} />
-        </div>
+        return <TeamPresentation/>
     }
 
     return (

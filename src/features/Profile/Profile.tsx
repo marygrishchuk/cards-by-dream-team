@@ -4,9 +4,8 @@ import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
-import {Avatar, Popover} from 'antd';
+import {Avatar, Popover, Typography} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import { Typography } from 'antd';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
 
