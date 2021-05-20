@@ -117,7 +117,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
 
     return <>
         <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} style={{width: '100%'}}
-               size={'small'} loading={requestStatus === 'loading'}/>
+               size={'small'} loading={requestStatus === 'loading'} tableLayout={'fixed'}/>
         {/*модалка для добавления колоды*/}
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}

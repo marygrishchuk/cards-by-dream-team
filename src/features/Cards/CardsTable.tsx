@@ -99,7 +99,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
 
     return <>
         <Table columns={columns} dataSource={data} pagination={false} style={{width: '100%'}}
-               size={'small'} loading={requestStatus === 'loading'}/>
+               size={'small'} loading={requestStatus === 'loading'} tableLayout={'fixed'}/>
         {/*модалка для добавления карточки*/}
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
