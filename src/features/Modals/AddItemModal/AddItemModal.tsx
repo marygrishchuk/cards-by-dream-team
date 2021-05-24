@@ -6,7 +6,6 @@ import {UploadOutlined} from '@ant-design/icons';
 import {ImageEditor} from "../../../common/ImageEditor/ImageEditor";
 
 export type UploadedFileType = {
-    id: string | undefined
     base64: string
     fileURL: string | undefined
     fileName: string | undefined
@@ -31,7 +30,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                                                                          }) => {
     //создаем массив initialValues с пустыми строками, кол-во которых совпадает с кол-вом лейблов в inputLabels
     const initialValues = Array.from(inputLabels, () => "")
-    const initialFileData = Array.from(filesToUpload, (el) => ({id: el, base64: '', fileURL: '', fileName: ''}))
+    const initialFileData = Array.from(filesToUpload, () => ({base64: '', fileURL: '', fileName: ''}))
     const [values, setValues] = useState<Array<string>>(initialValues)
     const [fileData, setFileData] = useState<Array<UploadedFileType>>(initialFileData)
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
