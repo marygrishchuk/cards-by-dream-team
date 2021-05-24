@@ -131,8 +131,7 @@ export const deletePackTC = (packId: string) => (dispatch: ThunkDispatch<AppRoot
 
 export const updatePackTC = (packId: string, params: NewPackType = {}) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
-    const {name, deckCover, private: isPrivate} = params
-    packsAPI.updatePack(packId, {name, deckCover, private: isPrivate})
+    packsAPI.updatePack(packId, params)
         .then(() => {
             dispatch(getPacksTC())
             dispatch(setRequestStatusAC('success'))
