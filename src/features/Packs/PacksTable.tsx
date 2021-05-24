@@ -23,6 +23,7 @@ type ButtonsDataType = {
     packUserId: string
     cardsCount: number
     packName: string
+    deckCover: string
 }
 type PackType = {
     key: string,
@@ -38,6 +39,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
     const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
     const [currentPackID, setCurrentPackID] = useState<string>('')
     const [currentPackName, setCurrentPackName] = useState<string>('')
+    const [currentPackCover, setCurrentPackCover] = useState<string>('')
     const dispatch = useDispatch()
 
     const onAddPackClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
@@ -52,18 +54,19 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         }
     }, [dispatch, currentPackID])
 
-    const onUpdateClick = useCallback((values: Array<string>) => {
+    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
-        dispatch(updatePackTC(currentPackID, {name: values[0]}))
+        dispatch(updatePackTC(currentPackID, {name: values[0], deckCover: fileData[0].base64}))
     }, [dispatch, currentPackID])
 
     const data: Array<PackType> = cardPacks.map(p => ({
         key: p._id,
         name: p.name,
+        deckCover: p.deckCover,
         cardsCount: p.cardsCount,
         updated: p.updated,
         createdBy: p.user_name,
-        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount, packName: p.name}
+        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount, packName: p.name, deckCover: p.deckCover}
     }))
 
     const columns: ColumnsType<PackType> = [
@@ -76,7 +79,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
                                  icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>,
             dataIndex: 'buttons',
             key: 'buttons',
-            render: ({packId, packUserId, cardsCount, packName}: ButtonsDataType) => <>
+            render: ({packId, packUserId, cardsCount, packName, deckCover}: ButtonsDataType) => <>
                 {packUserId === authUserId && <>
                     <Button onClick={() => {
                         setCurrentPackID(packId)
@@ -85,6 +88,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
                     <Button onClick={() => {
                         setCurrentPackID(packId)
                         setCurrentPackName(packName)
+                        setCurrentPackCover(deckCover)
                         setShowUpdateItemModal(true)
                     }} icon={<EditTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
                 </>}
@@ -128,6 +132,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         {/*модалка для редактирования колоды*/}
         {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
                                                  itemToUpdate={'pack'} onUpdateBtnClick={onUpdateClick}
+                                                 filesToUpload={['deck cover']} imageURLs={[currentPackCover]}
                                                  inputLabels={["Name: "]} inputValues={[currentPackName]}/>}
     </>
 })

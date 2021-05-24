@@ -21,6 +21,8 @@ type ButtonsDataType = {
     cardId: string
     question: string
     answer: string
+    questionImg: string
+    answerImg: string
 }
 type CardType = {
     key: string
@@ -37,6 +39,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const [currentCardID, setCurrentCardID] = useState<string>("")
     const [question, setQuestion] = useState<string>("")
     const [answer, setAnswer] = useState<string>("")
+    const [questionImg, setQuestionImg] = useState<string>("")
+    const [answerImg, setAnswerImg] = useState<string>("")
     const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
@@ -58,19 +62,32 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         }
     }, [dispatch, packId, currentCardID])
 
-    const onUpdateClick = useCallback((values: Array<string>) => {
+    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
-        dispatch(updateCardTC(packId, currentCardID, {question: values[0], answer: values[1]}))
+        dispatch(updateCardTC(packId, currentCardID, {
+            question: values[0],
+            answer: values[1],
+            questionImg: fileData[0].base64,
+            answerImg: fileData[1].base64
+        }))
     }, [dispatch, packId, currentCardID])
 
     const data: Array<CardType> = cards.map(c => ({
         key: c._id,
         question: c.question,
+        questionImg: c.questionImg,
         answer: c.answer,
+        answerImg: c.answerImg,
         grade: c.grade,
         updated: c.updated,
         packId: c.cardsPack_id,
-        buttons: {cardId: c._id, question: c.question, answer: c.answer}
+        buttons: {
+            cardId: c._id,
+            question: c.question,
+            answer: c.answer,
+            questionImg: c.questionImg,
+            answerImg: c.answerImg
+        }
     }))
 
     const columns: ColumnsType<CardType> = [
@@ -85,7 +102,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
                                  icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>,
             dataIndex: 'buttons',
             key: 'buttons',
-            render: ({cardId, question, answer}: ButtonsDataType) => <>
+            render: ({cardId, question, answer, questionImg, answerImg}: ButtonsDataType) => <>
                 {packUserId === authUserId && <>
                     <Button onClick={() => {
                         setCurrentCardID(cardId)
@@ -95,6 +112,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
                         setCurrentCardID(cardId)
                         setQuestion(question)
                         setAnswer(answer)
+                        setQuestionImg(questionImg)
+                        setAnswerImg(answerImg)
                         setShowUpdateItemModal(true)
                     }} icon={<EditTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
                 </>}
@@ -116,6 +135,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {/*модалка для редактирования карточки*/}
         {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
                                                  itemToUpdate={'card'} onUpdateBtnClick={onUpdateClick}
+                                                 filesToUpload={['question pic', 'answer pic']}
+                                                 imageURLs={[questionImg, answerImg]}
                                                  inputLabels={["Question: ", "Answer: "]}
                                                  inputValues={[question, answer]}/>}
     </>

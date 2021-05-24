@@ -2,7 +2,7 @@ import React, {ChangeEvent, useCallback, useState} from "react";
 import style from "./AddItemModal.module.css";
 import {Modal} from "../../../common/Modal/Modal";
 import {Button} from 'antd';
-import {UploadOutlined} from '@ant-design/icons';
+import {DeleteTwoTone, UploadOutlined} from '@ant-design/icons';
 import {ImageEditor} from "../../../common/ImageEditor/ImageEditor";
 
 export type UploadedFileType = {
@@ -36,8 +36,12 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         setValues(values.map((v, i) => i === index ? e.currentTarget.value : v))
     }
+    const onDeleteImageClick = useCallback((index: number) => {
+        setFileData(fileData.map((d, i) => i === index ? ({base64: '', fileURL: '', fileName: ''})
+            : d))
+    }, [fileData])
     const onImageUpload = useCallback((base64: string, fileURL?: string, fileName?: string, index?: number) => {
-        setFileData(fileData.map((d, i) => i === index ? ({...d, base64, fileURL, fileName}) : d))
+        setFileData(fileData.map((d, i) => i === index ? ({base64, fileURL, fileName}) : d))
     }, [fileData])
     const onAddClick = () => {
         onAddBtnClick(values, fileData)
@@ -51,16 +55,26 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
             {inputLabels.map((l, i) => <div key={i}>
                 <label>
                     <div>{l}</div>
-                    <textarea value={values[i]} onChange={(e) => onChangeHandler(e, i)}/></label>
+                    <textarea value={values[i]} onChange={(e) => onChangeHandler(e, i)}/>
+                </label>
             </div>)}
             <div>
-                {filesToUpload.map((f, i) => <ImageEditor key={i} onClick={(
-                    base64: string, fileURL?: string, fileName?: string) => onImageUpload(base64, fileURL, fileName, i)}>
+                {filesToUpload.map((f, i) => <ImageEditor
+                    key={i}
+                    onClick={(base64: string, fileURL?: string, fileName?: string) => onImageUpload(base64, fileURL, fileName, i)}>
                     <Button icon={<UploadOutlined/>}>Upload {f}</Button>
                 </ImageEditor>)}
             </div>
             <div className={style.previews}>
-                {fileData.map(f => f.fileURL ? <img src={f.fileURL} alt="preview"/> : null)}
+                {fileData.map((f, i) => f.fileURL
+                    ? <div className={style.previewContainer}>
+                        <div className={style.preview} style={{backgroundImage: `url(${f.fileURL})`}}> </div>
+                        <div className={style.bin}>
+                            <Button onClick={() => onDeleteImageClick(i)}
+                                    icon={<DeleteTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
+                        </div>
+                    </div>
+                    : null)}
             </div>
             <div className={style.buttons}>
                 <button onClick={() => setShow(false)}>Cancel</button>

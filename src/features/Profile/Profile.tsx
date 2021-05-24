@@ -48,7 +48,7 @@ export const Profile = () => {
             {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
             <div className={error && commonStyle.error}>{error}</div>
             <div className={style.avatarContainer}>
-                {avatar !== '0' ? <>
+                {avatar !== "0" ? <>
                         <Avatar src={avatar} size={64}/>
                         <div className={style.avatarButtons}>
                             <ImageEditor onClick={onImageEditorClick}>

@@ -204,6 +204,8 @@ export type CardDataType = {
     created: Date
     updated: Date
     comments: string
+    answerImg: string
+    questionImg: string
 }
 
 export enum SortDirections {
