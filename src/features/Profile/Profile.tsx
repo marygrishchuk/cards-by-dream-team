@@ -36,9 +36,9 @@ export const Profile = () => {
             Welcome!
             {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
             <div className={error && commonStyle.error}>{error}</div>
-            <div>
+            <div className={style.avatarContainer}>
                 {avatar ? <Avatar src={avatar} size={64}/> : <Avatar size={64} icon={<UserOutlined/>}/>}
-                <ImageEditor imageToEdit={'avatar'} style={{position: "absolute", top: "44%", left: "54%"}}/>
+                <ImageEditor imageToEdit={'avatar'} style={{position: "absolute", top: "30%", right: "0"}}/>
             </div>
             <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>
             <div>{email}</div>

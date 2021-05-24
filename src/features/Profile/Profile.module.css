@@ -10,3 +10,8 @@
 .loading {
     color: green;
 }
+
+.avatarContainer {
+    width: 140px;
+    position: relative;
+}
