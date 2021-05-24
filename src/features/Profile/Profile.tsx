@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import style from "./Profile.module.css";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -24,18 +24,18 @@ export const Profile = () => {
     const {Paragraph} = Typography;
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
 
-    const onImageEditorClick = (base64: string) => {
+    const onImageEditorClick = useCallback((base64: string) => {
         dispatch(updateUserDataTC({avatar: base64}))
-    }
-    const onDeleteAvatarClick = (isToBeDeleted: boolean) => {
+    },[dispatch])
+    const onDeleteAvatarClick = useCallback((isToBeDeleted: boolean) => {
         if (isToBeDeleted) {
             dispatch(updateUserDataTC({avatar: "0"}))
             setShowDeleteItemModal(false)
         }
-    }
-    const onNewNameSubmit = (newName: string) => {
+    },[dispatch])
+    const onNewNameSubmit = useCallback((newName: string) => {
         dispatch(updateUserDataTC({name: newName}))
-    }
+    },[dispatch])
     const onLogoutClick = () => {
         dispatch(logoutTC())
     }
