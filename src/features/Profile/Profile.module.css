@@ -4,12 +4,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .loading {
     color: green;
-}
-
-.error {
-    color: red;
 }

@@ -1,13 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import style from "./Profile.module.css";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
-import {Avatar, Popover, Typography} from 'antd';
+import {Avatar, Typography} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
+import {ImageEditor} from "../../common/ImageEditor/ImageEditor";
 
 export const Profile = () => {
     const {
@@ -19,28 +20,14 @@ export const Profile = () => {
         requestStatus
     } = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
     const dispatch = useDispatch()
-    const { Paragraph } = Typography;
-    const [newAvatarUrl, setNewAvatarUrl] = useState('')
+    const {Paragraph} = Typography;
 
     const onLogoutClick = () => {
         dispatch(logoutTC())
     }
-    const onChangeAvatarClick = () => {
-        dispatch(updateUserDataTC({avatar: newAvatarUrl}))
-    }
     const onNewNameSubmit = (newName: string) => {
         dispatch(updateUserDataTC({name: newName}))
     }
-
-    const setAvatarTools = (
-        <span>
-            <label>Enter avatar URL or Base64:
-                <input onChange={e => setNewAvatarUrl(e.currentTarget.value)}
-                       value={newAvatarUrl}/>
-            </label>
-            <button onClick={onChangeAvatarClick}>Set Avatar</button>
-        </span>
-    )
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
@@ -49,15 +36,11 @@ export const Profile = () => {
             Welcome!
             {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
             <div className={error && commonStyle.error}>{error}</div>
-            {avatar
-                ? <Popover content={setAvatarTools} title="Change avatar" trigger="hover">
-                    <Avatar src={avatar} size={64}/>
-                </Popover>
-                : <Popover content={setAvatarTools} title="Add avatar" trigger="hover">
-                    <Avatar size={64}
-                            icon={<UserOutlined/>}/>
-                </Popover>}
-            <Paragraph editable={{ onChange: onNewNameSubmit }}>{name}</Paragraph>
+            <div>
+                {avatar ? <Avatar src={avatar} size={64}/> : <Avatar size={64} icon={<UserOutlined/>}/>}
+                <ImageEditor imageToEdit={'avatar'} style={{position: "absolute", top: "44%", left: "54%"}}/>
+            </div>
+            <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>
             <div>{email}</div>
             <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
         </div>
