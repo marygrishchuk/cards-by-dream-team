@@ -1,12 +1,12 @@
 import React, {CSSProperties} from "react";
 
 type ModalPropsType = {
-    enableBackground?: boolean;
-    backgroundOnClick?: () => void;
-    modalWidthPx: number;
-    modalHeightPx: number;
-    modalStyle?: CSSProperties;
-    modalOnClick?: () => void;
+    enableBackground?: boolean
+    backgroundOnClick?: () => void
+    modalWidthPx: number
+    modalHeightPx: number
+    modalStyle?: CSSProperties
+    modalOnClick?: () => void
     show: boolean
 }
 

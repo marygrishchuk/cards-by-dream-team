@@ -54,7 +54,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
 
     const onUpdateClick = useCallback((values: Array<string>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
-        dispatch(updatePackTC(currentPackID, values[0]))
+        dispatch(updatePackTC(currentPackID, {name: values[0]}))
     }, [dispatch, currentPackID])
 
     const data: Array<PackType> = cardPacks.map(p => ({
