@@ -70,7 +70,7 @@ export const Profile = () => {
             <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
             {/*появляющаяся модалка для удаления аватара*/}
             {showDeleteItemModal &&
-            <DeleteItemModal itemToDelete={'avatar'} onDeleteBtnClick={onDeleteAvatarClick}
+            <DeleteItemModal itemToDelete={'image'} onDeleteBtnClick={onDeleteAvatarClick}
                              setShow={setShowDeleteItemModal}
                              show={showDeleteItemModal}/>}
         </div>
