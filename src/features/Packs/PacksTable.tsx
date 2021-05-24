@@ -8,7 +8,7 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
+import {AddItemModal, UploadedFileType} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
@@ -40,9 +40,9 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
     const [currentPackName, setCurrentPackName] = useState<string>('')
     const dispatch = useDispatch()
 
-    const onAddPackClick = useCallback((values: Array<string>) => {
+    const onAddPackClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
-        dispatch(addPackTC(values[0]))
+        dispatch(addPackTC(values[0], fileData[0].base64))
     }, [dispatch])
 
     const onDeleteClick = useCallback((isToBeDeleted: boolean) => {
@@ -121,7 +121,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         {/*модалка для добавления колоды*/}
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}
-                      itemToAdd={'pack'} onAddBtnClick={onAddPackClick}/>}
+                      itemToAdd={'pack'} filesToUpload={['deck cover']} onAddBtnClick={onAddPackClick}/>}
         {/*модалка для удаления колоды*/}
         {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
                                                  itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}

@@ -13,6 +13,17 @@ textarea {
     resize: vertical;
 }
 
+.previews {
+    width: 350px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.previews img {
+    width: 80px;
+    height: 80px;
+}
+
 .buttons {
     width: 100%;
     display: flex;

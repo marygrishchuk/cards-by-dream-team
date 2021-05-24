@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
 import {Avatar, Button, Typography} from 'antd';
-import {DeleteTwoTone, UserOutlined} from '@ant-design/icons';
+import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
 import {ImageEditor} from "../../common/ImageEditor/ImageEditor";
@@ -51,7 +51,9 @@ export const Profile = () => {
                 {avatar !== '0' ? <>
                         <Avatar src={avatar} size={64}/>
                         <div className={style.avatarButtons}>
-                            <ImageEditor onClick={onImageEditorClick} action={'edit'}/>
+                            <ImageEditor onClick={onImageEditorClick}>
+                                <EditTwoTone style={{fontSize: '16px'}}/>
+                            </ImageEditor>
                             <div>
                                 <Button onClick={() => {
                                     setShowDeleteItemModal(true)
@@ -61,8 +63,9 @@ export const Profile = () => {
                     </>
                     : <>
                         <Avatar size={64} icon={<UserOutlined/>}/>
-                        <ImageEditor onClick={onImageEditorClick} style={{position: "absolute", top: "30%", right: "0"}}
-                                     action={'add'}/>
+                        <ImageEditor onClick={onImageEditorClick} style={{position: "absolute", top: "30%", right: "0"}}>
+                            <PlusSquareTwoTone style={{fontSize: '16px'}}/>
+                        </ImageEditor>
                     </>}
             </div>
             <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>

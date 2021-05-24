@@ -6,7 +6,7 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import React, {useCallback, useState} from "react";
 import {addCardTC, deleteCardTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
+import {AddItemModal, UploadedFileType} from "../Modals/AddItemModal/AddItemModal";
 import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 
@@ -41,9 +41,14 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
-    const onAddCardClick = useCallback((values: Array<string>) => {
+    const onAddCardClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
-        dispatch(addCardTC(packId, {question: values[0], answer: values[1]}))
+        dispatch(addCardTC(packId, {
+            question: values[0],
+            answer: values[1],
+            questionImg: fileData[0].base64,
+            answerImg: fileData[1].base64
+        }))
     }, [dispatch, packId])
 
     const onDeleteClick = useCallback((isToBeDeleted: boolean) => {
@@ -103,7 +108,8 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {/*модалка для добавления карточки*/}
         {showAddItemModal &&
         <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
-                      itemToAdd={'card'} onAddBtnClick={onAddCardClick}/>}
+                      itemToAdd={'card'} filesToUpload={['question pic', 'answer pic']}
+                      onAddBtnClick={onAddCardClick}/>}
         {/*модалка для удаления карточки*/}
         {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
                                                  itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}
