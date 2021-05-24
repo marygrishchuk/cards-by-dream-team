@@ -15,3 +15,9 @@
     width: 140px;
     position: relative;
 }
+
+.avatarButtons {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
