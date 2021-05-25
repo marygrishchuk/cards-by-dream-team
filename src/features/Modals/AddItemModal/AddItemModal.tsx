@@ -8,7 +8,6 @@ import {ImageEditor} from "../../../common/ImageEditor/ImageEditor";
 export type UploadedFileType = {
     base64: string
     fileURL: string | undefined
-    fileName: string | undefined
 }
 
 type AddItemModalPropsType = {
@@ -30,18 +29,18 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                                                                          }) => {
     //создаем массив initialValues с пустыми строками, кол-во которых совпадает с кол-вом лейблов в inputLabels
     const initialValues = Array.from(inputLabels, () => "")
-    const initialFileData = Array.from(filesToUpload, () => ({base64: '', fileURL: '', fileName: ''}))
+    const initialFileData = Array.from(filesToUpload, () => ({base64: '', fileURL: ''}))
     const [values, setValues] = useState<Array<string>>(initialValues)
     const [fileData, setFileData] = useState<Array<UploadedFileType>>(initialFileData)
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         setValues(values.map((v, i) => i === index ? e.currentTarget.value : v))
     }
     const onDeleteImageClick = useCallback((index: number) => {
-        setFileData(fileData.map((d, i) => i === index ? ({base64: '', fileURL: '', fileName: ''})
+        setFileData(fileData.map((d, i) => i === index ? ({base64: '', fileURL: ''})
             : d))
     }, [fileData])
-    const onImageUpload = useCallback((base64: string, fileURL?: string, fileName?: string, index?: number) => {
-        setFileData(fileData.map((d, i) => i === index ? ({base64, fileURL, fileName}) : d))
+    const onImageUpload = useCallback((base64: string, fileURL?: string, index?: number) => {
+        setFileData(fileData.map((d, i) => i === index ? ({base64, fileURL}) : d))
     }, [fileData])
     const onAddClick = () => {
         onAddBtnClick(values, fileData)
@@ -63,7 +62,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                 {/*мапим названия файлов (картинок) для получения соответствующего количества кнопок для их выгрузки*/}
                 {filesToUpload.map((f, i) => <ImageEditor
                     key={i}
-                    onClick={(base64: string, fileURL?: string, fileName?: string) => onImageUpload(base64, fileURL, fileName, i)}>
+                    onClick={(base64: string, fileURL?: string) => onImageUpload(base64, fileURL, i)}>
                     <Button icon={<UploadOutlined/>}>Upload {f}</Button>
                 </ImageEditor>)}
             </div>

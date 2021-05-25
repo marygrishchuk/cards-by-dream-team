@@ -3,7 +3,7 @@ import {Button} from "antd";
 
 type ImageEditorPropsType = {
     style?: CSSProperties
-    onClick: (base64: string, fileURL?: string, fileName?: string) => void
+    onClick: (base64: string, fileURL?: string) => void
 }
 
 export const ImageEditor: React.FC<ImageEditorPropsType> = React.memo(({
@@ -23,7 +23,7 @@ export const ImageEditor: React.FC<ImageEditorPropsType> = React.memo(({
             reader.onloadend = () => {
                 const newBase64 = reader.result
                 if (e.target.files && e.target.files[0].size < 2097152) {
-                    if (newBase64) onClick(newBase64.toString(), imageURL, e.target.files[0].name || '')
+                    if (newBase64) onClick(newBase64.toString(), imageURL)
                 } else if (e.target.files && e.target.files[0].size > 2097152) {
                     alert('Image size should be less than 2MB.')
                 }

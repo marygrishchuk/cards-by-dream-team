@@ -27,18 +27,17 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
                                                                                    setShow,
                                                                                    onUpdateBtnClick
                                                                                }) => {
-    const initialFileData = Array.from(imageURLs, (url) => ({base64: '', fileURL: url, fileName: ''}))
+    const initialFileData = Array.from(imageURLs, (url) => ({base64: '', fileURL: url}))
     const [values, setValues] = useState<Array<string>>(inputValues)
     const [fileData, setFileData] = useState<Array<UploadedFileType>>(initialFileData)
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
-        let valuesCopy = [...values]
-        setValues(valuesCopy.map((v, i) => i === index ? e.currentTarget.value : v))
+        setValues(values.map((v, i) => i === index ? e.currentTarget.value : v))
     }
-    const onImageUpload = useCallback((base64: string, fileURL?: string, fileName?: string, index?: number) => {
-        setFileData(fileData.map((d, i) => i === index ? ({base64, fileURL, fileName}) : d))
+    const onImageUpload = useCallback((base64: string, fileURL?: string, index?: number) => {
+        setFileData(fileData.map((d, i) => i === index ? ({base64, fileURL}) : d))
     }, [fileData])
     const onDeleteImageClick = useCallback((index: number) => {
-        setFileData(fileData.map((d, i) => i === index ? ({base64: '', fileURL: '', fileName: ''})
+        setFileData(fileData.map((d, i) => i === index ? ({base64: '0', fileURL: '0'})
             : d))
     }, [fileData])
     const onUpdateClick = () => {
@@ -63,13 +62,13 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
                 {/*мапим названия файлов (картинок) для получения соответствующего количества кнопок для их выгрузки*/}
                 {filesToUpload.map((f, i) => <ImageEditor
                     key={i}
-                    onClick={(base64: string, fileURL?: string, fileName?: string) => onImageUpload(base64, fileURL, fileName, i)}>
+                    onClick={(base64: string, fileURL?: string) => onImageUpload(base64, fileURL, i)}>
                     <Button icon={<UploadOutlined/>}>Upload {f}</Button>
                 </ImageEditor>)}
             </div>
             <div className={style.previews}>
                 {/*мапим файлы (картинки) для их отображения вместе с кнопкой для их удаления*/}
-                {fileData.map((f, i) => f.fileURL
+                {fileData.map((f, i) => f.fileURL !== '0'
                     ? <div className={style.previewContainer}>
                         {/*картинка*/}
                         <div className={style.preview} style={{backgroundImage: `url(${f.fileURL})`}}> </div>
