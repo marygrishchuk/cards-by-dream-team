@@ -6,8 +6,8 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import React, {useCallback, useState} from "react";
 import {addCardTC, deleteCardTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal, UploadedFileType} from "../Modals/AddItemModal/AddItemModal";
-import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
+import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
+import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 
 type CardsTablePropsType = {
@@ -45,7 +45,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const dispatch = useDispatch()
 
-    const onAddCardClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
+    const onAddCardClick = useCallback((values: Array<string>, fileData: Array<UploadedImageDataType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
         dispatch(addCardTC(packId, {
             question: values[0],
@@ -62,7 +62,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         }
     }, [dispatch, packId, currentCardID])
 
-    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
+    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedImageDataType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
         dispatch(updateCardTC(packId, currentCardID, {
             question: values[0],
@@ -97,9 +97,12 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Pack ID', dataIndex: 'packId', key: 'packId'},
         {
-            title: () => <Button onClick={() => setShowAddItemModal(true)} disabled={packUserId !== authUserId}
-                                 type={'ghost'} size={'large'}
-                                 icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>,
+            title: () => <>
+                {packUserId === authUserId &&
+                <Button onClick={() => setShowAddItemModal(true)} type={'ghost'} size={'large'}
+                        icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>
+                }
+            </>,
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({cardId, question, answer, questionImg, answerImg}: ButtonsDataType) => <>

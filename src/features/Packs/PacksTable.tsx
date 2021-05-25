@@ -8,10 +8,10 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal, UploadedFileType} from "../Modals/AddItemModal/AddItemModal";
+import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
-import {UpdateItemModal} from "../Modals/UpdateItemModal/UpdateItemModal";
+import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
@@ -42,7 +42,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
     const [currentPackCover, setCurrentPackCover] = useState<string>('')
     const dispatch = useDispatch()
 
-    const onAddPackClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
+    const onAddPackClick = useCallback((values: Array<string>, fileData: Array<UploadedImageDataType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels в AddItemModal
         dispatch(addPackTC(values[0], fileData[0].base64))
     }, [dispatch])
@@ -54,7 +54,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         }
     }, [dispatch, currentPackID])
 
-    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedFileType>) => {
+    const onUpdateClick = useCallback((values: Array<string>, fileData: Array<UploadedImageDataType>) => {
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
         dispatch(updatePackTC(currentPackID, {name: values[0], deckCover: fileData[0].base64}))
     }, [dispatch, currentPackID])

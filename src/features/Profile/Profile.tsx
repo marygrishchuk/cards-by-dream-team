@@ -8,7 +8,7 @@ import {Avatar, Button, Typography} from 'antd';
 import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
-import {ImageEditor} from "../../common/ImageEditor/ImageEditor";
+import {FileUploader, UploadedFileDataType} from "../../common/FileUploader/FileUploader";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 
 export const Profile = () => {
@@ -24,8 +24,8 @@ export const Profile = () => {
     const {Paragraph} = Typography;
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
 
-    const onImageEditorClick = useCallback((base64: string) => {
-        dispatch(updateUserDataTC({avatar: base64}))
+    const onImageEditorClick = useCallback((fileData: UploadedFileDataType) => {
+        dispatch(updateUserDataTC({avatar: fileData.base64}))
     },[dispatch])
     const onDeleteAvatarClick = useCallback((isToBeDeleted: boolean) => {
         if (isToBeDeleted) {
@@ -48,12 +48,12 @@ export const Profile = () => {
             {requestStatus === 'loading' && <div className={style.loading}>loading...</div>}
             <div className={error && commonStyle.error}>{error}</div>
             <div className={style.avatarContainer}>
-                {avatar !== "0" ? <>
+                {avatar && avatar !== "0" ? <>
                         <Avatar src={avatar} size={64}/>
                         <div className={style.avatarButtons}>
-                            <ImageEditor onClick={onImageEditorClick}>
+                            <FileUploader onClick={onImageEditorClick} expectedFileType={'image'}>
                                 <EditTwoTone style={{fontSize: '16px'}}/>
-                            </ImageEditor>
+                            </FileUploader>
                             <div>
                                 <Button onClick={() => {
                                     setShowDeleteItemModal(true)
@@ -63,9 +63,10 @@ export const Profile = () => {
                     </>
                     : <>
                         <Avatar size={64} icon={<UserOutlined/>}/>
-                        <ImageEditor onClick={onImageEditorClick} style={{position: "absolute", top: "30%", right: "0"}}>
+                        <FileUploader onClick={onImageEditorClick} expectedFileType={'image'}
+                                      style={{position: "absolute", top: "30%", right: "0"}}>
                             <PlusSquareTwoTone style={{fontSize: '16px'}}/>
-                        </ImageEditor>
+                        </FileUploader>
                     </>}
             </div>
             <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>

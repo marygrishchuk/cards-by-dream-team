@@ -3,12 +3,8 @@ import style from "./AddItemModal.module.css";
 import {Modal} from "../../../common/Modal/Modal";
 import {Button} from 'antd';
 import {DeleteTwoTone, UploadOutlined} from '@ant-design/icons';
-import {ImageEditor} from "../../../common/ImageEditor/ImageEditor";
-
-export type UploadedFileType = {
-    base64: string
-    fileURL: string | undefined
-}
+import {FileUploader, UploadedFileDataType} from "../../../common/FileUploader/FileUploader";
+import {UploadedImageDataType} from "../UpdateItemModal/UpdateItemModal";
 
 type AddItemModalPropsType = {
     inputLabels: Array<'Name: ' | 'Question: ' | 'Answer: '>
@@ -16,7 +12,7 @@ type AddItemModalPropsType = {
     itemToAdd: 'pack' | 'card'
     show: boolean
     setShow: (show: boolean) => void
-    onAddBtnClick: (values: Array<string>, fileData: Array<UploadedFileType>) => void
+    onAddBtnClick: (values: Array<string>, fileData: Array<UploadedImageDataType>) => void
 }
 
 export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
@@ -31,7 +27,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
     const initialValues = Array.from(inputLabels, () => "")
     const initialFileData = Array.from(filesToUpload, () => ({base64: '', fileURL: ''}))
     const [values, setValues] = useState<Array<string>>(initialValues)
-    const [fileData, setFileData] = useState<Array<UploadedFileType>>(initialFileData)
+    const [fileData, setFileData] = useState<Array<UploadedImageDataType>>(initialFileData)
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         setValues(values.map((v, i) => i === index ? e.currentTarget.value : v))
     }
@@ -60,11 +56,11 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
             </div>)}
             <div>
                 {/*мапим названия файлов (картинок) для получения соответствующего количества кнопок для их выгрузки*/}
-                {filesToUpload.map((f, i) => <ImageEditor
-                    key={i}
-                    onClick={(base64: string, fileURL?: string) => onImageUpload(base64, fileURL, i)}>
+                {filesToUpload.map((f, i) => <FileUploader
+                    key={i} expectedFileType={'image'}
+                    onClick={(fileData: UploadedFileDataType) => onImageUpload(fileData.base64, fileData.fileURL, i)}>
                     <Button icon={<UploadOutlined/>}>Upload {f}</Button>
-                </ImageEditor>)}
+                </FileUploader>)}
             </div>
             <div className={style.previews}>
                 {/*мапим файлы (картинки) для их отображения вместе с кнопкой для их удаления*/}
