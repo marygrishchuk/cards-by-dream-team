@@ -71,7 +71,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
             answerImg: fileData[1].base64
         }))
     }, [dispatch, packId, currentCardID])
-
+//мапим данные для таблицы:
     const data: Array<CardType> = cards.map(c => ({
         key: c._id,
         question: c.question,
@@ -89,7 +89,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
             answerImg: c.answerImg
         }
     }))
-
+// колонки (их заголовки и render в тех колонках, где надо отрисовывать элементы в таблице):
     const columns: ColumnsType<CardType> = [
         {title: 'Question', dataIndex: 'question', key: 'question'},
         {title: 'Answer', dataIndex: 'answer', key: 'answer'},

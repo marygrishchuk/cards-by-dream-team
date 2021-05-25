@@ -16,7 +16,9 @@ export const ImageEditor: React.FC<ImageEditorPropsType> = React.memo(({
     const uploadImage = (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader()
         if (e.target.files !== null && e.target.files[0] instanceof Blob) {
+            // получаем base64 файла, необходимый для его отправки на сервер:
             reader.readAsDataURL(e.target.files[0])
+            // получаем url файла, необходимый для его предпросмотра до отправки на сервер:
             const imageURL = window.URL.createObjectURL(e.target.files[0])
             reader.onloadend = () => {
                 const newBase64 = reader.result
@@ -34,6 +36,7 @@ export const ImageEditor: React.FC<ImageEditorPropsType> = React.memo(({
                onChange={uploadImage}/>
         <Button onClick={() => inputRef && inputRef.current && inputRef.current.click()}
                 type={'link'}>
+            {/*внешний вид кнопки будет любым в зависимости от переданного childrena*/}
             {children}
         </Button>
     </span>

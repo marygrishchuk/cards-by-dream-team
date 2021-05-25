@@ -58,7 +58,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         //values содержатся в массиве в том порядке, в котором передаем inputLabels и inputValues в UpdateItemModal
         dispatch(updatePackTC(currentPackID, {name: values[0], deckCover: fileData[0].base64}))
     }, [dispatch, currentPackID])
-
+//мапим данные для таблицы:
     const data: Array<PackType> = cardPacks.map(p => ({
         key: p._id,
         name: p.name,
@@ -66,9 +66,15 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         cardsCount: p.cardsCount,
         updated: p.updated,
         createdBy: p.user_name,
-        buttons: {packId: p._id, packUserId: p.user_id, cardsCount: p.cardsCount, packName: p.name, deckCover: p.deckCover}
+        buttons: {
+            packId: p._id,
+            packUserId: p.user_id,
+            cardsCount: p.cardsCount,
+            packName: p.name,
+            deckCover: p.deckCover
+        }
     }))
-
+// колонки (их заголовки и render в тех колонках, где надо отрисовывать элементы в таблице):
     const columns: ColumnsType<PackType> = [
         {title: 'Name', dataIndex: 'name', key: 'name', sorter: true},
         {title: 'Cards Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
@@ -100,7 +106,7 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
             </>,
         },
     ];
-
+//диспатч экшенов при сортировке с помощью кнопкок сортировки там, где они есть (Name и Cards Count):
     const onChange = (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>,
                       sorter: SorterResult<PackType> | any) => {
         if (sorter.columnKey === 'name' && sorter.order === 'ascend') {

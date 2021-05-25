@@ -52,6 +52,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                   backgroundOnClick={() => setShow(false)}>
         <div className={style.addBlock}>
             <h4>Add new {itemToAdd}:</h4>
+            {/*мапим лейблы для получения соответствующего количества текстэрий с ними*/}
             {inputLabels.map((l, i) => <div key={i}>
                 <label>
                     <div>{l}</div>
@@ -59,6 +60,7 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                 </label>
             </div>)}
             <div>
+                {/*мапим названия файлов (картинок) для получения соответствующего количества кнопок для их выгрузки*/}
                 {filesToUpload.map((f, i) => <ImageEditor
                     key={i}
                     onClick={(base64: string, fileURL?: string, fileName?: string) => onImageUpload(base64, fileURL, fileName, i)}>
@@ -66,9 +68,12 @@ export const AddItemModal: React.FC<AddItemModalPropsType> = React.memo(({
                 </ImageEditor>)}
             </div>
             <div className={style.previews}>
+                {/*мапим файлы (картинки) для их отображения вместе с кнопкой для их удаления*/}
                 {fileData.map((f, i) => f.fileURL
                     ? <div className={style.previewContainer}>
+                        {/*картинка*/}
                         <div className={style.preview} style={{backgroundImage: `url(${f.fileURL})`}}> </div>
+                        {/*кнопка для удаления*/}
                         <div className={style.bin}>
                             <Button onClick={() => onDeleteImageClick(i)}
                                     icon={<DeleteTwoTone style={{fontSize: '16px'}}/>} shape="circle" ghost/>
