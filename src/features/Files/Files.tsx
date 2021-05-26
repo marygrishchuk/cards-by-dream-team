@@ -60,6 +60,7 @@ export const Files = () => {
         setFileName('')
         setFileSize('')
         setFileType('')
+        setFileLastModified('')
         setFileURL('')
         setBase64('')
         setFileData(undefined)

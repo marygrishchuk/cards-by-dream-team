@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./TeamPresentation.module.css";
-import maria from "../../assets/images/maria.jpg";
+import maria from "../../assets/images/maria.jpeg"
 import leonid from "../../assets/images/leonid.jpg";
 import anton from "../../assets/images/anton.png";
 
