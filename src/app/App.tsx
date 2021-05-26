@@ -16,6 +16,7 @@ import {AppRootStateType} from "./store";
 import {Learn} from "../features/Learn/Learn";
 import {ScrollUpModal} from '../features/Modals/ScrollUpModal/ScrollUpModal';
 import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
+import {Files} from "../features/Files/Files";
 
 export const PATH = {
     LOGIN: "/login",
@@ -26,6 +27,7 @@ export const PATH = {
     PACKS: "/packs",
     CARDS: "/cards",
     LEARN: "/learn",
+    FILES: "/files",
 }
 
 const App = () => {
@@ -51,6 +53,7 @@ const App = () => {
                 <Route path={PATH.PACKS} render={() => <Packs/>}/>
                 <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
                 <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
+                <Route path={PATH.FILES} render={() => <Files/>}/>
                 <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>

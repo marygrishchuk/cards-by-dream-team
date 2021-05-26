@@ -1,0 +1,32 @@
+.files {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.previewContainer {
+    width: 270px;
+    position: relative;
+}
+
+.preview {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    background: center no-repeat;
+    background-size: cover;
+}
+
+.bin {
+    position: absolute;
+    top: 40%;
+    right: 0;
+}
+
+video {
+    width: 60vw;
+}

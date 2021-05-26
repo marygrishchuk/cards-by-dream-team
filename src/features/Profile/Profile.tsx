@@ -1,11 +1,11 @@
 import React, {useCallback, useState} from "react";
 import style from "./Profile.module.css";
-import {Redirect} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
-import {Avatar, Button, Typography} from 'antd';
-import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined} from '@ant-design/icons';
+import {Avatar, Button, Popover, Typography} from 'antd';
+import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, CloudServerOutlined, UserOutlined} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
 import {FileUploader, UploadedFileDataType} from "../../common/FileUploader/FileUploader";
@@ -26,16 +26,16 @@ export const Profile = () => {
 
     const onImageEditorClick = useCallback((fileData: UploadedFileDataType) => {
         dispatch(updateUserDataTC({avatar: fileData.base64}))
-    },[dispatch])
+    }, [dispatch])
     const onDeleteAvatarClick = useCallback((isToBeDeleted: boolean) => {
         if (isToBeDeleted) {
             dispatch(updateUserDataTC({avatar: "0"}))
             setShowDeleteItemModal(false)
         }
-    },[dispatch])
+    }, [dispatch])
     const onNewNameSubmit = useCallback((newName: string) => {
         dispatch(updateUserDataTC({name: newName}))
-    },[dispatch])
+    }, [dispatch])
     const onLogoutClick = () => {
         dispatch(logoutTC())
     }
@@ -72,6 +72,12 @@ export const Profile = () => {
             <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>
             <div>{email}</div>
             <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
+            {/*картинка со ссылкой на Files*/}
+            <NavLink to={PATH.FILES}>
+                <Popover title="Go to Files 🙂" trigger="hover">
+                    <CloudServerOutlined style={{position: "absolute", top: "30%", right: "30%", fontSize: '52px', color: 'orange'}}/>
+                </Popover>
+            </NavLink>
             {/*появляющаяся модалка для удаления аватара*/}
             {showDeleteItemModal &&
             <DeleteItemModal itemToDelete={'image'} onDeleteBtnClick={onDeleteAvatarClick}

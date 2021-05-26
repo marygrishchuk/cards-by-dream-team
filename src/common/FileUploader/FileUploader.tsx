@@ -2,7 +2,7 @@ import React, {ChangeEvent, CSSProperties, useRef} from "react";
 import {Button} from "antd";
 
 const getLastModifiedDate = (epochDate: number) => {
-    let date = new Date(epochDate * 1000);
+    let date = new Date(epochDate);
     return date.toLocaleString()
 }
 
@@ -19,11 +19,12 @@ const getFileSize = (size: number) => {
 export type UploadedFileDataType = {
     //base64 содержит base64 файла либо текст файла, если файл текстовый (получаем из reader.result)
     base64: string
-    fileURL?: string
-    fileName?: string
-    fileType?: string
+    fileURL: string
+    fileName: string
+    fileType: string
     fileSize?: string
-    fileLastModified?: string
+    fileLastModified: string
+    formData: FormData
 }
 
 type FileUploaderPropsType = {
@@ -42,13 +43,16 @@ export const FileUploader: React.FC<FileUploaderPropsType> = React.memo(({
 
     const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader()
+        const formData = new FormData()
         if (e.target.files !== null && e.target.files[0] instanceof Blob) {
             // получаем base64 файла, необходимый для его отправки на сервер:
-            if (e.target.files[0].type !== 'text/*') reader.readAsDataURL(e.target.files[0])
+            if (!/text\/.+/.test(e.target.files[0].type)) reader.readAsDataURL(e.target.files[0])
             // получаем текст файла, необходимый для отображения, если файл текстовый:
-            if (e.target.files[0].type === 'text/*') reader.readAsText(e.target.files[0])
+            if (/text\/.+/.test(e.target.files[0].type)) reader.readAsText(e.target.files[0])
             // получаем url файла, необходимый для его предпросмотра до отправки на сервер:
             const imageURL = window.URL.createObjectURL(e.target.files[0])
+            // получаем весь файл для отправки на второй сервер для файлов:
+            formData.append('myFile', e.target.files[0], e.target.files[0].name)
             reader.onloadend = () => {
                 const newBase64 = reader.result
                 if (e.target.files && e.target.files[0].size < 2097152) {
@@ -59,6 +63,7 @@ export const FileUploader: React.FC<FileUploaderPropsType> = React.memo(({
                         fileType: e.target.files[0].type,
                         fileSize: getFileSize(e.target.files[0].size),
                         fileLastModified: getLastModifiedDate(e.target.files[0].lastModified),
+                        formData: formData
                     })
                 } else if (e.target.files && e.target.files[0].size > 2097152) {
                     alert('File size should be less than 2MB.')
