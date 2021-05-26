@@ -69,7 +69,8 @@ export const Files = () => {
 
     return (
         <div className={style.files}>
-            {requestStatus === 'loading' && <Progress percent={100} style={{position: "absolute", top: 0}}/>}
+            {requestStatus === 'loading' && <Progress status="active" percent={99.9} style={{position: "absolute", top: 0}}
+                                                      strokeColor={{from: '#1890ff', to: '#76ff7a'}} strokeWidth={7}/>}
             <div className={error && commonStyle.error}>{error}</div>
             <FileUploader onClick={onFileUpload} style={{margin: '20px'}}>
                 <Button icon={<UploadOutlined/>}>Upload file</Button>
