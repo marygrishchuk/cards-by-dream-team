@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
 import {Avatar, Button, Tooltip, Typography} from 'antd';
-import {CloudServerOutlined, DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined} from '@ant-design/icons';
+import {CloudServerOutlined, DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined, BlockOutlined} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
 import {FileUploader, UploadedFileDataType} from "../../common/FileUploader/FileUploader";
@@ -72,9 +72,16 @@ export const Profile = () => {
             <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>
             <div>{email}</div>
             <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
+            {/*картинка со ссылкой на Packs*/}
+            <NavLink to={PATH.PACKS}>
+                <Tooltip title="You can create Packs with cards to learn by 🙂" color="#53cafc">
+                    <BlockOutlined
+                        style={{position: "absolute", top: "18%", right: "43%", fontSize: '52px', color: 'orange'}}/>
+                </Tooltip>
+            </NavLink>
             {/*картинка со ссылкой на Files*/}
             <NavLink to={PATH.FILES}>
-                <Tooltip title="Go to Files 🙂" color="#2db7f5">
+                <Tooltip title="You can upload various Files to view or send them to server 🙂" color="#53cafc">
                     <CloudServerOutlined
                         style={{position: "absolute", top: "30%", right: "30%", fontSize: '52px', color: 'orange'}}/>
                 </Tooltip>
