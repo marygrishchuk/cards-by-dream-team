@@ -59,13 +59,13 @@
     justify-content: space-around;
     align-items: center;
 }
-.timing {
+.playAndTime {
     width: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.timing span {
+.playAndTime span {
     color: white;
 }
 
