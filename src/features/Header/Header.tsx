@@ -12,7 +12,8 @@ export const Header = () => {
     return (
         <div className={style.header}>
             <div className={style.linksContainer}>
-                <NavLink to={PATH.PROFILE} activeClassName={style.active}><HomeOutlined style={{fontSize: '25px'}}/></NavLink>
+                <NavLink to={PATH.PROFILE} activeClassName={style.active}><HomeOutlined
+                    style={{fontSize: '25px'}}/></NavLink>
                 <NavLink to={PATH.PACKS} activeClassName={style.active}>
                     <BlockOutlined style={{fontSize: '25px'}}/>
                     Card Packs to Learn</NavLink>

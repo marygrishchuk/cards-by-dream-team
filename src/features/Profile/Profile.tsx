@@ -5,7 +5,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {InitialAuthStateType, logoutTC, updateUserDataTC} from "../Login/auth-reducer";
 import {Avatar, Button, Tooltip, Typography} from 'antd';
-import {CloudServerOutlined, DeleteTwoTone, EditTwoTone, PlusSquareTwoTone, UserOutlined, BlockOutlined} from '@ant-design/icons';
+import {
+    CloudServerOutlined,
+    DeleteTwoTone,
+    EditTwoTone,
+    PlusSquareTwoTone,
+    UserOutlined,
+    BlockOutlined
+} from '@ant-design/icons';
 import {PATH} from "../../app/App";
 import commonStyle from "../../common/styles/error.module.css";
 import {FileUploader, UploadedFileDataType} from "../../common/FileUploader/FileUploader";
