@@ -12,6 +12,7 @@ import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
+import style from "../Learn/Learn.module.css";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
@@ -26,11 +27,12 @@ type ButtonsDataType = {
     deckCover: string
 }
 type PackType = {
-    key: string,
-    name: string,
-    cardsCount: number,
-    updated: Date,
-    createdBy: string,
+    key: string
+    name: string
+    deckCover: string
+    cardsCount: number
+    updated: Date
+    createdBy: string
     buttons: ButtonsDataType
 }
 export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
@@ -77,6 +79,11 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
 // колонки (их заголовки и render в тех колонках, где надо отрисовывать элементы в таблице):
     const columns: ColumnsType<PackType> = [
         {title: 'Pack Name', dataIndex: 'name', key: 'name', sorter: true},
+        {title: 'Deck Cover', dataIndex: 'deckCover', key: 'deckCover',
+            render: (text, record) => <div className={style.deckCover}
+                                           style={{backgroundImage: `url(${record.deckCover})`}}>
+            </div>
+        },
         {title: 'Cards Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
