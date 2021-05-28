@@ -25,13 +25,11 @@ type ButtonsDataType = {
     questionImg: string
     answerImg: string
 }
-type ImgType = {
-    questionImg: string
-}
+
 export type CardType = {
     key: string
     question: string
-    questionImg: ImgType
+    questionImg: string
     answer: string
     answerImg: string
     grade: number
@@ -81,7 +79,7 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
     const data: Array<CardType> = cards.map(c => ({
         key: c._id,
         question: c.question,
-        questionImg: {questionImg: c.questionImg},
+        questionImg: c.questionImg,
         answer: c.answer,
         answerImg: c.answerImg,
         grade: c.grade,
@@ -100,14 +98,17 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
         {title: 'Question', dataIndex: 'question', key: 'question'},
         {
             title: 'Question Pic', dataIndex: 'questionImg ', key: 'questionImg ',
-            // render: ({questionImg}: ImgType) => {
-            //     console.log(questionImg)
-            //     return <div className={style.questionImg} style={{
-            //     backgroundImage: `url(${questionImg})`
-            // }}></div>}
+            render: (text, record) => <div className={style.questionImg}
+                                           style={{backgroundImage: `url(${record.questionImg})`}}>
+            </div>
         },
         {title: 'Answer', dataIndex: 'answer', key: 'answer'},
-        {title: 'Answer Pic', dataIndex: 'answerImg ', key: 'answerImg '},
+        {
+            title: 'Answer Pic', dataIndex: 'answerImg ', key: 'answerImg ',
+            render: (text, record) => <div className={style.answerImg}
+                                           style={{backgroundImage: `url(${record.answerImg})`}}>
+            </div>
+        },
         {title: 'Grade', dataIndex: 'grade', key: 'grade'},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Pack ID', dataIndex: 'packId', key: 'packId'},
