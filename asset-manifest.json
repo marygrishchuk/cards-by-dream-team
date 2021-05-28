@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/cards-by-dream-team/static/css/main.46cb2259.chunk.css",
-    "main.js": "/cards-by-dream-team/static/js/main.2f846e77.chunk.js",
-    "main.js.map": "/cards-by-dream-team/static/js/main.2f846e77.chunk.js.map",
+    "main.css": "/cards-by-dream-team/static/css/main.0adef9bd.chunk.css",
+    "main.js": "/cards-by-dream-team/static/js/main.eb2d9fad.chunk.js",
+    "main.js.map": "/cards-by-dream-team/static/js/main.eb2d9fad.chunk.js.map",
     "runtime-main.js": "/cards-by-dream-team/static/js/runtime-main.c771a323.js",
     "runtime-main.js.map": "/cards-by-dream-team/static/js/runtime-main.c771a323.js.map",
     "static/css/2.e4d41df7.chunk.css": "/cards-by-dream-team/static/css/2.e4d41df7.chunk.css",
-    "static/js/2.b52bb015.chunk.js": "/cards-by-dream-team/static/js/2.b52bb015.chunk.js",
-    "static/js/2.b52bb015.chunk.js.map": "/cards-by-dream-team/static/js/2.b52bb015.chunk.js.map",
+    "static/js/2.4e2645d9.chunk.js": "/cards-by-dream-team/static/js/2.4e2645d9.chunk.js",
+    "static/js/2.4e2645d9.chunk.js.map": "/cards-by-dream-team/static/js/2.4e2645d9.chunk.js.map",
     "static/js/3.55ea5fac.chunk.js": "/cards-by-dream-team/static/js/3.55ea5fac.chunk.js",
     "static/js/3.55ea5fac.chunk.js.map": "/cards-by-dream-team/static/js/3.55ea5fac.chunk.js.map",
     "index.html": "/cards-by-dream-team/index.html",
     "static/css/2.e4d41df7.chunk.css.map": "/cards-by-dream-team/static/css/2.e4d41df7.chunk.css.map",
-    "static/css/main.46cb2259.chunk.css.map": "/cards-by-dream-team/static/css/main.46cb2259.chunk.css.map",
-    "static/js/2.b52bb015.chunk.js.LICENSE.txt": "/cards-by-dream-team/static/js/2.b52bb015.chunk.js.LICENSE.txt",
+    "static/css/main.0adef9bd.chunk.css.map": "/cards-by-dream-team/static/css/main.0adef9bd.chunk.css.map",
+    "static/js/2.4e2645d9.chunk.js.LICENSE.txt": "/cards-by-dream-team/static/js/2.4e2645d9.chunk.js.LICENSE.txt",
     "static/media/anton.01b75db7.png": "/cards-by-dream-team/static/media/anton.01b75db7.png",
     "static/media/leonid.50e258e4.jpg": "/cards-by-dream-team/static/media/leonid.50e258e4.jpg",
     "static/media/maria.85ce96e4.jpeg": "/cards-by-dream-team/static/media/maria.85ce96e4.jpeg",
@@ -22,8 +22,8 @@
   "entrypoints": [
     "static/js/runtime-main.c771a323.js",
     "static/css/2.e4d41df7.chunk.css",
-    "static/js/2.b52bb015.chunk.js",
-    "static/css/main.46cb2259.chunk.css",
-    "static/js/main.2f846e77.chunk.js"
+    "static/js/2.4e2645d9.chunk.js",
+    "static/css/main.0adef9bd.chunk.css",
+    "static/js/main.eb2d9fad.chunk.js"
   ]
 }
