@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 import {authReducer} from "../features/Login/auth-reducer";
 import {registerReducer} from "../features/Register/register-reducer";
 import {setPasswordReducer} from "../features/SetPassword/set-password-reducer";
-import {profileReducer} from "../features/Profile/profile-reducer";
 import {forgotReducer} from "../features/Forgot/forgot-reducer";
 import {packsReducer} from "../features/Packs/packs-reducer";
 import {cardsReducer} from "../features/Cards/cards-reducer";
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({  //стейт
     register: registerReducer,
     forgot: forgotReducer,
     setPassword: setPasswordReducer,
-    profile: profileReducer,
     packs: packsReducer,
     cards: cardsReducer,
     app: appReducer,
