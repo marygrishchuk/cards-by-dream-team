@@ -59,6 +59,13 @@ it(`error message clears when request status is set to "success"`, () => {
     expect(newState.error).toBe('')
 })
 
+it(`error message is set successfully`, () => {
+    let newState = cardsReducer(state, {type: 'CARDS/SET-ERROR', error: "some error"})
+
+    expect(newState.error).toBe("some error")
+    expect(newState.requestStatus).toBe('idle')
+})
+
 it(`parameters for sorting cards are set successfully`, () => {
     let newSortParams = {
         question: 'a',
