@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useState} from "react";
 import {Modal} from "../../../common/Modal/Modal";
-import style from "./UpdateItemModal.module.css";
+import style from "./InputModal.module.css";
 import {FileUploader, UploadedFileDataType} from "../../../common/FileUploader/FileUploader";
 import {Button} from "antd";
 import {DeleteTwoTone, UploadOutlined} from "@ant-design/icons";
@@ -10,30 +10,35 @@ export type UploadedImageDataType = {
     fileURL?: string
 }
 
-type UpdateItemModalPropsType = {
-    inputValues: Array<string>
-    inputLabels: Array<'Name: ' | 'Question: ' | 'Answer: '>
-    imageURLs: Array<string>
+type InputModalPropsType = {
+    action: 'add' | 'update'
+    inputValues?: Array<string>
+    inputLabels: Array<'name' | 'question' | 'answer'>
+    imageURLs?: Array<string>
     filesToUpload: Array<'deck cover' | 'question pic' | 'answer pic'>
-    itemToUpdate: 'pack' | 'card'
+    itemToInput: 'pack' | 'card'
     show: boolean
     setShow: (show: boolean) => void
-    onUpdateBtnClick: (values: Array<string>, fileData: Array<UploadedImageDataType>) => void
+    onSubmitClick: (values: Array<string>, fileData: Array<UploadedImageDataType>) => void
 }
 
-export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
-                                                                                   inputValues,
-                                                                                   inputLabels,
-                                                                                   filesToUpload,
-                                                                                   imageURLs,
-                                                                                   itemToUpdate,
-                                                                                   show,
-                                                                                   setShow,
-                                                                                   onUpdateBtnClick
-                                                                               }) => {
-    const initialFileData = Array.from(imageURLs, (url) => ({base64: '', fileURL: url}))
-    const [values, setValues] = useState<Array<string>>(inputValues)
-    const [fileData, setFileData] = useState<Array<UploadedImageDataType>>(initialFileData)
+export const InputModal: React.FC<InputModalPropsType> = React.memo(({
+                                                                         action,
+                                                                         inputValues,
+                                                                         inputLabels,
+                                                                         filesToUpload,
+                                                                         imageURLs,
+                                                                         itemToInput,
+                                                                         show,
+                                                                         setShow,
+                                                                         onSubmitClick
+                                                                     }) => {
+    const initialValues = Array.from(inputLabels, () => "")
+    const initialEmptyFileData = Array.from(filesToUpload, () => ({base64: '', fileURL: ''}))
+    const initialFileData = Array.from(imageURLs || [''], (url) => ({base64: '', fileURL: url}))
+    const [values, setValues] = useState<Array<string>>(inputValues || initialValues)
+    const [fileData, setFileData] = useState<Array<UploadedImageDataType>>(imageURLs ? initialFileData : initialEmptyFileData)
+
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
         setValues(values.map((v, i) => i === index ? e.currentTarget.value : v))
     }
@@ -44,20 +49,21 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
         setFileData(fileData.map((d, i) => i === index ? ({base64: '0', fileURL: '0'})
             : d))
     }, [fileData])
-    const onUpdateClick = () => {
-        onUpdateBtnClick(values, fileData)
+    const onSubmitBtnClick = () => {
+        onSubmitClick(values, fileData)
         setShow(false)
     }
 
     return <Modal enableBackground modalHeightPx={400} modalWidthPx={450} show={show}
                   backgroundOnClick={() => setShow(false)}>
-        <div className={style.updateBlock}>
-            <h4>Update {itemToUpdate}:</h4>
+        <div className={style.inputFormContainer}>
+            <h4>{action[0].toUpperCase() + action.slice(1)} {itemToInput}:</h4>
             <div>
                 {/*мапим лейблы для получения соответствующего количества текстэрий с ними*/}
                 {inputLabels.map((l, i) => <div>
                     <label>
-                        <div>{l}</div>
+                        {/*отображаем лейбл с большой буквы и через двоеточие*/}
+                        <div>{l[0].toUpperCase() + l.slice(1) + ': '}</div>
                         <textarea value={values[i]} onChange={(e) => onChangeHandler(e, i)}/>
                     </label>
                 </div>)}
@@ -86,7 +92,8 @@ export const UpdateItemModal: React.FC<UpdateItemModalPropsType> = React.memo(({
             </div>
             <div className={style.buttons}>
                 <button onClick={() => setShow(false)}>Cancel</button>
-                <button onClick={onUpdateClick}>Update</button>
+                {/*name of the submit button has a capitalized first character*/}
+                <button onClick={onSubmitBtnClick}>{action[0].toUpperCase() + action.slice(1)}</button>
             </div>
         </div>
     </Modal>
