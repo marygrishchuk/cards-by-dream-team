@@ -17,6 +17,7 @@ import {Learn} from "../features/Learn/Learn";
 import {ScrollUpModal} from '../features/Modals/ScrollUpModal/ScrollUpModal';
 import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
 import {Files} from "../features/Files/Files";
+import {Page404} from "../features/Page404/Page404";
 
 export const PATH = {
     LOGIN: "/login",
@@ -54,7 +55,7 @@ const App = () => {
                 <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
                 <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
                 <Route path={PATH.FILES} render={() => <Files/>}/>
-                <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
+                <Route path={'/404'} render={() => <Page404/>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>
             {/*кнопка для скролла вверх появится только, если юзер промотал вниз на 400px*/}
