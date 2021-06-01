@@ -9,9 +9,9 @@ export const Page404 = () => {
 
     return (
         <div className={style.page404}>
-            <h3 className={style.goBack} onClick={() => {
-                history.goBack()
-            }}>⏴ Back</h3>
+            <h3 className={style.goBack}>
+                <button onClick={() => history.goBack()}>⏴ Back</button>
+            </h3>
             <div className={style.bigError}>error</div>
             <div className={style.ghostContainer}>
                 <div className={style.ghostWithShadow}>
