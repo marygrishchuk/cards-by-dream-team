@@ -37,8 +37,8 @@ export const Register = () => {
 
     return (
         <div className={style.register}>
-            <div className={errorPassword && commonStyle.error}>{errorPassword}</div>
-            <h3 className={text !== 'success' ? commonStyle.error : style.info}>{text}</h3>
+            {errorPassword && <div className={errorPassword && commonStyle.error}>{errorPassword}</div>}
+            {text && <h3 className={text !== 'success' ? commonStyle.error : style.info}>{text}</h3>}
             <p>Please enter your correct email and</p>
             <p>create a password to register:</p>
             <input type="email" placeholder={'email'} onChange={(e) => setEmailValue(e.currentTarget.value)}
