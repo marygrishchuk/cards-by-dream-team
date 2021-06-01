@@ -1,8 +1,3 @@
-## IMPORTANT NOTICE:
-
-Our server is temporarily unavailable. You'll be getting a network error until June 1, 2021 when the server gets available again.
-We apologize for the inconvenience.
-
 # Getting Started with Cards App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
