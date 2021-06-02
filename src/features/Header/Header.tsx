@@ -6,6 +6,7 @@ import {
     CloudServerOutlined,
     BlockOutlined,
     HomeOutlined,
+    TeamOutlined,
 } from '@ant-design/icons';
 
 export const Header = () => {
@@ -20,7 +21,10 @@ export const Header = () => {
                 <NavLink to={PATH.FILES} activeClassName={style.active}>
                     <CloudServerOutlined style={{fontSize: '25px'}}/>
                     Files</NavLink>
+                <NavLink to={PATH.USERS} activeClassName={style.active}>
+                    <TeamOutlined style={{fontSize: '25px'}}/>
+                    Users</NavLink>
             </div>
         </div>
-    );
+    )
 }
