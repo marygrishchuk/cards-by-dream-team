@@ -6,8 +6,9 @@ import {AppRootStateType} from "../../app/store";
 import {useFormik} from "formik";
 import {InitialAuthStateType, loginTC} from "./auth-reducer";
 import {PATH} from "../../app/App";
-import { Form } from "antd";
+import {Form} from "antd";
 import commonStyle from "../../common/styles/error.module.css";
+import {Chat} from "../Chat/Chat";
 
 
 export const Login = () => {
@@ -74,6 +75,8 @@ export const Login = () => {
                     <NavLink to="/register" activeClassName={style.active}>Registration</NavLink>
                 </div>
             </form>
+            {/*чат*/}
+            <Chat/>
         </div>
 
     )

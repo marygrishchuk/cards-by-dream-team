@@ -1,6 +1,6 @@
 import {SortDirections} from "../../api/api";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {setUsersAC, usersReducer} from "./users-reducer";
+import {setCurrentUserDataAC, setUsersAC, usersReducer} from "./users-reducer";
 
 //initial state
 let state = {
@@ -31,6 +31,12 @@ let state = {
         propToSortBy: '',
         page: undefined,
         pageCount: undefined
+    },
+    currentUserData: {
+        _id: "",
+        email: "",
+        name: "",
+        avatar: ""
     }
 }
 //tests
@@ -82,6 +88,19 @@ it(`parameters for sorting users are set successfully`, () => {
     expect(newState.sortParams.userName).toBe('ri')
     expect(newState.sortParams.sortDirection).toBe(0)
     expect(newState.sortParams.maxPublicCardPacksCount).toBe(11)
-    expect(newState.sortParams.propToSortBy).toBeDefined()
+    expect(newState.sortParams.propToSortBy).toBe('publicCardPacksCount')
 })
 
+it(`current user data are set successfully`, () => {
+    let action = setCurrentUserDataAC("576",
+        "dg@yu.ry",
+        "dilan",
+        "img")
+
+    let newState = usersReducer(state, action)
+
+    expect(newState.currentUserData._id).toBe('576')
+    expect(newState.currentUserData.name).toBe('dilan')
+    expect(newState.sortParams.maxPublicCardPacksCount).toBeUndefined()
+    expect(newState.sortParams.propToSortBy).toBe('')
+})

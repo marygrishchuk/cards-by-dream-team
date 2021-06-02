@@ -11,6 +11,7 @@ import commonStyle from "../../common/styles/error.module.css";
 import {FileUploader, UploadedFileDataType} from "../../common/FileUploader/FileUploader";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 import {getUserByIdTC} from "../Users/users-reducer";
+import {Chat} from "../Chat/Chat";
 
 export const Profile = () => {
     const {_id, email, name, error, avatar, isLoggedIn, requestStatus} = useSelector<AppRootStateType,
@@ -82,15 +83,17 @@ export const Profile = () => {
                 : <>
                     <Paragraph editable={{onChange: onNewNameSubmit}}>{name}</Paragraph>
                     <div>{email}</div>
-                    <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
                 </>}
 
+            <button onClick={onLogoutClick} disabled={requestStatus === 'loading'}>Log out</button>
 
             {/*появляющаяся модалка для удаления аватара*/}
             {showDeleteItemModal &&
             <DeleteItemModal itemToDelete={'image'} onDeleteBtnClick={onDeleteAvatarClick}
                              setShow={setShowDeleteItemModal}
                              show={showDeleteItemModal}/>}
+            {/*чат*/}
+            <Chat/>
         </div>
     );
 }
