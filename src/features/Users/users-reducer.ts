@@ -15,8 +15,8 @@ const initialState = {
     error: "",
     sortParams: {
         userName: '',
-        minPublicCardPacksCount: undefined,
-        maxPublicCardPacksCount: undefined,
+        minPublicCardPacksCount: 0,
+        maxPublicCardPacksCount: 100,
         sortDirection: undefined,
         propToSortBy: '',
         page: undefined,
