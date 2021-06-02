@@ -1,8 +1,14 @@
-import {instance, SortDirections} from "./api";
+import axios from 'axios'
+import {SortDirections} from "./api";
 import socketIo from "socket.io-client";
 
 //websocket для чата
 export const socket = socketIo("https://neko-back.herokuapp.com/");
+
+//инстанс для получения юзеров
+const instance = axios.create({
+    baseURL: 'https://neko-back.herokuapp.com/2.0/',
+})
 
 export const usersAPI = {
     getUsers(sortParams: UsersSortParamsType = {}) { // получение userов
