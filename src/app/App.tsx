@@ -19,6 +19,7 @@ import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
 import {Files} from "../features/Files/Files";
 import {Page404} from "../features/Page404/Page404";
 import {Users} from "../features/Users/Users";
+import {Chat} from "../features/Chat/Chat";
 
 export const PATH = {
     LOGIN: "/login",
@@ -30,7 +31,7 @@ export const PATH = {
     CARDS: "/cards",
     LEARN: "/learn",
     FILES: "/files",
-    USERS: "/users",
+    USERS: "/users"
 }
 
 const App = () => {

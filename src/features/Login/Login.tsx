@@ -75,8 +75,6 @@ export const Login = () => {
                     <NavLink to="/register" activeClassName={style.active}>Registration</NavLink>
                 </div>
             </form>
-            {/*чат*/}
-            <Chat/>
         </div>
 
     )

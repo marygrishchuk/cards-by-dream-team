@@ -92,8 +92,6 @@ export const Profile = () => {
             <DeleteItemModal itemToDelete={'image'} onDeleteBtnClick={onDeleteAvatarClick}
                              setShow={setShowDeleteItemModal}
                              show={showDeleteItemModal}/>}
-            {/*чат*/}
-            <Chat/>
         </div>
     );
 }

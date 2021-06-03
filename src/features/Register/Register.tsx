@@ -50,8 +50,6 @@ export const Register = () => {
                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}/>
             <button onClick={setRegister}>Register</button>
             <NavLink to="/login" activeClassName={style.active}>Log in</NavLink>
-            {/*чат*/}
-            <Chat/>
         </div>
     );
 }
