@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {requestRegister} from "./register-reducer";
 import {AppRootStateType} from "../../app/store";
 import commonStyle from "../../common/styles/error.module.css";
-import {Chat} from "../Chat/Chat";
 
 export const Register = () => {
     const text = useSelector<AppRootStateType, string>(state => state.register.responseText)

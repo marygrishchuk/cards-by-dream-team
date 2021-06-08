@@ -8,7 +8,6 @@ import {InitialAuthStateType, loginTC} from "./auth-reducer";
 import {PATH} from "../../app/App";
 import {Form} from "antd";
 import commonStyle from "../../common/styles/error.module.css";
-import {Chat} from "../Chat/Chat";
 
 
 export const Login = () => {
