@@ -35,15 +35,13 @@ export const Profile = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
+            dispatch(setPacksAC([], 0, 1, 10))
             if (userId && userId !== _id) { // если выбран юзер со страницы Users и его id есть в url
                 dispatch(getUserByIdTC(userId))
                 dispatch(getPacksTC({userId, page: 1, pageCount: 5}))
             } else {
                 dispatch(getPacksTC({userId: _id, page: 1, pageCount: 5}))
             }
-        }
-        return () => {
-            dispatch(setPacksAC([], 0, 1, 10))
         }
     }, [])
 

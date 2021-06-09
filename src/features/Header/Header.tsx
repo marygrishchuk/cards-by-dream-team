@@ -8,7 +8,8 @@ import {
     HomeOutlined,
     LogoutOutlined,
     TeamOutlined,
-    WechatOutlined
+    WechatOutlined,
+    CompassOutlined
 } from '@ant-design/icons';
 import {Chat} from "../Chat/Chat";
 import {Button, Popover} from "antd";
@@ -44,6 +45,9 @@ export const Header = () => {
                     <TeamOutlined style={{fontSize: '25px'}}/>Users
                 </Popover>
             </NavLink>
+            <NavLink to={PATH.MAP} activeClassName={style.active}>
+                <CompassOutlined style={{fontSize: '25px'}}/>
+                Map</NavLink>
             {isLoggedIn && <Button onClick={onLogoutClick} icon={<LogoutOutlined style={{fontSize: '25px', color: '#1890ff'}}/>}
                     disabled={requestStatus === 'loading'} shape="circle" ghost/>}
         </div>

@@ -19,7 +19,7 @@ import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
 import {Files} from "../features/Files/Files";
 import {Page404} from "../features/Page404/Page404";
 import {Users} from "../features/Users/Users";
-import {Chat} from "../features/Chat/Chat";
+import {MapPage} from "../features/MapPage/MapPage";
 
 export const PATH = {
     LOGIN: "/login",
@@ -31,7 +31,8 @@ export const PATH = {
     CARDS: "/cards",
     LEARN: "/learn",
     FILES: "/files",
-    USERS: "/users"
+    USERS: "/users",
+    MAP: "/map",
 }
 
 const App = () => {
@@ -59,6 +60,7 @@ const App = () => {
                 <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
                 <Route path={PATH.FILES} render={() => <Files/>}/>
                 <Route path={PATH.USERS} render={() => <Users/>}/>
+                <Route path={PATH.MAP} render={() => <MapPage/>}/>
                 <Route path={'/404'} render={() => <Page404/>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>

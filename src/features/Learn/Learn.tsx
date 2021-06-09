@@ -74,7 +74,7 @@ export const Learn = () => {
     if (!isPackFound) return <Redirect to={PATH.PACKS}/>
 
     return <Modal show enableBackground modalWidthPx={800} modalHeightPx={600}
-                  backgroundOnClick={() => history.push(PATH.PACKS)}>
+                  backgroundOnClick={() => history.goBack()}>
         <div className={error && commonStyle.error}>{error}</div>
         {/*вопрос*/}
         <div className={style.learn}>
