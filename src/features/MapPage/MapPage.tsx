@@ -2,11 +2,14 @@ import React, {useState} from "react";
 import {Map, Placemark, YMaps} from 'react-yandex-maps';
 import style from "./MapPage.module.css";
 import {config} from "../../config";
+import {RouteCalculator} from "./RouteCalculator";
 
 
 export const MapPage = () => {
     console.log('render TestMapPage')
     const [coordinates, setCoordinates] = useState([55.684758, 37.738521])
+    const [destination1, setDestination1] = useState('Moscow, Russia')
+    const [destination2, setDestination2] = useState('Minsk, Belarus')
 
 
     return (
@@ -28,8 +31,18 @@ export const MapPage = () => {
                                    }}
                         />
                     </Map>
+                    <div>
+                        {/*пока пробный подсчет расстояния между двумя точками, используя Yandex API через HOC withYMaps:*/}
+                        Route calculation:
+                        <div>
+                            <input placeholder="Enter a destination" value={destination1}
+                                   onChange={e => setDestination1(e.currentTarget.value)}/>{' '}
+                            <input placeholder="Enter a destination" value={destination2}
+                                   onChange={e => setDestination2(e.currentTarget.value)}/>
+                        </div>
+                        <RouteCalculator route={[destination1, destination2]}/>
+                    </div>
                 </div>
-
             </YMaps>
         </div>
     )
