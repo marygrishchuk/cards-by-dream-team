@@ -7,32 +7,24 @@ import {config} from "../../config";
 export const MapPage = () => {
     console.log('render TestMapPage')
     const [coordinates, setCoordinates] = useState([55.684758, 37.738521])
-    // const [position, setPosition] = useState<Array<number>>([])
 
 
     return (
         <div>
             <YMaps query={{
                 apikey: config.MY_API_KEY,
-                ns: 'use-load-option',
-                load:
-                    'map.Converter, geoObject.addon.hint',
             }}>
                 <div className={style.mapPage}>
 
                     <Map height={370} width={370}
                          state={{center: [55.75, 37.57], zoom: 9}}
-                         onClick={(e: any) => setCoordinates([...e.get('coords')])}
-                         // modules={['map.Converter']}
+                         onClick={(e: any) => {
+                             setCoordinates([...e.get('coords')])
+                         }}
                     >
-                        <Placemark geometry={[coordinates[0], coordinates[1]]}
-                                   options={{draggable: 'true'}}
+                        <Placemark geometry={[coordinates[0], coordinates[1]]} modules={['geoObject.addon.hint']}
                                    properties={{
                                        hintContent: `${coordinates}`,
-                                   }}
-
-                                   onDragEnd={() => {
-                                       // setPosition(e.get('position'))
                                    }}
                         />
                     </Map>
