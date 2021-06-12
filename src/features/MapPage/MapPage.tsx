@@ -1,5 +1,13 @@
 import React, {useState} from "react";
-import {Map, Placemark, YMaps} from 'react-yandex-maps';
+import {
+    FullscreenControl,
+    GeolocationControl,
+    Map,
+    Placemark,
+    SearchControl,
+    YMaps,
+    ZoomControl
+} from 'react-yandex-maps';
 import style from "./MapPage.module.css";
 import {config} from "../../config";
 import {RouteCalculator} from "./RouteCalculator";
@@ -30,7 +38,12 @@ export const MapPage = () => {
                                        hintContent: `${coordinates}`,
                                    }}
                         />
+                        <ZoomControl options={{ float: 'right' }} />
+                        <GeolocationControl options={{ float: 'left' }} />
+                        <FullscreenControl />
+                        <SearchControl options={{ float: 'right' }} />
                     </Map>
+
                     <div>
                         {/*пока пробный подсчет расстояния между двумя точками, используя Yandex API через HOC withYMaps:*/}
                         Route calculation:
