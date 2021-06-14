@@ -17,12 +17,11 @@ import {FigurePainter} from "./FigurePainter";
 
 export const MapPage = () => {
     console.log('render TestMapPage')
-    const [coordinates, setCoordinates] = useState([55.684758, 37.738521])
+    const [coordinates, setCoordinates] = useState<Array<number>>([55.684758, 37.738521])
     const [destination1, setDestination1] = useState<string>('Moscow, Russia')
     const [destination2, setDestination2] = useState<string>('Minsk, Belarus')
     const [destinations, setDestinations] = useState<Array<string>>(['Moscow, Russia', 'Minsk, Belarus'])
     const [drawingMode, setDrawingMode] = useState<boolean>(false)
-    const [event, setEvent] = useState<any>()
     const onDistanceCheckClick = () => {
         setDestinations([destination1, destination2])
     }
@@ -40,7 +39,6 @@ export const MapPage = () => {
                              if (!e.get('altKey')) {
                                  setCoordinates([...e.get('coords')])
                              }
-                             setEvent(e)
                          }}
                     >
                         <Placemark geometry={[coordinates[0], coordinates[1]]} modules={['geoObject.addon.hint']}
@@ -58,7 +56,7 @@ export const MapPage = () => {
                             state={{selected: drawingMode, enabled: drawingMode}}
                             onClick={() => setDrawingMode(!drawingMode)}
                         />
-                        {drawingMode && <FigurePainter event={event}/>}
+                        {drawingMode && <FigurePainter/>}
                     </Map>
                     <div>
                         {/*пока пробный подсчет расстояния между двумя точками, используя Yandex API через HOC withYMaps:*/}

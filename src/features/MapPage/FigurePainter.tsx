@@ -1,28 +1,26 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Polygon} from 'react-yandex-maps';
 
-type PropsType = {
-    event: any
-}
-
-export const FigurePainter: React.FC<PropsType> = React.memo(({event}) => {
+export const FigurePainter: React.FC = React.memo(() => {
         console.log('FigurePainter')
-
         const [coordinates, setCoordinates] = useState<number[][]>([])
 
-        useEffect(() => {
-            if (event && event.get('type') === 'click' && event.get('altKey')) {
-                setCoordinates(coordinates => {
-                    return [...coordinates, event.get('coords')]
-                })
-            }
+        const draw = (ref: any) => {
+            ref.editor.startDrawing()
+            ref.editor.events.add("vertexadd", () => {
+                let coords = ref.geometry.getCoordinates()[0]
+                setCoordinates(coords.slice(0, -1))
+            });
 
-        }, [event])
+        }
 
         return <div>
             <Polygon
+                modules={["geoObject.addon.editor"]}
+                instanceRef={(ref: any) => ref && draw(ref)}
                 geometry={[coordinates]}
                 options={{
+                    editorDrawingCursor: "crosshair",
                     fillColor: '#ff0000',
                     strokeColor: '#ff0000',
                     strokeOpacity: 0.6,
