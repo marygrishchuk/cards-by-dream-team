@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/cards-by-dream-team/static/css/main.f72e01ff.chunk.css",
-    "main.js": "/cards-by-dream-team/static/js/main.7e7a6640.chunk.js",
-    "main.js.map": "/cards-by-dream-team/static/js/main.7e7a6640.chunk.js.map",
+    "main.js": "/cards-by-dream-team/static/js/main.25323dde.chunk.js",
+    "main.js.map": "/cards-by-dream-team/static/js/main.25323dde.chunk.js.map",
     "runtime-main.js": "/cards-by-dream-team/static/js/runtime-main.33d93c83.js",
     "runtime-main.js.map": "/cards-by-dream-team/static/js/runtime-main.33d93c83.js.map",
     "static/css/2.e4d41df7.chunk.css": "/cards-by-dream-team/static/css/2.e4d41df7.chunk.css",
@@ -24,6 +24,6 @@
     "static/css/2.e4d41df7.chunk.css",
     "static/js/2.5b37aeda.chunk.js",
     "static/css/main.f72e01ff.chunk.css",
-    "static/js/main.7e7a6640.chunk.js"
+    "static/js/main.25323dde.chunk.js"
   ]
 }
