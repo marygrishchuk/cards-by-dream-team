@@ -16,7 +16,6 @@ import {FigurePainter} from "./FigurePainter";
 
 
 export const MapPage = () => {
-    console.log('render TestMapPage')
     const [coordinates, setCoordinates] = useState<Array<number>>([55.684758, 37.738521])
     const [destination1, setDestination1] = useState<string>('Moscow, Russia')
     const [destination2, setDestination2] = useState<string>('Minsk, Belarus')
@@ -32,7 +31,7 @@ export const MapPage = () => {
                 apikey: config.MY_API_KEY,
             }}>
                 <div className={style.mapPage}>
-                    <div>Please turn the Drawing mode on, press and hold an Alt key to draw a Polygon.</div>
+                    <div>Please turn the 'Drawing' mode on to draw a polygon.</div>
                     <Map height={370} width={370}
                          state={{center: [55.75, 37.57], zoom: 9}}
                          onClick={(e: any) => setCoordinates([...e.get('coords')])}
