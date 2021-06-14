@@ -35,11 +35,7 @@ export const MapPage = () => {
                     <div>Please turn the Drawing mode on, press and hold an Alt key to draw a Polygon.</div>
                     <Map height={370} width={370}
                          state={{center: [55.75, 37.57], zoom: 9}}
-                         onClick={(e: any) => {
-                             if (!e.get('altKey')) {
-                                 setCoordinates([...e.get('coords')])
-                             }
-                         }}
+                         onClick={(e: any) => setCoordinates([...e.get('coords')])}
                     >
                         <Placemark geometry={[coordinates[0], coordinates[1]]} modules={['geoObject.addon.hint']}
                                    properties={{

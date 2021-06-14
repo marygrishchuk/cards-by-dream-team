@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Polygon} from 'react-yandex-maps';
 
 export const FigurePainter: React.FC = React.memo(() => {
-        console.log('FigurePainter')
         const [coordinates, setCoordinates] = useState<number[][]>([])
 
         const draw = (ref: any) => {
