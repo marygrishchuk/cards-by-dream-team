@@ -16,7 +16,7 @@ import {FigurePainter} from "./FigurePainter";
 
 
 export const MapPage = () => {
-    const [coordinates, setCoordinates] = useState<Array<number>>([55.684758, 37.738521])
+    const [coordinates, setCoordinates] = useState<Array<number>>([55.75, 37.57])
     const [destination1, setDestination1] = useState<string>('Moscow, Russia')
     const [destination2, setDestination2] = useState<string>('Minsk, Belarus')
     const [destinations, setDestinations] = useState<Array<string>>(['Moscow, Russia', 'Minsk, Belarus'])
@@ -38,7 +38,7 @@ export const MapPage = () => {
                     <div>To edit a polygon, please drag its vertices.</div>
                     <div>To add more vertices, please click on the 'Add vertices' button.</div>
                     <Map height={370} width={370}
-                         state={{center: [55.75, 37.57], zoom: 9}}
+                         state={{center: coordinates, zoom: 9}}
                          onClick={(e: any) => setCoordinates([...e.get('coords')])}
                     >
                         <Placemark geometry={[coordinates[0], coordinates[1]]} modules={['geoObject.addon.hint']}
