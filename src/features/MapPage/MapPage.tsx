@@ -21,6 +21,8 @@ export const MapPage = () => {
     const [destination2, setDestination2] = useState<string>('Minsk, Belarus')
     const [destinations, setDestinations] = useState<Array<string>>(['Moscow, Russia', 'Minsk, Belarus'])
     const [drawingMode, setDrawingMode] = useState<boolean>(false)
+    const [stopDrawing, setStopDrawing] = useState<boolean>(false)
+
     const onDistanceCheckClick = () => {
         setDestinations([destination1, destination2])
     }
@@ -28,10 +30,13 @@ export const MapPage = () => {
     return (
         <div>
             <YMaps query={{
-                apikey: config.MY_API_KEY,
+                apikey: config.MY_API_KEY
             }}>
                 <div className={style.mapPage}>
-                    <div>Please turn the 'Drawing' mode on to draw a polygon.</div>
+                    <div>To measure area, please click 'Draw', and draw a polygon.</div>
+                    <div>To finish drawing, please click on the 'Stop drawing' button.</div>
+                    <div>To edit a polygon, please drag its vertices.</div>
+                    <div>To add more vertices, please click on the 'Add vertices' button.</div>
                     <Map height={370} width={370}
                          state={{center: [55.75, 37.57], zoom: 9}}
                          onClick={(e: any) => setCoordinates([...e.get('coords')])}
@@ -41,17 +46,28 @@ export const MapPage = () => {
                                        hintContent: `${coordinates[0]}, ${coordinates[1]}`,
                                    }}
                         />
-                        <ZoomControl options={{ float: 'right' }} />
-                        <GeolocationControl options={{ float: 'left' }} />
-                        <FullscreenControl />
-                        <SearchControl options={{ float: 'right' }} />
+                        <ZoomControl options={{float: 'right'}}/>
+                        <GeolocationControl options={{float: 'left'}}/>
+                        <FullscreenControl/>
+                        <SearchControl options={{float: 'right'}}/>
                         <Button
-                            options={{maxWidth: 128}}
-                            data={{content: `Drawing mode ${drawingMode ? 'on' : 'off'}`}}
+                            options={{maxWidth: 128, float: 'none', position: {bottom: '60px', right: '5px'}}}
+                            data={{content: `${drawingMode ? 'Remove drawing' : 'Draw'}`}}
                             state={{selected: drawingMode, enabled: drawingMode}}
-                            onClick={() => setDrawingMode(!drawingMode)}
+                            onClick={() => {
+                                setDrawingMode(!drawingMode)
+                                setStopDrawing(false)
+                            }}
                         />
-                        {drawingMode && <FigurePainter/>}
+                        {drawingMode && <>
+                            <FigurePainter stopDrawing={stopDrawing}/>
+                            <Button
+                                options={{maxWidth: 128, float: 'none', position: {bottom: '30px', right: '5px'}}}
+                                state={{selected: stopDrawing}}
+                                data={{content: `${stopDrawing ? 'Add vertices' : 'Stop drawing'}`}}
+                                onClick={() => setStopDrawing(!stopDrawing)}
+                            />
+                        </>}
                     </Map>
                     <div>
                         {/*пока пробный подсчет расстояния между двумя точками, используя Yandex API через HOC withYMaps:*/}
