@@ -11,32 +11,36 @@ const Painter: React.FC<PropsType> = React.memo(({ymaps, stopDrawing}) => {
         const [coordinates, setCoordinates] = useState<number[][]>([])
         const [area, setArea] = useState<string>('')
         const [polygonCenter, setPolygonCenter] = useState<number[]>([])
+        const [calcModuleLoaded, setCalcModuleLoaded] = useState<boolean>(false)
 
         useEffect(() => {
-            ymaps && addAreaCalculationModule(ymaps)
+            if (ymaps) {
+                addAreaCalculationModule(ymaps)
+                ymaps.ready(['util.calculateArea']).then(() => {
+                    setCalcModuleLoaded(true)
+                }).catch((error: string) => console.log(error))
+            }
         }, [])
-
-        const calculatePolygonCenterAndArea = useCallback((ref: AnyObject) => {
-            ymaps && ymaps.ready(['util.calculateArea']).then(() => {
-                let newArea = Math.round(ymaps.util.calculateArea(ref))
-                if (newArea <= 1e6) setArea(`${newArea} m²`)
-                else setArea(`${(newArea / 1e6).toFixed(3)} km²`)
-            }).catch((error: string) => console.log(error))
-            ymaps && setPolygonCenter(ymaps.util.bounds.getCenter(ref.geometry.getBounds()))
-        }, [ymaps])
 
         const onVertexChange = useCallback((ref: AnyObject) => {
             let coords = ref.geometry.getCoordinates()[0]
             setCoordinates(coords.slice(0, -1))
-            calculatePolygonCenterAndArea(ref)
-        }, [calculatePolygonCenterAndArea])
+            if (ymaps && calcModuleLoaded) {
+                // вычисляем и сетаем центр полигона для установления метки в него:
+                setPolygonCenter(ymaps.util.bounds.getCenter(ref.geometry.getBounds()))
+                // вычисляем и сетаем площадь полигона:
+                let newArea = Math.round(ymaps.util.calculateArea(ref))
+                if (newArea <= 1e6) setArea(`${newArea} m²`)
+                else setArea(`${(newArea / 1e6).toFixed(3)} km²`)
+            }
+        }, [ymaps, calcModuleLoaded])
 
         const draw = useCallback((ref: AnyObject) => {
             ref.editor.startDrawing()
-            ref.editor.events.add("vertexadd", () => {
+            ref.editor.events.add("vertexadd", () => { // при добавлении вершины вызываем функцию перерасчёта
                 onVertexChange(ref)
             })
-            ref.editor.events.add("vertexdragend", () => {
+            ref.editor.events.add("vertexdragend", () => { // при перетаскивании вершины вызываем функцию перерасчёта
                 onVertexChange(ref)
             })
             stopDrawing && ref.editor.stopDrawing()
