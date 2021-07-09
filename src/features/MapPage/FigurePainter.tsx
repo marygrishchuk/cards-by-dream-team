@@ -14,7 +14,7 @@ const Painter: React.FC<PropsType> = React.memo(({ymaps, stopDrawing}) => {
         const [calcModuleLoaded, setCalcModuleLoaded] = useState<boolean>(false)
 
         useEffect(() => {
-            if (ymaps) {
+            if (ymaps && !stopDrawing) {
                 addAreaCalculationModule(ymaps)
                 ymaps.ready(['util.calculateArea']).then(() => {
                     setCalcModuleLoaded(true)
@@ -25,26 +25,29 @@ const Painter: React.FC<PropsType> = React.memo(({ymaps, stopDrawing}) => {
         const onVertexChange = useCallback((ref: AnyObject) => {
             let coords = ref.geometry.getCoordinates()[0]
             setCoordinates(coords.slice(0, -1))
-            if (ymaps && calcModuleLoaded) {
+            if (calcModuleLoaded) {
                 // вычисляем и сетаем центр полигона для установления метки в него:
-                setPolygonCenter(ymaps.util.bounds.getCenter(ref.geometry.getBounds()))
+                setPolygonCenter(ymaps?.util.bounds.getCenter(ref.geometry.getBounds()))
                 // вычисляем и сетаем площадь полигона:
-                let newArea = Math.round(ymaps.util.calculateArea(ref))
+                let newArea = Math.round(ymaps?.util.calculateArea(ref))
                 if (newArea <= 1e6) setArea(`${newArea} m²`)
                 else setArea(`${(newArea / 1e6).toFixed(3)} km²`)
             }
         }, [ymaps, calcModuleLoaded])
 
         const draw = useCallback((ref: AnyObject) => {
-            ref.editor.startDrawing()
-            ref.editor.events.add("vertexadd", () => { // при добавлении вершины вызываем функцию перерасчёта
-                onVertexChange(ref)
-            })
-            ref.editor.events.add("vertexdragend", () => { // при перетаскивании вершины вызываем функцию перерасчёта
-                onVertexChange(ref)
-            })
-            stopDrawing && ref.editor.stopDrawing()
-        }, [onVertexChange, stopDrawing])
+            if (!stopDrawing) {
+                ref.editor.startDrawing()
+                ref.editor.events.add("vertexadd", () => { // при добавлении вершины вызываем функцию перерасчёта
+                    onVertexChange(ref)
+                })
+                ref.editor.events.add("vertexdragend", () => { // при перетаскивании вершины вызываем функцию перерасчёта
+                    onVertexChange(ref)
+                })
+            } else {
+                coordinates.length > 0 && ref.editor.stopDrawing()
+            }
+        }, [onVertexChange, stopDrawing, coordinates])
 
         return <div>
             <Polygon
